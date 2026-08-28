@@ -1,17 +1,20 @@
 # UCAV Aero-Stealth GNN
 
-Multifidelity Graph Neural Networks with Geometric Algebra and physics-informed learning for accelerated aero-stealth optimization of UCAV flying-wing configurations.
+Multifidelity Graph Neural Networks with Geometric Algebra for accelerated multidisciplinary aero-stealth optimization of low-observable UCAV configurations.
+
+> **Terminology:** UCAV denotes a functional class of unmanned combat aircraft/air vehicles; it is not synonymous with a flying-wing aerodynamic configuration. Flying-wing, tailless, blended-wing-body, or other layouts may be considered as specific design families.
 
 ## Objective
 
-This project investigates Graph Neural Networks (GNNs) as multifidelity surrogate models to accelerate multidisciplinary aero-stealth optimization involving:
+This project develops a multidisciplinary aero-stealth optimization framework that combines:
 
-- Radar Cross Section (RCS);
+- Radar Cross Section (RCS) modeling;
 - subsonic aerodynamic performance;
-- geometric representations informed by Geometric Algebra;
-- physics-informed learning based on Maxwell and Euler equations;
-- uncertainty-aware multifidelity learning and active learning;
-- multiobjective optimization with high-fidelity revalidation.
+- Geometric Algebra as a common mathematical representation for geometry and physics;
+- mesh-based Graph Neural Networks (GNNs);
+- multifidelity learning across models with different physical/numerical detail and computational-resource requirements;
+- deterministic mathematical optimization, including NLP and MINLP formulations when appropriate;
+- high-fidelity re-evaluation of selected optimization solutions.
 
 ## Research architecture
 
@@ -20,18 +23,20 @@ Geometry / OpenVSP
         ↓
 Mesh and graph representation
         ↓
-Low- and high-fidelity physics solvers
+Physics models at different fidelity levels
         ↓
 Multifidelity physics-informed GNNs
         ↓
-Fast surrogate models
+Fast surrogate evaluations
         ↓
-Aero-stealth multidisciplinary optimization
+Deterministic multidisciplinary aero-stealth optimization
         ↓
-High-fidelity validation
+Reference-model re-evaluation
 ```
 
-The principal computational contribution is the use of multifidelity GNNs to reduce the cost of repeated electromagnetic and aerodynamic evaluations inside the optimization loop. Geometric Algebra is investigated as a representation and physics-regularization layer, not assumed a priori to provide computational speed-up.
+The principal computational contribution is the use of multifidelity GNNs to reduce the number of resource-intensive electromagnetic and aerodynamic evaluations required inside the optimization loop. Geometric Algebra is adopted as a structuring mathematical formalism for geometric representation, physical relations, and optimization operators.
+
+Uncertainty quantification and active learning are considered supporting strategies that may be evaluated when they demonstrably improve the selection of additional high-fidelity simulations; they are not assumed as mandatory components of the framework.
 
 ## Documentation
 
@@ -47,7 +52,7 @@ Changes from `develop` to `main` should be reviewed through pull requests.
 
 ## Repository status
 
-Research and development in progress. The current milestone establishes the reproducible Quarto foundation before scientific chapters and computational experiments are expanded.
+Research and development in progress.
 
 ## License
 
