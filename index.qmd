@@ -2,13 +2,13 @@
 
 ## Sobre este projeto
 
-Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para configurações UCAV *flying-wing*. A contribuição computacional central é o emprego de **Graph Neural Networks (GNNs) multifidelidade** como modelos substitutos para reduzir o custo das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização.
+Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para **configurações UCAV de baixa observabilidade**. UCAV é tratado aqui como uma classe funcional de aeronave não tripulada de combate, e não como sinônimo de *flying wing*. Configurações sem cauda, asas integradas ou outras topologias podem ser estudadas conforme o espaço de projeto for formalizado.
 
-A Álgebra Geométrica (AG) é investigada como uma linguagem para representação geométrica e regularização física das GNNs. Seu eventual benefício computacional será tratado como hipótese de pesquisa a ser testada, e não como premissa.
+A contribuição computacional central é o emprego de **Graph Neural Networks (GNNs) multifidelidade** como modelos substitutos para reduzir o custo das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização. A Álgebra Geométrica (AG) é investigada como uma linguagem para representação geométrica e regularização física das GNNs. Seu eventual benefício será tratado como hipótese de pesquisa a ser testada, e não como premissa.
 
 ## Objetivo geral
 
-Desenvolver e validar modelos substitutos baseados em Graph Neural Networks multifidelidade e *physics-informed*, com representação geométrica fundamentada em Álgebra Geométrica, para acelerar a otimização multidisciplinar da seção reta radar e do desempenho aerodinâmico de um UCAV *flying-wing*.
+Desenvolver e validar um framework de otimização multidisciplinar aero-stealth acelerado por Graph Neural Networks multifidelidade e *physics-informed*, investigando representações baseadas em Álgebra Geométrica para modelar a assinatura radar e o desempenho aerodinâmico de configurações UCAV e reduzir o custo total do processo de otimização com revalidação seletiva em alta fidelidade.
 
 ## Arquitetura da pesquisa
 
@@ -28,7 +28,7 @@ $$
 \text{revalidação HF}.
 $$
 
-A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em *geometric deep learning* e simulação baseada em malhas [@bronstein2021; @pfaff2021]. A formulação de Maxwell em Álgebra do Espaço-Tempo fornece uma referência importante para a investigação da regularização eletromagnética em AG [@dressel2015]. O problema de compromisso entre aerodinâmica e baixa observabilidade também possui antecedentes recentes em otimização aero-stealth [@thoulon2024].
+A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em *geometric deep learning* e simulação baseada em malhas [@bronstein2021; @pfaff2021]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética 3-D [@shan2024] e, em 2026, análise aero-eletromagnética multitarefa em malhas de configurações blended-wing-body [@li2026aeroem]. O projeto busca avançar dessa análise acelerada para um framework UCAV multifidelidade, adaptativo e orientado à otimização.
 
 ## Questões metodológicas centrais
 
@@ -45,7 +45,7 @@ O projeto investiga, entre outras questões:
 
 Os capítulos evoluirão incrementalmente, acompanhando a pesquisa:
 
-- definição do problema aero-stealth;
+- contexto UCAV e definição do problema aero-stealth;
 - fundamentos e papel da Álgebra Geométrica;
 - equações físicas de Maxwell/RCS e Euler/aerodinâmica;
 - GNNs para *surrogate modeling*;
@@ -54,4 +54,4 @@ Os capítulos evoluirão incrementalmente, acompanhando a pesquisa:
 
 ## Estado atual
 
-Este repositório encontra-se em desenvolvimento. O **Milestone 0 (M0)** estabelece a infraestrutura reproduzível em Quarto, a bibliografia inicial, os metadados do projeto e a validação automatizada de renderização. Os capítulos científicos serão desenvolvidos de forma incremental nos marcos subsequentes.
+O **Milestone 1 (M1)** aprofunda o contexto UCAV, o estado da arte, a justificativa, o gap de literatura, a questão de pesquisa, os objetivos e as hipóteses antes do desenvolvimento dos capítulos matemáticos e computacionais.
