@@ -1,21 +1,44 @@
-Capítulo 1 — Problem Definition
+# Aero-Stealth Optimization of a UCAV Flying-Wing
 
-chapters/01_problem.qmd
+Este capítulo definirá o problema de engenharia que motiva todo o framework. Seu propósito é estabelecer o escopo antes de introduzir Álgebra Geométrica, GNNs ou algoritmos de otimização.
 
-Título:
+## UCAV flying-wing e problema aero-stealth
 
-Aero-Stealth Optimization of a UCAV Flying-Wing
+Conteúdo a desenvolver no M1:
 
-Conteúdo inicial:
+- configuração UCAV *flying-wing*;
+- Radar Cross Section (RCS) e baixa observabilidade;
+- desempenho aerodinâmico subsônico;
+- conflito e sinergias entre requisitos aerodinâmicos e eletromagnéticos;
+- parametrização geométrica relevante ao problema.
 
-UCAV flying-wing;
-conflito entre desempenho aerodinâmico e redução de RCS;
-parametrização geométrica;
-definição preliminar do problema MDO;
-custo das avaliações CEM e CFD;
-motivação para modelos substitutos;
-objetivo do projeto.
+## Gargalo computacional
 
-Este capítulo responde:
+O capítulo caracterizará o custo de avaliações CEM e CFD e explicará por que a exploração direta do espaço de projeto com solvers de alta fidelidade pode se tornar proibitiva.
 
-Qual problema de engenharia queremos resolver?
+## Formulação multidisciplinar preliminar
+
+Serão definidos progressivamente:
+
+- variáveis de projeto;
+- condições operacionais;
+- funções objetivo de RCS e aerodinâmica;
+- restrições geométricas e físicas;
+- níveis de fidelidade disponíveis.
+
+## Objetivo e questão de pesquisa
+
+O objetivo central será formulado em termos da **aceleração da otimização por GNNs multifidelidade**, preservando precisão suficiente para revalidação de soluções candidatas em alta fidelidade.
+
+## Hipóteses e métricas
+
+Serão explicitadas hipóteses sobre:
+
+- ganho por representação em grafos;
+- ganho por multifidelidade;
+- ganho por regularização física;
+- contribuição incremental da Álgebra Geométrica;
+- *speed-up* de avaliação e da otimização completa;
+- qualidade da fronteira de Pareto revalidada.
+
+> **Status M0:** estrutura editorial preparada. O conteúdo científico será desenvolvido no M1 a partir do TCC, do relatório sobre GNNs e das referências bibliográficas revisadas.

@@ -1,34 +1,54 @@
-Capítulo 4 — Graph Neural Networks
+# Graph Neural Networks for Physics-Based Surrogate Modeling
 
-chapters/04_graph_neural_networks.qmd
+As Graph Neural Networks constituem a **principal contribuição computacional** do projeto: substituir grande parte das avaliações repetidas dos solvers físicos por inferências rápidas dentro do processo de otimização, mantendo revalidação de alta fidelidade para as soluções relevantes.
 
-Esse deve se tornar um dos capítulos centrais do eBook.
+## Why graphs?
 
-Título:
+A justificativa partirá da correspondência natural entre malhas CEM/CFD e estruturas de grafo.
 
-Graph Neural Networks for Physics-Based Surrogate Modeling
+## Meshes as graphs
 
-Estrutura inicial:
+Serão avaliadas representações por nós, arestas, faces e, quando necessário, células volumétricas.
 
-4.1 Why graphs?
-4.2 Meshes as graphs
-4.3 Message passing
-4.4 Node, edge and face features
-4.5 Geometric representations
-4.6 Equivariance and invariance
-4.7 Physics-informed GNNs
-4.8 Electromagnetic surrogate
-4.9 Aerodynamic surrogate
-4.10 Uncertainty quantification
+## Message passing
 
-Aqui aparecerá a conexão fundamental:
+Formalização do ciclo mensagem--agregação--atualização--readout e sua interpretação em problemas de PDEs discretizadas.
 
-$$ \text{malha} \rightarrow \text{grafo} \rightarrow \text{GNN}. $$
+## Node, edge and face features
 
-E também nossa hipótese:
+Features geométricas, físicas, operacionais e, posteriormente, atributos derivados de Álgebra Geométrica.
 
-$$ \text{representação GA} \rightarrow \text{GNN geometricamente mais consistente}. $$
+## Geometric representations
 
-Este capítulo responde:
+Comparação entre coordenadas cartesianas, invariantes geométricos, representações equivariantes e possíveis objetos multivetoriais.
 
-Como substituir avaliações caras dos solvers por inferências rápidas?
+## Equivariance and invariance
+
+Definição das propriedades desejáveis frente a rotações, translações, mudança de orientação e remalhamento.
+
+## Physics-informed GNNs
+
+A física será incorporada prioritariamente como regularização, supervisão auxiliar ou informação de baixa fidelidade, evitando pressupor que uma PINN completa seja a solução adequada ao loop de otimização.
+
+## Electromagnetic surrogate
+
+Entradas, saídas de RCS/campo e tarefas auxiliares serão especificadas durante o desenvolvimento.
+
+## Aerodynamic surrogate
+
+Predição de coeficientes e, quando necessário, campos intermediários adequados à regularização pelas equações de Euler.
+
+## Uncertainty quantification
+
+A incerteza epistemológica será usada tanto para validação quanto para *active learning*.
+
+## Estudos de ablação
+
+O projeto deverá separar empiricamente os ganhos de:
+
+1. uso de grafo;
+2. representação geométrica/AG;
+3. regularização física;
+4. multifidelidade.
+
+> **Status M0:** estrutura editorial preparada; este capítulo será priorizado após a definição do problema no M1.
