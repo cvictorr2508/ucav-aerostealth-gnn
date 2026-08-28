@@ -1,25 +1,62 @@
-Capítulo 5 — Multifidelity
+# Multifidelity Learning and Adaptive Data Generation
 
-chapters/05_multifidelity.qmd
+A multifidelidade é central para tornar o treinamento das GNNs economicamente viável quando dados de alta fidelidade são caros.
 
-Título:
+## Computational cost hierarchy
 
-Multifidelity Learning and Adaptive Data Generation
+Caracterização explícita do custo dos diferentes níveis de solver.
 
-Estrutura:
+## Low- and high-fidelity models
 
-5.1 Computational cost hierarchy
-5.2 Low- and high-fidelity models
-5.3 Electromagnetic fidelity hierarchy
-5.4 Aerodynamic fidelity hierarchy
-5.5 Multi-Fidelity GNNs
-5.6 Residual correction
-5.7 Transfer learning
-5.8 Active learning
-5.9 Uncertainty-driven sampling
+Definição de baixa, média e alta fidelidade e critérios de compatibilidade entre respostas.
 
-O princípio central poderá ser formalizado como:
+## Electromagnetic fidelity hierarchy
 
-$$ y_{HF} = y_{LF} + \Delta_\theta(G,y_{LF}). $$
+Estrutura preliminar a revisar durante o projeto:
 
-É aqui que devemos incorporar boa parte do material já produzido no relatório sobre GNNs, que recomenda explicitamente correção LF→HF e estratégias coarse-to-fine.
+$$
+\text{PO/LE-PO}
+\rightarrow
+\text{SBR+/UTD/PTD ou equivalente HF}
+\rightarrow
+\text{validação experimental, quando disponível}.
+$$
+
+## Aerodynamic fidelity hierarchy
+
+Estrutura preliminar:
+
+$$
+\text{painel/VSPAERO}
+\rightarrow
+\text{Euler}
+\rightarrow
+\text{RANS/CFD de referência}.
+$$
+
+## Multi-Fidelity GNNs
+
+Uma hipótese de referência será aprender a discrepância entre níveis:
+
+$$
+y_{HF} = y_{LF} + \Delta_\theta(G, y_{LF}).
+$$
+
+## Residual correction and transfer learning
+
+Serão comparadas estratégias de correção residual, *coarse-to-fine*, currículo e transferência entre fidelidades.
+
+## Active learning
+
+A aquisição de novos casos deverá considerar:
+
+- incerteza epistemológica;
+- discrepância LF--HF;
+- proximidade de regiões promissoras para a fronteira de Pareto;
+- risco de picos de RCS ou degradação aerodinâmica.
+
+## Uncertainty-driven sampling
+
+A incerteza será avaliada como componente explícito do ciclo de geração de dados.
+
+> **Status M0:** estrutura editorial preparada; o conteúdo será expandido após o capítulo de GNNs.

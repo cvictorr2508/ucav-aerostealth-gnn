@@ -1,0 +1,37 @@
+name: Quarto build check
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto and TinyTeX
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+
+      - name: Render Quarto book
+        run: quarto render
+
+      - name: Upload rendered book
+        uses: actions/upload-artifact@v4
+        with:
+          name: quarto-book-${{ github.sha }}
+          path: _book
+          if-no-files-found: error

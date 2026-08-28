@@ -1,30 +1,49 @@
-Capítulo 6 — Optimization
+# GNN-Accelerated Multidisciplinary Aero-Stealth Optimization
 
-chapters/06_optimization.qmd
+Este capítulo integrará os surrogates eletromagnético e aerodinâmico ao processo de otimização multidisciplinar.
 
-Título:
+## Design variables
 
-GNN-Accelerated Multidisciplinary Aero-Stealth Optimization
+Variáveis contínuas, inteiras e categóricas serão definidas a partir da parametrização real do UCAV.
 
-Aqui fecharíamos o ciclo:
+## Objectives
 
-$$ \text{UCAV} \rightarrow \text{GNN} \rightarrow \text{RCS + aerodinâmica} \rightarrow \text{MDO}. $$
+Serão investigadas funções objetivo relacionadas a RCS, risco de picos e desempenho aerodinâmico.
 
-Estrutura inicial:
+## Constraints
 
-6.1 Design variables
-6.2 Objectives
-6.3 Constraints
-6.4 Continuous and discrete decisions
-6.5 NLP and MINLP
-6.6 Multiobjective optimization
-6.7 Surrogate-assisted optimization
-6.8 Pareto frontier
-6.9 High-fidelity revalidation
-6.10 Computational speed-up
+Restrições físicas, geométricas e operacionais serão explicitadas antes da escolha final do algoritmo de otimização.
 
-A métrica científica central deverá aparecer explicitamente:
+## NLP and MINLP
 
-$$ S_{\mathrm{MDO}} = \frac{ T_{\mathrm{optimization,\;solver}} }{ T_{\mathrm{optimization,\;GNN}} }. $$
+O problema será classificado como NLP ou MINLP somente após a definição das variáveis discretas. A Álgebra Geométrica estruturará representações e modelos físicos, enquanto os solvers de otimização operarão sobre objetivos e restrições escalares.
 
-Além da qualidade da fronteira de Pareto.
+## Multiobjective optimization
+
+A análise será orientada à fronteira de Pareto aero-stealth.
+
+## Surrogate-assisted optimization
+
+A GNN será usada para substituir avaliações caras durante grande parte da busca, com chamadas HF seletivas para calibração e validação.
+
+## High-fidelity revalidation
+
+Soluções candidatas deverão ser reavaliadas nos solvers de referência antes de conclusões de engenharia.
+
+## Computational speed-up
+
+Uma métrica central será o *speed-up* da otimização completa:
+
+$$
+S_{\mathrm{MDO}}
+=
+\frac{T_{\mathrm{MDO,baseline}}}{T_{\mathrm{MDO,GNN}}}.
+$$
+
+O tempo total deverá incluir geração dos dados, treinamento, otimização e revalidação para evitar estimativas artificiais de aceleração.
+
+## Pareto quality
+
+Serão definidas métricas para comparar a fronteira produzida pelo surrogate com soluções revalidadas em alta fidelidade.
+
+> **Status M0:** estrutura editorial preparada; a formulação final será desenvolvida após a consolidação das disciplinas físicas e dos surrogates.
