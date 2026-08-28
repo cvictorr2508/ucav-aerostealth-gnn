@@ -2,13 +2,15 @@
 
 ## Sobre este projeto
 
-Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para **configurações UCAV de baixa observabilidade**. UCAV é tratado aqui como uma classe funcional de aeronave não tripulada de combate, e não como sinônimo de *flying wing*. Configurações sem cauda, asas integradas ou outras topologias podem ser estudadas conforme o espaço de projeto for formalizado.
+Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para **configurações UCAV de baixa observabilidade**. A expressão UCAV (*Unmanned Combat Aerial Vehicle*) designa uma classe funcional de aeronave não tripulada de combate e não uma configuração aerodinâmica específica. Configurações sem cauda, *flying-wing*, *blended-wing-body* e outras famílias geométricas podem ser consideradas conforme o espaço de projeto for formalizado.
 
-A contribuição computacional central é o emprego de **Graph Neural Networks (GNNs) multifidelidade** como modelos substitutos para reduzir o custo das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização. A Álgebra Geométrica (AG) é investigada como uma linguagem para representação geométrica e regularização física das GNNs. Seu eventual benefício será tratado como hipótese de pesquisa a ser testada, e não como premissa.
+A contribuição computacional central é o emprego de **Graph Neural Networks (GNNs) multifidelidade** como modelos substitutos para reduzir a demanda de recursos computacionais e o tempo de processamento das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização.
+
+A **Álgebra Geométrica (AG)** é adotada como formalismo matemático estruturante para representar geometria, operações físicas e relações empregadas no aprendizado e na otimização. O projeto buscará formulações multivetoriais mais compactas e, quando matematicamente admissível, representações lineares nos objetos algébricos escolhidos, preservando explicitamente as não linearidades físicas intrínsecas.
 
 ## Objetivo geral
 
-Desenvolver e validar um framework de otimização multidisciplinar aero-stealth acelerado por Graph Neural Networks multifidelidade e *physics-informed*, investigando representações baseadas em Álgebra Geométrica para modelar a assinatura radar e o desempenho aerodinâmico de configurações UCAV e reduzir o custo total do processo de otimização com revalidação seletiva em alta fidelidade.
+Desenvolver e validar um framework de otimização multidisciplinar aero-stealth para configurações UCAV, baseado em Álgebra Geométrica e modelos substitutos por Graph Neural Networks multifidelidade, de forma a reduzir a demanda de recursos computacionais das avaliações eletromagnéticas e aerodinâmicas e viabilizar sua integração com métodos determinísticos de otimização matemática.
 
 ## Arquitetura da pesquisa
 
@@ -19,39 +21,37 @@ $$
 \rightarrow
 \text{malha/grafo}
 \rightarrow
-\text{solvers LF/HF}
+\text{modelos em diferentes fidelidades}
 \rightarrow
 \boxed{\text{GNN multifidelidade}}
 \rightarrow
-\text{otimização aero-stealth}
+\text{otimização matemática aero-stealth}
 \rightarrow
-\text{revalidação HF}.
+\text{reavaliação por modelos de referência}.
 $$
 
-A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em *geometric deep learning* e simulação baseada em malhas [@bronstein2021; @pfaff2021]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética 3-D [@shan2024] e, em 2026, análise aero-eletromagnética multitarefa em malhas de configurações blended-wing-body [@li2026aeroem]. O projeto busca avançar dessa análise acelerada para um framework UCAV multifidelidade, adaptativo e orientado à otimização.
+A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em *geometric deep learning* e simulação baseada em malhas [@bronstein2021; @pfaff2021]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional [@shan2024] e análise aero-eletromagnética multitarefa em malhas de configurações *blended-wing-body* [@li2026aeroem]. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.
 
 ## Questões metodológicas centrais
 
 O projeto investiga, entre outras questões:
 
-1. quanto uma GNN reduz o custo de uma avaliação eletromagnética ou aerodinâmica;
-2. quanto a modelagem multifidelidade reduz a necessidade de dados de alta fidelidade;
-3. se regularização física melhora precisão e generalização em regimes de poucos dados;
-4. se representações em Álgebra Geométrica melhoram invariância, equivariância, eficiência amostral ou robustez;
-5. quanto o uso dos *surrogates* acelera a otimização completa, incluindo o custo de geração de dados e treinamento;
-6. se as soluções obtidas pelo processo acelerado preservam a qualidade da fronteira de Pareto após revalidação em alta fidelidade.
+1. quanto as GNNs reduzem o tempo de processamento e o número de avaliações dos modelos eletromagnéticos e aerodinâmicos de referência;
+2. como combinar modelos de diferentes fidelidades para ampliar o espaço de projeto avaliado com a mesma infraestrutura computacional;
+3. como incorporar relações físicas de Maxwell e Euler, formuladas em Álgebra Geométrica, à representação e ao treinamento das GNNs;
+4. como integrar os modelos substitutos a formulações determinísticas de otimização multiobjetivo, incluindo NLP e, quando houver variáveis discretas, MINLP;
+5. quanto o processo completo reduz a demanda de CPU/GPU, memória e tempo de processamento após contabilizar geração de dados, treinamento, otimização e reavaliação;
+6. em que medida a fronteira de Pareto prevista preserva sua qualidade após reavaliação pelos modelos físicos de referência.
+
+Quantificação de incerteza e aprendizado ativo poderão ser avaliados como estratégias auxiliares de seleção de novas simulações, caso acrescentem informação relevante ao processo multifidelidade.
 
 ## Organização do eBook
 
-Os capítulos evoluirão incrementalmente, acompanhando a pesquisa:
+Os capítulos são organizados em torno de:
 
 - contexto UCAV e definição do problema aero-stealth;
-- fundamentos e papel da Álgebra Geométrica;
+- fundamentos e aplicação da Álgebra Geométrica;
 - equações físicas de Maxwell/RCS e Euler/aerodinâmica;
 - GNNs para *surrogate modeling*;
-- multifidelidade, incerteza e *active learning*;
-- otimização multidisciplinar acelerada e validação.
-
-## Estado atual
-
-O **Milestone 1 (M1)** aprofunda o contexto UCAV, o estado da arte, a justificativa, o gap de literatura, a questão de pesquisa, os objetivos e as hipóteses antes do desenvolvimento dos capítulos matemáticos e computacionais.
+- modelagem multifidelidade e estratégias de geração de dados;
+- otimização matemática multidisciplinar acelerada e validação.
