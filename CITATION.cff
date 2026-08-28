@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this repository in research, please cite it using the metadata below."
+title: "UCAV Aero-Stealth GNN"
+type: software
+authors:
+  - given-names: "Victor Rafael Rezende"
+    family-names: "Celestino"
+repository-code: "https://github.com/cvictorr2508/ucav-aerostealth-gnn"
+url: "https://github.com/cvictorr2508/ucav-aerostealth-gnn"
+license: MIT
+version: "0.1.0"
+keywords:
+  - graph neural networks
+  - multifidelity learning
+  - geometric algebra
+  - radar cross section
+  - aerodynamics
+  - multidisciplinary optimization
+  - UCAV

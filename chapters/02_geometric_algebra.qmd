@@ -1,25 +1,34 @@
-Capítulo 2 — Geometric Algebra
+# Geometric Algebra for Physical and Geometric Representation
 
-chapters/02_geometric_algebra.qmd
+Este capítulo apresentará a Álgebra Geométrica (AG) como linguagem de representação para geometria, campos e regularização física das GNNs. O projeto não assume a priori que AG reduz custo computacional; essa possibilidade será avaliada empiricamente.
 
-Título:
+## Da álgebra linear e tensorial à Álgebra Geométrica
 
-Geometric Algebra for Physical and Geometric Representation
+- vetores e covetores;
+- tensores e transformações multilineares;
+- métrica;
+- álgebra exterior e produto exterior;
+- relação entre formas diferenciais e multivetores.
 
-Inicialmente:
+## Álgebra de Clifford
 
-vetores e covetores;
-tensores;
-álgebra exterior;
-produto geométrico;
-multivetores;
-bivetores;
-rotores;
-operadores e cálculo geométrico;
-relação entre AG, matrizes e tensores.
+- produto geométrico;
+- escalares, vetores, bivetores e multivetores;
+- projeção por grau;
+- pseudoescalar e dualidade;
+- reversão, norma e inversa;
+- versores e rotores.
 
-O material de tensores que já analisamos será uma fonte importante para construir a ponte até a Álgebra Geométrica.
+## Matrizes, tensores e sistemas de equações
 
-Este capítulo responde:
+O capítulo distinguirá objetos geométricos de suas representações matriciais e discutirá como operadores lineares, tensores e sistemas de equações podem ser expressos e implementados sem identificar indevidamente todo tensor com um multivetor.
 
-Como representaremos geometricamente a aeronave e as grandezas físicas?
+## Representação de malhas
+
+Serão investigadas representações de faces, arestas, normais, áreas orientadas e transformações relativas adequadas a grafos derivados de malhas CEM/CFD.
+
+## Papel da AG no aprendizado
+
+A contribuição da AG será testada por estudos de ablação, comparando representações cartesianas convencionais com representações geométricas estruturadas.
+
+> **Status M0:** estrutura editorial preparada; a fundamentação será expandida após a consolidação do corpus bibliográfico de AG.

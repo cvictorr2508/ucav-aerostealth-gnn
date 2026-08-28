@@ -1,29 +1,59 @@
-Capítulo 3 — Physics
+# Electromagnetic and Aerodynamic Governing Equations
 
-chapters/03_physics.qmd
+Este capítulo reunirá os dois domínios físicos que geram os dados e as restrições usadas pelas GNNs.
 
-Título:
+## Electromagnetics
 
-Electromagnetic and Aerodynamic Governing Equations
+### Maxwell equations
 
-Inicialmente, duas grandes seções:
+Apresentação convencional das equações de Maxwell, condições constitutivas e condições de contorno relevantes ao espalhamento eletromagnético.
 
-3.1 Electromagnetics
-    3.1.1 Maxwell equations
-    3.1.2 Differential-form representation
-    3.1.3 Geometric Algebra formulation
-    3.1.4 Electromagnetic scattering
-    3.1.5 Radar Cross Section
+### Differential-form representation
 
-3.2 Aerodynamics
-    3.2.1 Perfect gas
-    3.2.2 Compressible inviscid flow
-    3.2.3 Euler equations
-    3.2.4 Geometric Algebra formulation
-    3.2.5 Aerodynamic coefficients
+Ponte entre cálculo vetorial, formas diferenciais e formulações independentes de coordenadas.
 
-O TCC de João Pedro fornecerá aqui a base convencional do lado eletromagnético; a formulação em AG será acrescentada gradativamente.
+### Geometric Algebra formulation
 
-Este capítulo responde:
+Maxwell será investigado em Álgebra Geométrica/Álgebra do Espaço-Tempo como **unificação compacta das equações**, e não como uma suposta linearização de um sistema que já é linear nos campos em meios lineares.
 
-Quais relações físicas a GNN deverá aprender e respeitar?
+### Electromagnetic scattering and RCS
+
+- campo incidente e espalhado;
+- condições PEC e materiais;
+- correntes superficiais;
+- campo distante;
+- RCS e polarizações;
+- fidelidades CEM relevantes.
+
+## Aerodynamics
+
+### Perfect gas and inviscid subsonic flow
+
+Definição do modelo físico e domínio de validade.
+
+### Euler equations
+
+- conservação de massa;
+- conservação de quantidade de movimento;
+- conservação de energia;
+- equação de estado de gás perfeito;
+- condições de contorno.
+
+### Geometric Algebra formulation
+
+A AG será usada para investigar uma reformulação geometricamente estruturada das equações de Euler. A não linearidade física das equações de Euler deverá ser preservada e tratada explicitamente.
+
+### Aerodynamic outputs
+
+- distribuição de pressão;
+- $C_L$;
+- $C_D$;
+- $C_m$;
+- $L/D$;
+- fidelidades aerodinâmicas de referência.
+
+## Uso na regularização das GNNs
+
+O capítulo culminará na definição de resíduos físicos e condições de contorno que possam ser incorporados às funções de perda dos modelos aprendidos.
+
+> **Status M0:** estrutura editorial preparada; as derivações serão incluídas após revisão específica da literatura de Maxwell/GA e Euler/GA.
