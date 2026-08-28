@@ -1,0 +1,17 @@
+# UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks
+
+## About this project
+
+## Research problem
+
+## Main objective
+
+## Research hypothesis
+
+## Scientific contributions
+
+## Methodological architecture
+
+## Structure of this book
+
+## Project status
