@@ -1,34 +1,440 @@
-# Geometric Algebra for Physical and Geometric Representation
+# Álgebra Geométrica para representação física, geométrica e computacional
 
-Este capítulo apresentará a Álgebra Geométrica (AG) como linguagem de representação para geometria, campos e regularização física das GNNs. O projeto não assume a priori que AG reduz custo computacional; essa possibilidade será avaliada empiricamente.
+A **Álgebra Geométrica (AG)**, também denominada álgebra de Clifford quando se enfatiza sua construção algébrica, constitui o formalismo matemático estruturante adotado neste trabalho. Seu papel é fornecer uma linguagem comum para representar geometria orientada, transformações, campos físicos e atributos utilizados pelos modelos de aprendizado em grafos, reduzindo a fragmentação entre notações vetoriais, matriciais, tensoriais e de formas diferenciais quando essas descrições admitem uma representação geométrica comum [@hestenes1984; @doran2003; @baylis1996].
 
-## Da álgebra linear e tensorial à Álgebra Geométrica
+A adoção da AG não implica a hipótese de que toda formulação matricial ou tensorial deva ser substituída por um multivetor. Matrizes permanecem representações coordenadas naturais de aplicações lineares; tensores gerais preservam seu papel quando expressam relações multilineares que não são antissimétricas; e os solucionadores numéricos podem requerer vetores e escalares convencionais em suas interfaces. A contribuição da AG consiste em organizar, de modo geometricamente explícito, os objetos para os quais produtos, graus, orientação, dualidade e transformações podem ser tratados dentro de uma única álgebra associativa.
 
-- vetores e covetores;
-- tensores e transformações multilineares;
-- métrica;
-- álgebra exterior e produto exterior;
-- relação entre formas diferenciais e multivetores.
+Essa distinção é particularmente importante para o problema aero-stealth. A geometria superficial de uma configuração UCAV, os campos eletromagnéticos, os campos aerodinâmicos e as mensagens trocadas por uma Graph Neural Network (GNN) apresentam estruturas geométricas diferentes. O objetivo deste capítulo é estabelecer uma base suficientemente rigorosa para representar essas estruturas sem confundir objeto geométrico com suas componentes em uma base específica.
 
-## Álgebra de Clifford
+## Do espaço vetorial métrico à álgebra de Clifford
 
-- produto geométrico;
-- escalares, vetores, bivetores e multivetores;
-- projeção por grau;
-- pseudoescalar e dualidade;
-- reversão, norma e inversa;
-- versores e rotores.
+Considere um espaço vetorial real finito-dimensional $V$ equipado com uma forma bilinear simétrica $g:V\times V\rightarrow\mathbb{R}$. A álgebra de Clifford $Cl(V,g)$ é gerada por $V$ impondo, para todo $a\in V$,
 
-## Matrizes, tensores e sistemas de equações
+$$
+a^2=g(a,a).
+$$
 
-O capítulo distinguirá objetos geométricos de suas representações matriciais e discutirá como operadores lineares, tensores e sistemas de equações podem ser expressos e implementados sem identificar indevidamente todo tensor com um multivetor.
+Equivalentemente, para $a,b\in V$,
 
-## Representação de malhas
+$$
+ab+ba=2g(a,b).
+$$
 
-Serão investigadas representações de faces, arestas, normais, áreas orientadas e transformações relativas adequadas a grafos derivados de malhas CEM/CFD.
+Quando a notação de produto interno é conveniente, escreve-se
 
-## Papel da AG no aprendizado
+$$
+a\cdot b=g(a,b),
+$$
 
-A contribuição da AG será testada por estudos de ablação, comparando representações cartesianas convencionais com representações geométricas estruturadas.
+de modo que
 
-> **Status M0:** estrutura editorial preparada; a fundamentação será expandida após a consolidação do corpus bibliográfico de AG.
+$$
+a\cdot b=\frac{1}{2}(ab+ba).
+$$
+
+A escolha de $g$ fixa a assinatura da álgebra. Em um espaço euclidiano tridimensional utiliza-se, por exemplo, $Cl(3,0)$, com uma base ortonormal $\{e_1,e_2,e_3\}$ tal que $e_i^2=1$. Em espaço-tempo, a assinatura é indefinida e deve ser declarada explicitamente antes de qualquer manipulação física. Essa dependência da métrica é essencial: a AG não é apenas uma álgebra exterior acrescida de notação, pois o produto geométrico incorpora simultaneamente a métrica e a estrutura de orientação [@hestenes1984; @doran2003].
+
+Em uma base geral $\{e_i\}$, a métrica é representada pelas componentes
+
+$$
+g_{ij}=e_i\cdot e_j.
+$$
+
+A matriz $[g_{ij}]$ é uma representação coordenada da forma bilinear. Em cálculo tensorial, a mesma construção aparece como tensor métrico ou matriz de Gram [@grinfeld2013]. A AG mantém o produto interno como operação sobre os vetores geométricos, deixando a matriz de componentes para as situações em que uma base precisa ser explicitada.
+
+## Produto geométrico, produto interno e produto exterior
+
+Para dois vetores $a,b\in V$, o produto geométrico decompõe-se em uma parte simétrica escalar e uma parte antissimétrica bivetorial:
+
+$$
+\boxed{ab=a\cdot b+a\wedge b}
+$$
+
+com
+
+$$
+a\cdot b=\frac{1}{2}(ab+ba),
+\qquad
+ a\wedge b=\frac{1}{2}(ab-ba).
+$$
+
+O produto exterior $a\wedge b$ é antissimétrico:
+
+$$
+a\wedge b=-b\wedge a,
+$$
+
+e, em particular, $a\wedge a=0$. Geometricamente, para vetores linearmente independentes, $a\wedge b$ representa o **plano orientado** gerado por $a$ e $b$, com magnitude igual à área do paralelogramo correspondente no caso euclidiano. Essa interpretação substitui a necessidade de identificar o plano com um pseudovetor perpendicular. Em três dimensões, o produto vetorial pode ser recuperado por dualidade, mas o bivetor é o objeto geométrico primário e generaliza-se naturalmente para outras dimensões [@pollock2014; @sen2023].
+
+O produto geométrico é associativo e distributivo, porém não é, em geral, comutativo. A associatividade permite compor transformações e construir inversos de classes importantes de elementos sem abandonar a própria álgebra. Essa característica é central para o uso de versores e rotores em transformações geométricas.
+
+Para um $r$-vetor homogêneo $A_r$, a multiplicação à esquerda por um vetor $a$ pode ser separada em partes que diminuem e aumentam o grau:
+
+$$
+a\cdot A_r
+=\frac{1}{2}\left(aA_r-(-1)^rA_ra\right),
+$$
+
+$$
+a\wedge A_r
+=\frac{1}{2}\left(aA_r+(-1)^rA_ra\right),
+$$
+
+portanto
+
+$$
+aA_r=a\cdot A_r+a\wedge A_r.
+$$
+
+Essa decomposição fornece uma regra algébrica uniforme para operações que, em notações tradicionais, aparecem separadas como projeções, contrações, produtos exteriores e dualizações.
+
+## Grades, blades e multivetores
+
+A álgebra $Cl(V,g)$ é graduada. Um elemento de grau zero é um escalar; um elemento de grau um é um vetor; um elemento simples de grau dois é um bivetor; um elemento simples de grau três é um trivetor; e assim sucessivamente. Um **blade** de grau $r$ é um $r$-vetor decomponível da forma
+
+$$
+A_r=a_1\wedge a_2\wedge\cdots\wedge a_r.
+$$
+
+Blades representam subespaços orientados: vetores representam direções orientadas, bivetores representam planos orientados e trivectors representam volumes orientados. Um $r$-vetor geral pode ser uma soma de blades de mesmo grau e não precisa ser, ele próprio, simples.
+
+Um **multivetor** $A\in Cl(V,g)$ combina componentes de vários graus:
+
+$$
+A=\sum_{r=0}^{n}\langle A\rangle_r,
+$$
+
+onde $\langle A\rangle_r$ denota a projeção de $A$ sobre o subespaço de grau $r$.
+
+Para $\dim V=n$,
+
+$$
+\dim \Lambda^rV={n\choose r},
+$$
+
+e a dimensão total da álgebra é
+
+$$
+\dim Cl(V,g)=\sum_{r=0}^{n}{n\choose r}=2^n.
+$$
+
+Em $Cl(3,0)$, por exemplo, uma base pode ser escrita como
+
+$$
+\{1,e_1,e_2,e_3,e_{12},e_{23},e_{31},e_{123}\},
+$$
+
+com $e_{ij}=e_i e_j=e_i\wedge e_j$ para $i\neq j$ em base ortonormal. Há, portanto, oito componentes: uma escalar, três vetoriais, três bivetoriais e uma trivetorial. Essa organização por grau permite armazenar no mesmo objeto grandezas geométricas de natureza distinta sem apagá-las em um vetor de características sem semântica geométrica explícita.
+
+## Bases, métrica e independência de coordenadas
+
+A distinção entre um vetor e sua lista de componentes é fundamental. Um vetor $v$ é um objeto geométrico; as componentes $v^i$ dependem da base escolhida. Para uma base $\{e_i\}$ e sua base recíproca $\{e^i\}$,
+
+$$
+e^i\cdot e_j=\delta^i{}_j,
+$$
+
+onde $\delta^i{}_j$ é o delta de Kronecker. Assim,
+
+$$
+v=v^i e_i,
+\qquad
+v^i=v\cdot e^i.
+$$
+
+O cálculo tensorial torna essa dependência de coordenadas explícita por meio das leis de transformação covariante e contravariante [@grinfeld2013]. A AG é compatível com essa estrutura, mas permite executar muitas operações diretamente sobre os objetos geométricos antes de escolher uma representação matricial.
+
+Essa separação é relevante para malhas obtidas de Computer-Aided Design (CAD), Computational Electromagnetics (CEM) e Computational Fluid Dynamics (CFD). Coordenadas nodais são componentes em um referencial; arestas, faces orientadas e transformações relativas podem ser tratadas como objetos geométricos cuja interpretação não depende de um sistema cartesiano específico.
+
+## Pseudoescalar e dualidade
+
+Dada uma base orientada $\{e_1,\ldots,e_n\}$, o elemento de grau máximo
+
+$$
+I=e_1\wedge e_2\wedge\cdots\wedge e_n
+$$
+
+é denominado **pseudoescalar**. Em uma base ortogonal,
+
+$$
+I^2=(-1)^{n(n-1)/2}\prod_{i=1}^{n}e_i^2.
+$$
+
+Quando $I$ é inversível, a dualidade pode ser definida, adotando-se aqui a convenção de dual à direita,
+
+$$
+A^\star=A I^{-1}.
+$$
+
+A convenção — dual à direita ou à esquerda, assinatura métrica e orientação da base — deve ser declarada porque controla sinais. Em $Cl(3,0)$, um bivetor é dual a um vetor. O conhecido pseudovetor associado ao produto vetorial tridimensional é, nessa perspectiva, a representação dual de um plano orientado. Essa leitura é especialmente útil para normais de superfícies, vorticidade e campos magnéticos, que podem ser representados primariamente por bivetores e dualizados apenas quando uma interface vetorial exigir [@sen2023].
+
+## Involuções, reversão, conjugação e inversa
+
+Três operações involutivas aparecem repetidamente na AG. Para um elemento homogêneo $A_r$ de grau $r$, a **involução de grau** é
+
+$$
+\widehat{A_r}=(-1)^rA_r,
+$$
+
+a **reversão** é
+
+$$
+\widetilde{A_r}=(-1)^{r(r-1)/2}A_r,
+$$
+
+e a conjugação de Clifford é
+
+$$
+\overline{A_r}=(-1)^{r(r+1)/2}A_r.
+$$
+
+A reversão recebe esse nome porque inverte a ordem dos fatores vetoriais de um blade:
+
+$$
+\widetilde{a_1a_2\cdots a_r}=a_r\cdots a_2a_1.
+$$
+
+Para um vetor não nulo $a$ em métrica não degenerada,
+
+$$
+a^{-1}=\frac{a}{a^2}.
+$$
+
+Para versores $V$ — produtos de vetores inversíveis —, uma forma particularmente útil é
+
+$$
+V^{-1}=\frac{\widetilde V}{V\widetilde V},
+$$
+
+desde que o denominador seja não nulo. Para multivetores gerais, entretanto, não se deve assumir que a mesma expressão produz o inverso: a existência e o cálculo da inversa dependem da estrutura do elemento e da álgebra. Analogamente, expressões como $\langle A\widetilde A\rangle_0$ podem definir formas quadráticas úteis, mas sua interpretação como norma positiva depende da assinatura e da classe de multivetores considerada.
+
+## Projeção, rejeição, reflexão e rotação
+
+A combinação do produto geométrico com a inversa de vetores fornece expressões compactas para decomposições geométricas. Para $a^2\neq 0$, um vetor $b$ pode ser decomposto em partes paralela e perpendicular a $a$:
+
+$$
+b=b_{\parallel}+b_{\perp},
+$$
+
+$$
+b_{\parallel}=(b\cdot a)a^{-1},
+\qquad
+b_{\perp}=(b\wedge a)a^{-1}.
+$$
+
+Uma reflexão de $x$ no hiperplano cuja normal não nula é $n$ pode ser escrita como
+
+$$
+x'=-n x n^{-1}.
+$$
+
+Composições pares de reflexões geram rotações. Se $B$ é um bivetor unitário euclidiano do plano de rotação, $B^2=-1$, define-se o rotor
+
+$$
+R=\exp\left(-\frac{\theta}{2}B\right),
+\qquad
+R\widetilde R=1,
+$$
+
+e a rotação de um vetor é dada pela ação sanduíche
+
+$$
+x'=R x\widetilde R.
+$$
+
+Rotores codificam simultaneamente o plano e a amplitude angular da rotação. Em cadeias de transformações, essa construção evita a necessidade de reconstruir a geometria a partir de sucessivas matrizes de rotação, embora representações matriciais continuem disponíveis quando exigidas por bibliotecas numéricas [@doran2003; @baylis1996].
+
+## Aplicações lineares, tensores, dyadics e matrizes
+
+Uma matriz não é o objeto geométrico em si; ela é a representação de uma aplicação linear após a escolha de bases no domínio e no contradomínio. Se
+
+$$
+F:V\rightarrow W
+$$
+
+é linear, uma matriz $[F]^i{}_j$ codifica suas componentes em bases específicas. A mudança de base altera a matriz sem alterar a aplicação linear abstrata.
+
+Essa distinção também aparece na análise diádica. Um *dyadic* é utilizado como operador linear vetorial e pode ser representado por uma matriz; sua transposição, traço, partes simétrica e antissimétrica e ação sobre vetores têm interpretações próprias [@vanbladel2007]. A AG não invalida essa linguagem. Em vez disso, fornece uma representação particularmente natural para a parcela exterior ou antissimétrica de determinadas estruturas.
+
+É necessário, portanto, distinguir **tensor** de **multivetor**. Um $r$-vetor pertence a $\Lambda^rV$ e corresponde à parte totalmente antissimétrica de um tensor covariante de ordem $r$ depois das identificações métricas apropriadas. Um tensor geral não precisa ser antissimétrico e, em consequência, não é simplesmente um multivetor.
+
+Por exemplo, o fluxo de quantidade de movimento das equações de Euler contém
+
+$$
+\rho\,u\otimes u+p\,\mathsf{I},
+$$
+
+que é um tensor ou operador de segunda ordem. O produto geométrico $u^2=u\cdot u$ é um escalar e **não** substitui $u\otimes u$. A formulação geométrica correta mantém o operador quando sua ação tensorial é necessária e usa multivetores para as estruturas exterior, orientada ou métrica para as quais essa representação é adequada.
+
+Essa compatibilidade entre operadores e multivetores é mais útil do que uma tentativa de eliminar matrizes indiscriminadamente. No framework proposto, operações geométricas são expressas em AG quando isso preserva estrutura e clareza; matrizes e tensores são utilizados quando representam naturalmente aplicações lineares, constitutivas ou fluxos de ordem superior.
+
+## Outermorphisms e extensão de transformações
+
+Uma aplicação linear $F:V\rightarrow W$ estende-se naturalmente à álgebra exterior por uma **outermorphism** $\underline F$ definida por
+
+$$
+\underline F(a_1\wedge\cdots\wedge a_r)
+=F(a_1)\wedge\cdots\wedge F(a_r),
+$$
+
+com
+
+$$
+\underline F(1)=1.
+$$
+
+Essa extensão preserva o produto exterior:
+
+$$
+\underline F(A\wedge B)=\underline F(A)\wedge\underline F(B).
+$$
+
+Em um espaço $n$-dimensional orientado, para uma transformação $F:V\rightarrow V$,
+
+$$
+\underline F(I)=\det(F)I.
+$$
+
+A relação explicita geometricamente a ação de uma transformação sobre comprimento orientado, área, volume e orientação. Para uma transformação que preserva orientação, o sinal de $I$ é preservado; para uma reflexão, é invertido. Essa propriedade conecta diretamente transformações de CAD, Jacobianos e elementos de superfície às quantidades orientadas transportadas para a malha [@hestenes1984; @doran2003].
+
+O termo **extensor** será empregado, quando necessário, para aplicações multilineares e extensões de operadores sobre multivetores. A terminologia é útil para evitar a identificação incorreta entre um operador e o multivetor sobre o qual ele atua.
+
+## Derivada geométrica e cálculo de campos
+
+Em uma base recíproca $\{e^i\}$, define-se formalmente o operador derivada vetorial
+
+$$
+\nabla=e^i\partial_i.
+$$
+
+Quando atua sobre um campo vetorial $u$, o produto geométrico separa naturalmente duas contribuições:
+
+$$
+\boxed{\nabla u=\nabla\cdot u+\nabla\wedge u}.
+$$
+
+A primeira é escalar e corresponde à divergência. A segunda é bivetorial e codifica circulação local. Em três dimensões euclidianas, o *curl* convencional é recuperado por dualidade; a quantidade geométrica primária é $\nabla\wedge u$. Essa formulação é independente da particularidade tridimensional do produto vetorial [@hestenes1984; @sen2023].
+
+Para um campo de velocidade $u$, define-se o bivetor de vorticidade
+
+$$
+\Omega=\nabla\wedge u.
+$$
+
+A literatura demonstra o uso operacional de bivetores para representar planos de rotação e estruturas vorticais em campos amostrados [@pollock2014]. Esse resultado é relevante para a interpretação de campos aerodinâmicos e para a construção de atributos locais que preservem orientação em modelos sobre malhas.
+
+## Representação geométrica de malhas
+
+A discretização de superfícies para CEM e CFD produz naturalmente objetos que podem ser codificados em AG. Considere uma face triangular orientada $f=(i,j,k)$ com vértices $x_i,x_j,x_k$. As arestas relativas são vetores
+
+$$
+r_{ij}=x_j-x_i,
+\qquad
+r_{ik}=x_k-x_i.
+$$
+
+O bivetor de área orientada da face é
+
+$$
+B_f=\frac{1}{2}r_{ij}\wedge r_{ik}.
+$$
+
+No caso euclidiano,
+
+$$
+\|B_f\|=A_f,
+$$
+
+onde $A_f$ é a área do triângulo. A ordem dos vértices determina a orientação. Em $Cl(3,0)$, adotando a convenção de dual à direita, uma normal unitária compatível pode ser obtida por
+
+$$
+n_f=\frac{B_f I^{-1}}{\|B_f\|}.
+$$
+
+Assim, área e orientação não precisam ser armazenadas como atributos independentes sem vínculo: ambas estão codificadas em $B_f$. O vetor normal continua disponível como projeção dual para interfaces que o exijam.
+
+Para arestas adjacentes ou faces vizinhas, rotores podem representar transformações relativas de orientação. Produtos internos como $n_i\cdot n_j$ medem alinhamento, enquanto produtos exteriores como $n_i\wedge n_j$ preservam o plano e o sentido da mudança de orientação. Essas quantidades são candidatas naturais a atributos de mensagens em grafos de malha porque distinguem invariantes escalares de informações orientadas.
+
+Uma representação de nó ou face pode, portanto, combinar canais de diferentes graus, por exemplo,
+
+$$
+X_i=s_i+v_i+B_i+\tau_i I,
+$$
+
+onde $s_i$ agrupa escalares físicos ou geométricos, $v_i$ contém grandezas vetoriais, $B_i$ contém áreas ou planos orientados e $\tau_i I$ representa, quando fisicamente justificado, uma componente pseudoescalar. A composição concreta desses canais deve respeitar a natureza física de cada variável, e não apenas preencher todos os graus disponíveis.
+
+## Ponte para o eletromagnetismo
+
+A Álgebra do Espaço-Tempo (*Spacetime Algebra*, STA) permite representar o campo eletromagnético por um único bivetor $F$. Com a assinatura, as unidades e a convenção de corrente declaradas, as equações de Maxwell podem ser reunidas em uma equação multivetorial da forma
+
+$$
+\nabla F=J,
+$$
+
+cuja separação por graus recupera as parcelas de divergência e de exterior derivative [@dressel2015; @doran2003].
+
+Essa escrita é uma **unificação representacional** das equações de Maxwell, e não uma transformação de um sistema intrinsecamente não linear em um sistema linear. Em meios lineares, as equações de Maxwell já são lineares nos campos. A vantagem da STA está na organização geométrica de campo, dualidade, polarização, transformações e operadores. O capítulo seguinte explicita as convenções físicas, as condições de contorno, a decomposição incidente/espalhada e a relação com Radar Cross Section (RCS).
+
+## Ponte para a dinâmica dos fluidos
+
+Há trabalhos recentes que reescrevem grandezas da mecânica dos fluidos em AG e exploram analogias formais com o eletromagnetismo. Sen formula a vorticidade como bivetor e reorganiza equações em termos de vorticidade e vetor de Lamb para casos compressíveis, incompressíveis, viscosos e invíscidos mediante alterações nos termos-fonte [@sen2023]. Parameswaran, Panakkal e Vedan também apresentam uma formulação de equações do tipo Maxwell para fluidos usando um bivetor de espaço-tempo [@parameswaran2024].
+
+Esses resultados fornecem motivação para estudar representações geométricas de variáveis aerodinâmicas, mas não autorizam concluir que as equações conservativas de Euler para gás perfeito se tornam globalmente lineares. A não linearidade convectiva permanece. Uma identidade de cálculo geométrico útil é
+
+$$
+(u\cdot\nabla)u
+=u\cdot(\nabla\wedge u)+\frac{1}{2}\nabla(u^2),
+$$
+
+que reorganiza o termo convectivo em componentes geometricamente interpretáveis, sem eliminá-lo [@sen2023].
+
+No caso compressível conservativo, estruturas como $\rho u\otimes u$ continuam sendo tensoriais. O uso de AG no presente trabalho concentra-se na representação de orientação, vorticidade, derivadas geométricas, transformações e relações físicas que admitem forma multivetorial consistente. O capítulo de física preserva explicitamente a estrutura conservativa de Euler e a equação de estado.
+
+## Ponte para Graph Neural Networks
+
+A AG também pode ser incorporada às representações internas de redes neurais. Zhong e Cao propõem uma **Graph Geometric Algebra Network (GGAN)** na qual atributos são organizados como componentes de multivetores e operações de AG participam da agregação de vizinhança [@zhong2025]. Os autores reportam redução da contagem de parâmetros e desempenho competitivo em tarefas de classificação de nós e grafos.
+
+Esse antecedente demonstra a viabilidade computacional de canais multivetoriais em arquiteturas de grafos, mas não constitui evidência direta para predição de equações diferenciais parciais em malhas aerodinâmicas ou eletromagnéticas. No presente framework, a conexão com GNNs é estabelecida de forma mais específica: grafos são derivados de malhas físicas, seus atributos carregam geometria orientada, e as saídas representam campos ou respostas físicas.
+
+Uma camada de mensagem geometricamente estruturada pode ser escrita, em forma abstrata, como
+
+$$
+m_{ij}=\Phi_\theta\!\left(
+X_i,X_j,R_{ij},B_{ij},c
+\right),
+$$
+
+$$
+X_i'=\Psi_\theta\!\left(
+X_i,\operatorname{AGG}_{j\in\mathcal N(i)}m_{ij}
+\right),
+$$
+
+em que $X_i$ e $X_j$ podem conter canais multivetoriais, $R_{ij}$ pode codificar orientação relativa por rotor, $B_{ij}$ pode representar uma relação plana/orientada e $c$ reúne condições físicas globais. A arquitetura concreta deve preservar as simetrias requeridas pelo problema e separar canais que transformam de maneiras diferentes.
+
+Estudos de ablação continuam relevantes, mas seu objetivo é **quantificar quais representações e operações de AG contribuem para precisão, generalização e eficiência**, e não decidir se a AG permanece ou não como formalismo do framework. Comparações com atributos cartesianos convencionais fornecem uma linha de base científica para medir a contribuição de cada mecanismo.
+
+## Critérios computacionais
+
+A compactação algébrica de uma expressão não implica, por si só, menor tempo de processamento. Uma implementação baseada em multivetores pode economizar parâmetros ou evitar transformações redundantes, mas também pode introduzir mais canais, produtos ou conversões. Por isso, qualquer afirmação de vantagem computacional deve ser acompanhada de medição.
+
+Para as implementações desenvolvidas neste trabalho, a avaliação considera, conforme aplicável:
+
+- número de parâmetros treináveis;
+- memória de pico durante treinamento e inferência;
+- tempo de treinamento e de inferência;
+- número de operações ou kernels relevantes;
+- estabilidade numérica;
+- erro de predição e generalização geométrica;
+- sensibilidade a rotações e mudanças de referencial;
+- impacto no tempo total da otimização aero-stealth.
+
+A AG é, portanto, o formalismo matemático adotado; o ganho computacional de cada escolha de representação é uma propriedade a ser demonstrada por benchmark, não presumida a partir da notação.
+
+## Síntese
+
+A Álgebra Geométrica fornece uma estrutura em que produto interno, produto exterior e transformações podem ser derivados do produto geométrico, enquanto grades distinguem escalares, vetores, planos orientados e volumes. O pseudoescalar introduz dualidade; versores e rotores representam reflexões e rotações; outermorphisms transportam blades por aplicações lineares; e a derivada geométrica separa naturalmente divergência e componente exterior.
+
+Para o framework aero-stealth, essas ferramentas sustentam três conexões principais. A primeira é geométrica: faces, áreas orientadas, normais, transformações e relações locais de uma malha podem ser representadas sem reduzir toda informação a coordenadas cartesianas. A segunda é física: campos eletromagnéticos e partes geometricamente relevantes dos campos aerodinâmicos admitem formulações compactas em multivetores, preservadas as diferenças entre Maxwell e Euler. A terceira é computacional: atributos e operações de AG podem integrar as mensagens e os estados internos das GNNs utilizadas como modelos substitutos multifidelidade.
+
+A partir dessa base, o próximo capítulo formula as equações eletromagnéticas e aerodinâmicas, especificando quais objetos são representados por multivetores, quais permanecem tensores ou operadores e quais projeções escalares são necessárias para a discretização, o aprendizado e a otimização.
