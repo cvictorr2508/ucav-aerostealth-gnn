@@ -1,0 +1,29 @@
+Capítulo 3 — Physics
+
+chapters/03_physics.qmd
+
+Título:
+
+Electromagnetic and Aerodynamic Governing Equations
+
+Inicialmente, duas grandes seções:
+
+3.1 Electromagnetics
+    3.1.1 Maxwell equations
+    3.1.2 Differential-form representation
+    3.1.3 Geometric Algebra formulation
+    3.1.4 Electromagnetic scattering
+    3.1.5 Radar Cross Section
+
+3.2 Aerodynamics
+    3.2.1 Perfect gas
+    3.2.2 Compressible inviscid flow
+    3.2.3 Euler equations
+    3.2.4 Geometric Algebra formulation
+    3.2.5 Aerodynamic coefficients
+
+O TCC de João Pedro fornecerá aqui a base convencional do lado eletromagnético; a formulação em AG será acrescentada gradativamente.
+
+Este capítulo responde:
+
+Quais relações físicas a GNN deverá aprender e respeitar?

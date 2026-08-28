@@ -1,0 +1,34 @@
+project:
+  type: book
+
+book:
+  title: "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs"
+  subtitle: "Modelagem multifidelidade de Maxwell e Euler e aceleração da otimização multidisciplinar"
+
+  chapters:
+    - index.qmd
+    - chapters/01_problem.qmd
+    - chapters/02_geometric_algebra.qmd
+    - chapters/03_physics.qmd
+    - chapters/04_graph_neural_networks.qmd
+    - chapters/05_multifidelity.qmd
+    - chapters/06_optimization.qmd
+
+  downloads:
+    - pdf
+
+bibliography: references.bib
+
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: true
+
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    number-sections: true
+
+execute:
+  freeze: auto

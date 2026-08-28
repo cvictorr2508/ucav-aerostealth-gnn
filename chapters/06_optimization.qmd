@@ -1,0 +1,30 @@
+Capítulo 6 — Optimization
+
+chapters/06_optimization.qmd
+
+Título:
+
+GNN-Accelerated Multidisciplinary Aero-Stealth Optimization
+
+Aqui fecharíamos o ciclo:
+
+$$ \text{UCAV} \rightarrow \text{GNN} \rightarrow \text{RCS + aerodinâmica} \rightarrow \text{MDO}. $$
+
+Estrutura inicial:
+
+6.1 Design variables
+6.2 Objectives
+6.3 Constraints
+6.4 Continuous and discrete decisions
+6.5 NLP and MINLP
+6.6 Multiobjective optimization
+6.7 Surrogate-assisted optimization
+6.8 Pareto frontier
+6.9 High-fidelity revalidation
+6.10 Computational speed-up
+
+A métrica científica central deverá aparecer explicitamente:
+
+$$ S_{\mathrm{MDO}} = \frac{ T_{\mathrm{optimization,\;solver}} }{ T_{\mathrm{optimization,\;GNN}} }. $$
+
+Além da qualidade da fronteira de Pareto.

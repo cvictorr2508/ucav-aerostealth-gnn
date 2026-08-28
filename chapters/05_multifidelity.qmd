@@ -1,0 +1,25 @@
+Capítulo 5 — Multifidelity
+
+chapters/05_multifidelity.qmd
+
+Título:
+
+Multifidelity Learning and Adaptive Data Generation
+
+Estrutura:
+
+5.1 Computational cost hierarchy
+5.2 Low- and high-fidelity models
+5.3 Electromagnetic fidelity hierarchy
+5.4 Aerodynamic fidelity hierarchy
+5.5 Multi-Fidelity GNNs
+5.6 Residual correction
+5.7 Transfer learning
+5.8 Active learning
+5.9 Uncertainty-driven sampling
+
+O princípio central poderá ser formalizado como:
+
+$$ y_{HF} = y_{LF} + \Delta_\theta(G,y_{LF}). $$
+
+É aqui que devemos incorporar boa parte do material já produzido no relatório sobre GNNs, que recomenda explicitamente correção LF→HF e estratégias coarse-to-fine.

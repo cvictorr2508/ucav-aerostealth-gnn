@@ -1,0 +1,25 @@
+Capítulo 2 — Geometric Algebra
+
+chapters/02_geometric_algebra.qmd
+
+Título:
+
+Geometric Algebra for Physical and Geometric Representation
+
+Inicialmente:
+
+vetores e covetores;
+tensores;
+álgebra exterior;
+produto geométrico;
+multivetores;
+bivetores;
+rotores;
+operadores e cálculo geométrico;
+relação entre AG, matrizes e tensores.
+
+O material de tensores que já analisamos será uma fonte importante para construir a ponte até a Álgebra Geométrica.
+
+Este capítulo responde:
+
+Como representaremos geometricamente a aeronave e as grandezas físicas?

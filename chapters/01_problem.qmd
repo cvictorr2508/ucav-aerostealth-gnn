@@ -1,0 +1,21 @@
+Capítulo 1 — Problem Definition
+
+chapters/01_problem.qmd
+
+Título:
+
+Aero-Stealth Optimization of a UCAV Flying-Wing
+
+Conteúdo inicial:
+
+UCAV flying-wing;
+conflito entre desempenho aerodinâmico e redução de RCS;
+parametrização geométrica;
+definição preliminar do problema MDO;
+custo das avaliações CEM e CFD;
+motivação para modelos substitutos;
+objetivo do projeto.
+
+Este capítulo responde:
+
+Qual problema de engenharia queremos resolver?

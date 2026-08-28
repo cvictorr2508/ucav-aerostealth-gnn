@@ -1,0 +1,34 @@
+Capítulo 4 — Graph Neural Networks
+
+chapters/04_graph_neural_networks.qmd
+
+Esse deve se tornar um dos capítulos centrais do eBook.
+
+Título:
+
+Graph Neural Networks for Physics-Based Surrogate Modeling
+
+Estrutura inicial:
+
+4.1 Why graphs?
+4.2 Meshes as graphs
+4.3 Message passing
+4.4 Node, edge and face features
+4.5 Geometric representations
+4.6 Equivariance and invariance
+4.7 Physics-informed GNNs
+4.8 Electromagnetic surrogate
+4.9 Aerodynamic surrogate
+4.10 Uncertainty quantification
+
+Aqui aparecerá a conexão fundamental:
+
+$$ \text{malha} \rightarrow \text{grafo} \rightarrow \text{GNN}. $$
+
+E também nossa hipótese:
+
+$$ \text{representação GA} \rightarrow \text{GNN geometricamente mais consistente}. $$
+
+Este capítulo responde:
+
+Como substituir avaliações caras dos solvers por inferências rápidas?
