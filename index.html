@@ -173,7 +173,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/01_problem.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Aero-Stealth Optimization of a UCAV Flying-Wing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Contexto e Definição do Problema Aero-Stealth de um UCAV</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -223,7 +223,6 @@ window.Quarto = {
   <li><a href="#arquitetura-da-pesquisa" id="toc-arquitetura-da-pesquisa" class="nav-link" data-scroll-target="#arquitetura-da-pesquisa">Arquitetura da pesquisa</a></li>
   <li><a href="#questões-metodológicas-centrais" id="toc-questões-metodológicas-centrais" class="nav-link" data-scroll-target="#questões-metodológicas-centrais">Questões metodológicas centrais</a></li>
   <li><a href="#organização-do-ebook" id="toc-organização-do-ebook" class="nav-link" data-scroll-target="#organização-do-ebook">Organização do eBook</a></li>
-  <li><a href="#estado-atual" id="toc-estado-atual" class="nav-link" data-scroll-target="#estado-atual">Estado atual</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
@@ -255,12 +254,13 @@ window.Quarto = {
 <h1 class="unnumbered">UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks</h1>
 <section id="sobre-este-projeto" class="level2">
 <h2 class="anchored" data-anchor-id="sobre-este-projeto">Sobre este projeto</h2>
-<p>Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para configurações UCAV <em>flying-wing</em>. A contribuição computacional central é o emprego de <strong>Graph Neural Networks (GNNs) multifidelidade</strong> como modelos substitutos para reduzir o custo das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização.</p>
-<p>A Álgebra Geométrica (AG) é investigada como uma linguagem para representação geométrica e regularização física das GNNs. Seu eventual benefício computacional será tratado como hipótese de pesquisa a ser testada, e não como premissa.</p>
+<p>Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para <strong>configurações UCAV de baixa observabilidade</strong>. A expressão UCAV (<em>Unmanned Combat Aerial Vehicle</em>) designa uma classe funcional de aeronave não tripulada de combate e não uma configuração aerodinâmica específica. Configurações sem cauda, <em>flying-wing</em>, <em>blended-wing-body</em> e outras famílias geométricas podem ser consideradas conforme o espaço de projeto for formalizado.</p>
+<p>A contribuição computacional central é o emprego de <strong>Graph Neural Networks (GNNs) multifidelidade</strong> como modelos substitutos para reduzir a demanda de recursos computacionais e o tempo de processamento das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização.</p>
+<p>A <strong>Álgebra Geométrica (AG)</strong> é adotada como formalismo matemático estruturante para representar geometria, operações físicas e relações empregadas no aprendizado e na otimização. O projeto buscará formulações multivetoriais mais compactas e, quando matematicamente admissível, representações lineares nos objetos algébricos escolhidos, preservando explicitamente as não linearidades físicas intrínsecas.</p>
 </section>
 <section id="objetivo-geral" class="level2">
 <h2 class="anchored" data-anchor-id="objetivo-geral">Objetivo geral</h2>
-<p>Desenvolver e validar modelos substitutos baseados em Graph Neural Networks multifidelidade e <em>physics-informed</em>, com representação geométrica fundamentada em Álgebra Geométrica, para acelerar a otimização multidisciplinar da seção reta radar e do desempenho aerodinâmico de um UCAV <em>flying-wing</em>.</p>
+<p>Desenvolver e validar um framework de otimização multidisciplinar aero-stealth para configurações UCAV, baseado em Álgebra Geométrica e modelos substitutos por Graph Neural Networks multifidelidade, de forma a reduzir a demanda de recursos computacionais das avaliações eletromagnéticas e aerodinâmicas e viabilizar sua integração com métodos determinísticos de otimização matemática.</p>
 </section>
 <section id="arquitetura-da-pesquisa" class="level2">
 <h2 class="anchored" data-anchor-id="arquitetura-da-pesquisa">Arquitetura da pesquisa</h2>
@@ -270,57 +270,54 @@ window.Quarto = {
 \rightarrow
 \text{malha/grafo}
 \rightarrow
-\text{solvers LF/HF}
+\text{modelos em diferentes fidelidades}
 \rightarrow
 \boxed{\text{GNN multifidelidade}}
 \rightarrow
-\text{otimização aero-stealth}
+\text{otimização matemática aero-stealth}
 \rightarrow
-\text{revalidação HF}.
+\text{reavaliação por modelos de referência}.
 \]</span></p>
-<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021">(<a href="#ref-bronstein2021" role="doc-biblioref">Bronstein et al. 2021</a>; <a href="#ref-pfaff2021" role="doc-biblioref">Pfaff et al. 2021</a>)</span>. A formulação de Maxwell em Álgebra do Espaço-Tempo fornece uma referência importante para a investigação da regularização eletromagnética em AG <span class="citation" data-cites="dressel2015">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>)</span>. O problema de compromisso entre aerodinâmica e baixa observabilidade também possui antecedentes recentes em otimização aero-stealth <span class="citation" data-cites="thoulon2024">(<a href="#ref-thoulon2024" role="doc-biblioref">Thoulon et al. 2024</a>)</span>.</p>
+<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021">(<a href="#ref-bronstein2021" role="doc-biblioref">Bronstein et al. 2021</a>; <a href="#ref-pfaff2021" role="doc-biblioref">Pfaff et al. 2021</a>)</span>. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional <span class="citation" data-cites="shan2024">(<a href="#ref-shan2024" role="doc-biblioref">Shan et al. 2024</a>)</span> e análise aero-eletromagnética multitarefa em malhas de configurações <em>blended-wing-body</em> <span class="citation" data-cites="li2026aeroem">(<a href="#ref-li2026aeroem" role="doc-biblioref">Li et al. 2026</a>)</span>. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.</p>
 </section>
 <section id="questões-metodológicas-centrais" class="level2">
 <h2 class="anchored" data-anchor-id="questões-metodológicas-centrais">Questões metodológicas centrais</h2>
 <p>O projeto investiga, entre outras questões:</p>
 <ol type="1">
-<li>quanto uma GNN reduz o custo de uma avaliação eletromagnética ou aerodinâmica;</li>
-<li>quanto a modelagem multifidelidade reduz a necessidade de dados de alta fidelidade;</li>
-<li>se regularização física melhora precisão e generalização em regimes de poucos dados;</li>
-<li>se representações em Álgebra Geométrica melhoram invariância, equivariância, eficiência amostral ou robustez;</li>
-<li>quanto o uso dos <em>surrogates</em> acelera a otimização completa, incluindo o custo de geração de dados e treinamento;</li>
-<li>se as soluções obtidas pelo processo acelerado preservam a qualidade da fronteira de Pareto após revalidação em alta fidelidade.</li>
+<li>quanto as GNNs reduzem o tempo de processamento e o número de avaliações dos modelos eletromagnéticos e aerodinâmicos de referência;</li>
+<li>como combinar modelos de diferentes fidelidades para ampliar o espaço de projeto avaliado com a mesma infraestrutura computacional;</li>
+<li>como incorporar relações físicas de Maxwell e Euler, formuladas em Álgebra Geométrica, à representação e ao treinamento das GNNs;</li>
+<li>como integrar os modelos substitutos a formulações determinísticas de otimização multiobjetivo, incluindo NLP e, quando houver variáveis discretas, MINLP;</li>
+<li>quanto o processo completo reduz a demanda de CPU/GPU, memória e tempo de processamento após contabilizar geração de dados, treinamento, otimização e reavaliação;</li>
+<li>em que medida a fronteira de Pareto prevista preserva sua qualidade após reavaliação pelos modelos físicos de referência.</li>
 </ol>
+<p>Quantificação de incerteza e aprendizado ativo poderão ser avaliados como estratégias auxiliares de seleção de novas simulações, caso acrescentem informação relevante ao processo multifidelidade.</p>
 </section>
 <section id="organização-do-ebook" class="level2">
 <h2 class="anchored" data-anchor-id="organização-do-ebook">Organização do eBook</h2>
-<p>Os capítulos evoluirão incrementalmente, acompanhando a pesquisa:</p>
+<p>Os capítulos são organizados em torno de:</p>
 <ul>
-<li>definição do problema aero-stealth;</li>
-<li>fundamentos e papel da Álgebra Geométrica;</li>
+<li>contexto UCAV e definição do problema aero-stealth;</li>
+<li>fundamentos e aplicação da Álgebra Geométrica;</li>
 <li>equações físicas de Maxwell/RCS e Euler/aerodinâmica;</li>
 <li>GNNs para <em>surrogate modeling</em>;</li>
-<li>multifidelidade, incerteza e <em>active learning</em>;</li>
-<li>otimização multidisciplinar acelerada e validação.</li>
+<li>modelagem multifidelidade e estratégias de geração de dados;</li>
+<li>otimização matemática multidisciplinar acelerada e validação.</li>
 </ul>
-</section>
-<section id="estado-atual" class="level2">
-<h2 class="anchored" data-anchor-id="estado-atual">Estado atual</h2>
-<p>Este repositório encontra-se em desenvolvimento. O <strong>Milestone 0 (M0)</strong> estabelece a infraestrutura reproduzível em Quarto, a bibliografia inicial, os metadados do projeto e a validação automatizada de renderização. Os capítulos científicos serão desenvolvidos de forma incremental nos marcos subsequentes.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-bronstein2021" class="csl-entry" role="listitem">
 Bronstein, Michael M., Joan Bruna, Taco Cohen, e Petar Veličković. 2021. <span>“Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”</span>. <em>arXiv preprint arXiv:2104.13478</em>. <a href="https://arxiv.org/abs/2104.13478">https://arxiv.org/abs/2104.13478</a>.
 </div>
-<div id="ref-dressel2015" class="csl-entry" role="listitem">
-Dressel, Justin, Konstantin Y. Bliokh, e Franco Nori. 2015. <span>“Spacetime Algebra as a Powerful Tool for Electromagnetism”</span>. <em>Physics Reports</em> 589: 1–71. <a href="https://doi.org/10.1016/j.physrep.2015.06.001">https://doi.org/10.1016/j.physrep.2015.06.001</a>.
+<div id="ref-li2026aeroem" class="csl-entry" role="listitem">
+Li, Chunyun, Bowen Shu, Ke Zhao, Longzhou Yu, Yongbo Li, e Huan Zhao. 2026. <span>“Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”</span>. <em>Physics of Fluids</em> 38 (5): 057104. <a href="https://doi.org/10.1063/5.0326519">https://doi.org/10.1063/5.0326519</a>.
 </div>
 <div id="ref-pfaff2021" class="csl-entry" role="listitem">
 Pfaff, Tobias, Meire Fortunato, Alvaro Sanchez-Gonzalez, e Peter W. Battaglia. 2021. <span>“Learning Mesh-Based Simulation with Graph Networks”</span>. <em>International Conference on Learning Representations</em>.
 </div>
-<div id="ref-thoulon2024" class="csl-entry" role="listitem">
-Thoulon, C., G. Roge, e O. Pironneau. 2024. <span>“Gradient-Based Aero-Stealth Optimization of a Simplified Aircraft”</span>. <em>Fluids</em> 9 (8): 174. <a href="https://doi.org/10.3390/fluids9080174">https://doi.org/10.3390/fluids9080174</a>.
+<div id="ref-shan2024" class="csl-entry" role="listitem">
+Shan, Tao, Maokun Li, Fan Yang, e Shenheng Xu. 2024. <span>“Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”</span>. <em>IEEE Transactions on Antennas and Propagation</em> 72 (1): 733–44. <a href="https://doi.org/10.1109/TAP.2023.3331262">https://doi.org/10.1109/TAP.2023.3331262</a>.
 </div>
 </div>
 </section>
@@ -731,8 +728,8 @@ Thoulon, C., G. Roge, e O. Pironneau. 2024. <span>“Gradient-Based Aero-Stealth
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/01_problem.html" class="pagination-link" aria-label="Aero-Stealth Optimization of a UCAV Flying-Wing">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Aero-Stealth Optimization of a UCAV Flying-Wing</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapters/01_problem.html" class="pagination-link" aria-label="Contexto e Definição do Problema Aero-Stealth de um UCAV">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Contexto e Definição do Problema Aero-Stealth de um UCAV</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
