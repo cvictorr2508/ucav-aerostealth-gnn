@@ -1,44 +1,292 @@
 # Aero-Stealth Optimization of a UCAV Flying-Wing
 
-Este capítulo definirá o problema de engenharia que motiva todo o framework. Seu propósito é estabelecer o escopo antes de introduzir Álgebra Geométrica, GNNs ou algoritmos de otimização.
+Este capítulo define o problema de engenharia, a hierarquia científica e os critérios de avaliação que orientam o restante do projeto. A contribuição computacional principal é a **aceleração da otimização multidisciplinar por Graph Neural Networks (GNNs) multifidelidade**. A Álgebra Geométrica (AG) é investigada como uma possível camada de representação geométrica e de regularização física, mas qualquer vantagem de precisão, generalização ou custo deverá ser demonstrada experimentalmente.
 
-## UCAV flying-wing e problema aero-stealth
+::: {.callout-note title="Convenção científica adotada no eBook"}
+Ao longo deste projeto distinguem-se três categorias de afirmações. **Teoria estabelecida e trabalhos anteriores** são acompanhados de referências. **Escolhas metodológicas do projeto** são apresentadas como decisões de projeto e poderão ser revistas após experimentos. **Hipóteses de pesquisa** são formuladas explicitamente e não devem ser interpretadas como resultados antecipados.
+:::
 
-Conteúdo a desenvolver no M1:
+## Contexto de engenharia e continuidade do trabalho anterior
 
-- configuração UCAV *flying-wing*;
-- Radar Cross Section (RCS) e baixa observabilidade;
-- desempenho aerodinâmico subsônico;
-- conflito e sinergias entre requisitos aerodinâmicos e eletromagnéticos;
-- parametrização geométrica relevante ao problema.
+O projeto aero-stealth de uma aeronave exige considerar simultaneamente desempenho aerodinâmico e detectabilidade eletromagnética. Em um UCAV *flying-wing*, a geometria externa é particularmente importante porque as mesmas variáveis que determinam forma em planta, superfícies, bordos, espessura, curvatura e orientação local também influenciam a distribuição de pressão e os mecanismos de espalhamento eletromagnético. A otimização disciplinar isolada pode, portanto, conduzir a uma geometria excelente para uma disciplina e inadequada para a outra. Trabalhos recentes de otimização aero-stealth já tratam explicitamente esse acoplamento entre requisitos aerodinâmicos e de baixa observabilidade [@thoulon2024].
 
-## Gargalo computacional
+O projeto parte também de uma base experimental e computacional já construída para caracterização de Radar Cross Section (RCS). O trabalho de Silva avaliou alvos canônicos e alvos aeroespaciais complexos, empregando métodos de alta frequência como Physical Optics (PO), Large Element Physical Optics (LE-PO), Ray Launching Geometrical Optics (RL-GO) e Shooting and Bouncing Rays Plus (SBR+) em Altair Feko e Ansys HFSS, além de implementar FDTD, MoM e FEM em geometrias canônicas para consolidação dos fundamentos de eletromagnetismo computacional [@rocha2026]. Essa infraestrutura fornece experiência prévia com modelagem, validação cruzada e medição de RCS, mas o presente projeto desloca o foco da **caracterização** para a **otimização acelerada de geometrias**.
 
-O capítulo caracterizará o custo de avaliações CEM e CFD e explicará por que a exploração direta do espaço de projeto com solvers de alta fidelidade pode se tornar proibitiva.
+Nos resultados daquele trabalho, a esfera metálica apresentou excelente concordância entre solução teórica e simulação, enquanto o refletor triangular evidenciou a limitação de PO na representação de múltiplas reflexões; métodos como SBR+ e RL-GO representaram melhor esse mecanismo. Para alvos complexos, as diferenças entre métodos foram relacionadas principalmente à forma como difração e outros mecanismos são modelados [@rocha2026]. Esses resultados reforçam uma premissa importante para o presente framework: não existe uma única fidelidade barata que reproduza com igual qualidade todos os mecanismos relevantes em todo o espaço de projeto. A estratégia multifidelidade deve explorar justamente a diferença de custo e de conteúdo físico entre os níveis disponíveis.
 
-## Formulação multidisciplinar preliminar
+## Radar Cross Section como resposta de projeto
 
-Serão definidos progressivamente:
+RCS é uma medida da intensidade com que um alvo espalha energia eletromagnética na direção do receptor. Em termos clássicos, pode ser interpretada como uma área efetiva de espalhamento que produziria o mesmo eco recebido que o alvo real sob condições especificadas [@knott1993]. Para um sistema radar, a equação de alcance estabelece a relação entre RCS e distância de detecção; no caso monoestático idealizado, a distância máxima é proporcional a $\sigma^{1/4}$, evidenciando por que mudanças na assinatura do alvo têm consequência operacional [@knott1993; @rocha2026].
 
-- variáveis de projeto;
-- condições operacionais;
-- funções objetivo de RCS e aerodinâmica;
-- restrições geométricas e físicas;
-- níveis de fidelidade disponíveis.
+A RCS, entretanto, não é uma propriedade escalar única da geometria. Ela depende, entre outros fatores, de frequência, direção de incidência/observação, polarização, propriedades materiais e mecanismos de espalhamento. O trabalho anterior utiliza as polarizações horizontal e vertical e relaciona os coeficientes de espalhamento aos componentes de RCS co-polarizados e cruzados [@rocha2026]. Para uma aeronave eletricamente grande no regime óptico, detalhes geométricos tornam-se determinantes e a resposta é fortemente angular: reflexão especular, difração em bordos e pontas, múltiplas reflexões e ondas de superfície podem criar picos estreitos e redistribuir energia entre setores [@knott1993; @rocha2026].
 
-## Objetivo e questão de pesquisa
+Essa dependência angular tem consequência direta para o aprendizado e para a otimização. Um *surrogate* que estime apenas a média global de RCS pode ocultar um pequeno conjunto de ângulos com retorno elevado. Por isso, a saída eletromagnética de referência do projeto será tratada inicialmente como uma **curva angular**, com possibilidade de polarizações HH e VV, da qual poderão ser derivados funcionais escalares como média setorial, máximo, quantis altos ou uma medida de risco de cauda. A escala usada nesses funcionais --- linear ou dBsm --- deverá ser definida explicitamente antes da formulação final da função objetivo, pois operações estatísticas nas duas escalas não são equivalentes.
 
-O objetivo central será formulado em termos da **aceleração da otimização por GNNs multifidelidade**, preservando precisão suficiente para revalidação de soluções candidatas em alta fidelidade.
+Como decisão metodológica inicial, o framework deve preservar informação suficiente para responder simultaneamente a duas necessidades: avaliar fidelidade física da curva prevista e fornecer objetivos escalares adequados ao algoritmo de otimização. Essa separação evita que a escolha prematura de um único indicador de RCS limite a análise posterior.
 
-## Hipóteses e métricas
+## Desempenho aerodinâmico subsônico
 
-Serão explicitadas hipóteses sobre:
+O lado aerodinâmico do problema será restrito, nesta primeira formulação, ao escoamento externo subsônico de ar tratado como gás perfeito. As equações de Euler compressíveis e invíscidas serão estudadas posteriormente como um nível de fidelidade intermediário, enquanto métodos mais baratos, como abordagens de painel/VSPAERO, e métodos mais caros, como CFD viscoso de referência, poderão ocupar outros níveis da hierarquia multifidelidade.
 
-- ganho por representação em grafos;
-- ganho por multifidelidade;
-- ganho por regularização física;
-- contribuição incremental da Álgebra Geométrica;
-- *speed-up* de avaliação e da otimização completa;
-- qualidade da fronteira de Pareto revalidada.
+O M1 não fixa ainda um solver CFD definitivo. O que se fixa é o conjunto de respostas que deverá ser suficiente para o problema de projeto. Entre as grandezas candidatas estão o coeficiente de sustentação $C_L$, o coeficiente de arrasto $C_D$, o coeficiente de momento $C_m$ e a razão $L/D$. Dependendo da formulação de otimização, $C_D$ ou $-L/D$ poderá ser usado como objetivo, enquanto requisitos mínimos de sustentação, momento e condições de operação poderão aparecer como restrições.
 
-> **Status M0:** estrutura editorial preparada. O conteúdo científico será desenvolvido no M1 a partir do TCC, do relatório sobre GNNs e das referências bibliográficas revisadas.
+A literatura de GNNs em CFD já mostra que malhas triangulares *body-fitted* podem ser processadas diretamente por redes de grafos para prever pressão e velocidade em geometrias não vistas durante o treinamento [@chen2021]. Trabalhos *physics-informed* também incorporaram resíduos das equações governantes e condições de contorno em GCNs aplicadas a escoamentos sobre malhas não estruturadas [@peng2024]. Em escala maior, operadores neurais informados por geometria foram aplicados a problemas tridimensionais com geometrias variáveis e previsão de pressão superficial [@li2023gino]. Essas referências não demonstram por si só a solução do problema específico do UCAV; elas sustentam a viabilidade de usar representações de malha e modelos aprendidos como *surrogates* aerodinâmicos.
+
+## Acoplamento multidisciplinar e formulação preliminar
+
+Seja $x\in\mathbb{R}^{n}$ o vetor de variáveis contínuas de projeto e, caso decisões discretas sejam efetivamente introduzidas, seja $z\in\mathbb{Z}^{m}$ o vetor correspondente. $x$ poderá incluir, por exemplo, parâmetros geométricos provenientes do OpenVSP, enquanto $z$ poderá futuramente representar escolhas inteiras, binárias ou categóricas. O problema somente será classificado como MINLP se existirem variáveis discretas reais; caso contrário, a formulação será um NLP multiobjetivo.
+
+Em forma abstrata, o problema é
+
+$$
+\min_{x,z}
+\begin{bmatrix}
+J_{\mathrm{EM}}(x,z)\\
+J_{\mathrm{aero}}(x,z)
+\end{bmatrix}
+$$
+
+sujeito a
+
+$$
+g_i(x,z)\leq 0,\qquad
+h_j(x,z)=0,
+$$
+
+além de limites e condições de domínio para as variáveis.
+
+O objetivo eletromagnético será construído a partir da resposta angular
+
+$$
+\sigma=\sigma(\phi,\theta,f,p; x,z),
+$$
+
+na qual $\phi$ e $\theta$ representam direções angulares, $f$ a frequência e $p$ a polarização. Uma função de risco ou agregação $\mathcal{R}$ poderá produzir
+
+$$
+J_{\mathrm{EM}}(x,z)=\mathcal{R}[\sigma(\cdot;x,z)].
+$$
+
+A escolha de $\mathcal{R}$ será objeto do capítulo de otimização. Entre as alternativas a comparar estão média por setor, máximo por setor, quantis altos e CVaR. Para o lado aerodinâmico, uma formulação típica poderá usar
+
+$$
+J_{\mathrm{aero}}(x,z)=C_D(x,z)
+$$
+
+com restrição $C_L\geq C_{L,\min}$, ou alternativamente
+
+$$
+J_{\mathrm{aero}}(x,z)=-\frac{L}{D}.
+$$
+
+Essas expressões são **modelos preliminares do problema de decisão**, não a formulação final. A seleção de objetivos e restrições deve acompanhar a parametrização efetivamente disponível e as condições de missão escolhidas.
+
+## O gargalo computacional
+
+A dificuldade central não é apenas avaliar RCS ou aerodinâmica uma vez, mas fazê-lo milhares de vezes durante a exploração do espaço de projeto. Para RCS de geometrias complexas, soluções analíticas são restritas a casos simples, e a modelagem numérica pode ter custo elevado; no regime óptico, métodos assintóticos reduzem esse custo, mas diferem na capacidade de representar mecanismos como múltiplas reflexões e difração [@knott1993; @rocha2026]. No lado aerodinâmico, elevar a fidelidade também aumenta substancialmente o custo por configuração.
+
+Uma otimização direta baseada somente nos solvers mais caros apresenta, portanto, duas dificuldades acopladas: o custo de cada avaliação e o número de avaliações exigido pelo algoritmo de busca. O projeto deve distinguir explicitamente o *speed-up* de uma avaliação do *speed-up* do processo completo. Um modelo que infere em milissegundos, mas exige um banco de treinamento proibitivamente caro, pode não produzir ganho líquido no horizonte do problema.
+
+Essa distinção motiva uma contabilidade end-to-end. Para a solução assistida por GNN, o tempo total será tratado conceitualmente como
+
+$$
+T_{\mathrm{GNN,total}}
+=
+T_{\mathrm{DOE}}
++T_{\mathrm{data}}
++T_{\mathrm{train}}
++T_{\mathrm{opt}}
++T_{\mathrm{HF,reval}},
+$$
+
+onde $T_{\mathrm{data}}$ inclui as simulações necessárias para construir o banco multifidelidade e $T_{\mathrm{HF,reval}}$ inclui a reavaliação de candidatos relevantes. A comparação com uma otimização de referência deve usar a mesma definição de escopo temporal.
+
+## Por que Graph Neural Networks são centrais
+
+Malhas triangulares de superfície e malhas não estruturadas já possuem uma estrutura relacional natural. Uma GNN pode associar estados a nós, arestas ou faces, trocar mensagens segundo a conectividade e produzir saídas locais ou globais. MeshGraphNets mostrou que esse paradigma é adequado à simulação em malhas e a diferentes sistemas físicos [@pfaff2021]. A literatura de *geometric deep learning* fornece o enquadramento mais amplo para modelos que exploram estrutura, simetria e domínio geométrico [@bronstein2021].
+
+No problema deste projeto, a GNN não é introduzida apenas por conveniência de aprendizado de máquina. A superfície do UCAV é naturalmente representada por triangulações usadas ou derivadas dos fluxos CEM/CFD, e atributos como posição relativa, normal, área, curvatura, aresta, orientação e condição de incidência podem ser associados diretamente às entidades do grafo. Isso cria uma ponte entre parametrização CAD, discretização física e modelo substituto.
+
+A evidência direta em eletromagnetismo é mais recente do que em CFD, mas já inclui redes de grafos aplicadas a equações integrais de espalhamento 3-D. Shan et al. propuseram *physics-informed graph residual learning* para resolver CFIEs de alvos PEC 3-D sobre dados não estruturados [@shan2024]. Kong et al. demonstraram previsão de campo distante espalhado a partir de nuvens de pontos de alvos PEC 3-D [@kong2024]. Esses trabalhos são relevantes como antecedentes de representação geométrica e aceleração de modelagem eletromagnética, mas não eliminam a necessidade de validação específica para alvos aeronavalmente complexos e regimes de alta frequência.
+
+A função da GNN neste framework é, portanto,
+
+$$
+\boxed{
+\text{geometria + condições + informação LF}
+\longrightarrow
+\text{respostas EM/aero aproximadas rapidamente}
+}
+$$
+
+para substituir **a maior parte**, e não todas, das chamadas caras ao solver dentro da otimização. As chamadas de alta fidelidade permanecem necessárias para gerar informação, corrigir o modelo e revalidar soluções candidatas.
+
+## Multifidelidade como estratégia de viabilidade
+
+Treinar apenas com dados de alta fidelidade tende a deslocar o gargalo da otimização para a construção do dataset. A multifidelidade procura usar grande quantidade de avaliações baratas e um número menor de avaliações caras. Black e Najafi introduziram uma Multi-Fidelity Graph Neural Network em que projeções de baixa fidelidade informam a aproximação de alta fidelidade em subdomínios representados por grafos [@black2022]. Embora o domínio físico daquele trabalho seja diferente, sua estrutura LF$\rightarrow$HF é diretamente transferível como referência metodológica.
+
+A hierarquia abaixo é uma **decisão preliminar do projeto**, a ser refinada durante os capítulos físicos e experimentais:
+
+| Domínio | Baixa fidelidade | Média/alta fidelidade | Referência/correção |
+|---|---|---|---|
+| Eletromagnetismo | PO/LE-PO | SBR+/UTD/PTD ou equivalente | solver HF e, quando disponível, experimento |
+| Aerodinâmica | painel/VSPAERO | Euler | RANS/CFD de referência |
+
+Uma formulação de correção residual particularmente útil como hipótese de trabalho é
+
+$$
+y_{HF}
+=
+y_{LF}+\Delta_{\theta}(G,y_{LF}),
+$$
+
+em que $G$ representa o grafo geométrico e $\Delta_{\theta}$ é aprendido. O objetivo não é exigir que a baixa fidelidade seja precisa em termos absolutos, mas que forneça estrutura correlacionada que reduza a quantidade de informação HF necessária.
+
+A seleção dos casos HF também não deve ser necessariamente uniforme. O projeto investigará *active learning* orientado por quatro sinais: incerteza epistemológica elevada, discrepância LF--HF, proximidade de regiões promissoras para a fronteira de Pareto e risco de respostas extremas, particularmente picos de RCS. Essa política procura alocar o orçamento computacional onde novas avaliações possuem maior valor para a decisão de projeto.
+
+## Papel da Álgebra Geométrica
+
+A Álgebra Geométrica entra em uma camada diferente da GNN. Ela não é o mecanismo principal de aceleração e não substituirá, por si só, os solvers CEM/CFD. A motivação é investigar se uma representação geometricamente estruturada de superfícies orientadas, transformações e grandezas físicas pode melhorar a qualidade da informação fornecida à rede e a formulação de regularizadores físicos.
+
+No lado eletromagnético, a Álgebra do Espaço-Tempo permite expressar Maxwell de forma compacta por objetos multivetoriais [@dressel2015]. No lado geométrico, bivetores e rotores oferecem uma linguagem natural para planos orientados e rotações [@hestenes1984; @doran2003]. Entretanto, o projeto não assume que essa elegância formal implique menor custo numérico. A contribuição da AG será avaliada por ablação, comparando uma representação convencional com uma representação informada por AG sob os mesmos dados, arquitetura e orçamento de treinamento.
+
+Duas funções são especialmente relevantes para investigação posterior: **representação**, por exemplo de áreas orientadas e relações entre faces; e **regularização física**, quando saídas intermediárias da GNN permitirem avaliar resíduos derivados das equações governantes. Os capítulos seguintes deverão formalizar essas possibilidades sem confundir teoria estabelecida com vantagem empírica ainda não demonstrada.
+
+## Questão de pesquisa
+
+A questão central do projeto é:
+
+> **Em que medida Graph Neural Networks multifidelidade, enriquecidas por representações geométricas e restrições físicas formuladas com Álgebra Geométrica, podem reduzir o custo computacional da otimização aero-stealth de um UCAV flying-wing mantendo precisão suficiente em relação aos solvers eletromagnéticos e aerodinâmicos de referência?**
+
+A pergunta é deliberadamente formulada em termos de **custo da otimização** e **qualidade das respostas**, e não apenas de erro de regressão. O sucesso do projeto depende de demonstrar que o surrogate altera de forma útil a economia computacional do processo decisório.
+
+## Objetivo geral
+
+> **Desenvolver e validar modelos substitutos baseados em Graph Neural Networks multifidelidade e physics-informed, com representação geométrica fundamentada em Álgebra Geométrica, para acelerar a otimização multidisciplinar da seção reta radar e do desempenho aerodinâmico de um UCAV flying-wing.**
+
+## Objetivos específicos
+
+1. Definir a parametrização, as condições operacionais, as respostas e as restrições do problema aero-stealth do UCAV.
+2. Construir uma representação em grafos compatível com as malhas e informações produzidas pelos fluxos eletromagnético e aerodinâmico.
+3. Estruturar bancos de dados de múltiplas fidelidades para RCS e aerodinâmica, registrando custo, condições de simulação e proveniência de cada amostra.
+4. Desenvolver GNNs de referência para previsão de respostas eletromagnéticas e aerodinâmicas e compará-las com baselines que utilizem apenas parâmetros globais.
+5. Desenvolver e avaliar aprendizado multifidelidade, quantificação de incerteza e *active learning* para reduzir a necessidade de avaliações HF.
+6. Investigar regularização física e saídas intermediárias compatíveis com as equações de Maxwell e Euler.
+7. Investigar, por ablação controlada, a contribuição de representações informadas por Álgebra Geométrica.
+8. Integrar os surrogates ao algoritmo de otimização multiobjetivo e quantificar o ganho computacional end-to-end.
+9. Revalidar em alta fidelidade as soluções mais relevantes e avaliar a preservação da qualidade da fronteira de Pareto.
+
+## Hipóteses de pesquisa
+
+As hipóteses abaixo serão tratadas como proposições testáveis, e não como requisitos para que o projeto seja considerado válido.
+
+| Hipótese | Comparação principal | Evidência esperada |
+|---|---|---|
+| **H1 — representação em grafo** | GNN sobre malha vs. modelo que usa apenas parâmetros globais | menor erro e/ou melhor generalização para geometrias não vistas |
+| **H2 — multifidelidade** | GNN LF+HF vs. GNN HF-only sob orçamento computacional comparável | menor erro por unidade de custo ou menor número de casos HF para uma precisão-alvo |
+| **H3 — regularização física** | GNN *physics-informed* vs. GNN puramente supervisionada | maior precisão, robustez ou consistência física, sobretudo com poucos dados HF |
+| **H4 — representação em AG** | features/operadores informados por AG vs. representação convencional | ganho em invariância/equivariança, eficiência amostral, robustez ou erro; ausência de ganho também é resultado válido |
+| **H5 — aceleração da otimização** | otimização assistida por GNN vs. otimização baseada diretamente em solvers | redução do tempo total mantendo qualidade aceitável da fronteira após revalidação HF |
+
+## Escopo inicial e limites
+
+O escopo é deliberadamente restrito para manter exequibilidade. O alvo é uma configuração UCAV *flying-wing* parametrizada; o lado aerodinâmico prioriza regime subsônico e tratará Euler como um dos níveis de fidelidade, não como descrição completa de efeitos viscosos. O lado eletromagnético priorizará inicialmente RCS monostático e respostas angulares compatíveis com o banco de dados disponível, podendo começar por uma frequência e condição material controladas antes de ampliar o domínio.
+
+Não faz parte do objetivo inicial construir um solver universal aprendido de Maxwell ou Euler. Também não é objetivo desenvolver uma nova teoria geral de MINLP em Álgebra de Clifford. O problema de otimização será formulado sobre objetivos e restrições escalares, usando GNNs como surrogates das avaliações caras e AG como hipótese de representação/regularização.
+
+Da mesma forma, a validação de alta fidelidade não será removida do processo. O framework é pensado como um sistema híbrido:
+
+$$
+\text{solvers físicos}
+\rightarrow
+\text{dados multifidelidade}
+\rightarrow
+\text{GNN}
+\rightarrow
+\text{otimização rápida}
+\rightarrow
+\text{revalidação HF}.
+$$
+
+## Critérios de avaliação
+
+A avaliação será multidimensional. Um único RMSE não será suficiente para justificar o surrogate nem a otimização acelerada.
+
+### Qualidade da predição eletromagnética
+
+Para curvas de RCS, serão consideradas como conjunto mínimo candidato:
+
+- RMSE/MAE em dBsm sobre a curva completa, por polarização;
+- erro do pico global e dos principais picos;
+- deslocamento angular dos picos;
+- *recall* de picos top-$k$ sob tolerâncias previamente definidas;
+- MAE/RMSE por setores angulares;
+- erro de quantis altos ou CVaR quando esses funcionais forem usados na otimização;
+- avaliação OOD em geometrias e/ou condições não usadas no treinamento.
+
+Essas métricas são necessárias porque erro médio pode ocultar lóbulos estreitos ou deslocar picos para direções erradas, exatamente onde o erro pode ser mais relevante para stealth.
+
+### Qualidade da predição aerodinâmica
+
+O conjunto será definido conforme as saídas finais, mas deverá incluir erro em $C_L$, $C_D$, $C_m$ e/ou $L/D$, além de métricas de campo quando pressão, velocidade ou outras variáveis locais forem produzidas. A avaliação deverá separar interpolação dentro da distribuição de treinamento e generalização para geometrias não vistas.
+
+### Incerteza e eficiência amostral
+
+Quando houver bandas preditivas, serão avaliados cobertura empírica e calibração, e não apenas a largura dos intervalos. A multifidelidade será avaliada também pela relação entre erro e custo acumulado de geração do banco, permitindo comparar quantos casos HF são necessários para atingir determinado nível de precisão.
+
+### Aceleração computacional
+
+O *speed-up* de uma única avaliação será
+
+$$
+S_{\mathrm{eval}}
+=
+\frac{T_{\mathrm{solver}}}{T_{\mathrm{GNN}}}.
+$$
+
+A métrica principal, porém, será o ganho da otimização completa:
+
+$$
+S_{\mathrm{MDO}}
+=
+\frac{T_{\mathrm{MDO,baseline}}}
+{T_{\mathrm{MDO,GNN}}},
+$$
+
+com contabilização explícita de geração de dados, treinamento, otimização e revalidação. Essa definição impede que a aceleração de inferência seja confundida com aceleração real do processo de projeto.
+
+### Qualidade da decisão multiobjetivo
+
+As soluções produzidas com surrogate deverão ser reavaliadas em alta fidelidade. A comparação incluirá a alteração dos valores objetivos após revalidação, a proporção de candidatos que permanecem não dominados e métricas de qualidade de conjunto de Pareto, como *hypervolume* e distâncias geracionais, após definição de um protocolo de referência.
+
+### Estudos de ablação
+
+Para atribuir corretamente os ganhos, a sequência mínima de baselines será construída de forma incremental:
+
+$$
+M_0:\ \text{modelo por parâmetros globais},
+$$
+
+$$
+M_1:\ \text{GNN com geometria convencional},
+$$
+
+$$
+M_2:\ \text{GNN com representação informada por AG},
+$$
+
+$$
+M_3:\ \text{GNN + AG + regularização física},
+$$
+
+$$
+M_4:\ \text{GNN + AG + regularização física + multifidelidade}.
+$$
+
+A ordem poderá ser ajustada para separar melhor interações entre fatores, mas o princípio é preservar comparações controladas que permitam estimar os ganhos associados a grafo, AG, física e multifidelidade.
+
+## Hierarquia das contribuições
+
+A contribuição principal esperada é o **framework GNN multifidelidade para acelerar a otimização aero-stealth**. Em segundo nível está a representação do UCAV por grafos compatíveis com malhas físicas. Em seguida vêm a incorporação de regularização physics-informed e a investigação da Álgebra Geométrica como representação alternativa. Finalmente, a integração com a otimização e a revalidação HF demonstrarão se os ganhos locais dos modelos aprendidos se traduzem em ganho real no processo de projeto.
+
+Essa hierarquia será preservada nos capítulos seguintes. O capítulo de Álgebra Geométrica aprofundará a representação matemática sem deslocar o protagonismo das GNNs; o capítulo físico formalizará Maxwell/RCS e Euler; os capítulos de GNN e multifidelidade desenvolverão a arquitetura de aprendizado; e o capítulo de otimização fechará o ciclo com a formulação e validação do processo aero-stealth acelerado.
