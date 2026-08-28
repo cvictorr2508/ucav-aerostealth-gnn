@@ -1,0 +1,512 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "",
+    "text": "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "index.html#sobre-este-projeto",
+    "href": "index.html#sobre-este-projeto",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "Sobre este projeto",
+    "text": "Sobre este projeto\nEste eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para configurações UCAV flying-wing. A contribuição computacional central é o emprego de Graph Neural Networks (GNNs) multifidelidade como modelos substitutos para reduzir o custo das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização.\nA Álgebra Geométrica (AG) é investigada como uma linguagem para representação geométrica e regularização física das GNNs. Seu eventual benefício computacional será tratado como hipótese de pesquisa a ser testada, e não como premissa.",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "index.html#objetivo-geral",
+    "href": "index.html#objetivo-geral",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "Objetivo geral",
+    "text": "Objetivo geral\nDesenvolver e validar modelos substitutos baseados em Graph Neural Networks multifidelidade e physics-informed, com representação geométrica fundamentada em Álgebra Geométrica, para acelerar a otimização multidisciplinar da seção reta radar e do desempenho aerodinâmico de um UCAV flying-wing.",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "index.html#arquitetura-da-pesquisa",
+    "href": "index.html#arquitetura-da-pesquisa",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "Arquitetura da pesquisa",
+    "text": "Arquitetura da pesquisa\nA arquitetura metodológica de referência é:\n\\[\n\\text{CAD/OpenVSP}\n\\rightarrow\n\\text{malha/grafo}\n\\rightarrow\n\\text{solvers LF/HF}\n\\rightarrow\n\\boxed{\\text{GNN multifidelidade}}\n\\rightarrow\n\\text{otimização aero-stealth}\n\\rightarrow\n\\text{revalidação HF}.\n\\]\nA motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em geometric deep learning e simulação baseada em malhas (Bronstein et al. 2021; Pfaff et al. 2021). A formulação de Maxwell em Álgebra do Espaço-Tempo fornece uma referência importante para a investigação da regularização eletromagnética em AG (Dressel et al. 2015). O problema de compromisso entre aerodinâmica e baixa observabilidade também possui antecedentes recentes em otimização aero-stealth (Thoulon et al. 2024).",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "index.html#questões-metodológicas-centrais",
+    "href": "index.html#questões-metodológicas-centrais",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "Questões metodológicas centrais",
+    "text": "Questões metodológicas centrais\nO projeto investiga, entre outras questões:\n\nquanto uma GNN reduz o custo de uma avaliação eletromagnética ou aerodinâmica;\nquanto a modelagem multifidelidade reduz a necessidade de dados de alta fidelidade;\nse regularização física melhora precisão e generalização em regimes de poucos dados;\nse representações em Álgebra Geométrica melhoram invariância, equivariância, eficiência amostral ou robustez;\nquanto o uso dos surrogates acelera a otimização completa, incluindo o custo de geração de dados e treinamento;\nse as soluções obtidas pelo processo acelerado preservam a qualidade da fronteira de Pareto após revalidação em alta fidelidade.",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "index.html#organização-do-ebook",
+    "href": "index.html#organização-do-ebook",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "Organização do eBook",
+    "text": "Organização do eBook\nOs capítulos evoluirão incrementalmente, acompanhando a pesquisa:\n\ndefinição do problema aero-stealth;\nfundamentos e papel da Álgebra Geométrica;\nequações físicas de Maxwell/RCS e Euler/aerodinâmica;\nGNNs para surrogate modeling;\nmultifidelidade, incerteza e active learning;\notimização multidisciplinar acelerada e validação.",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "index.html#estado-atual",
+    "href": "index.html#estado-atual",
+    "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
+    "section": "Estado atual",
+    "text": "Estado atual\nEste repositório encontra-se em desenvolvimento. O Milestone 0 (M0) estabelece a infraestrutura reproduzível em Quarto, a bibliografia inicial, os metadados do projeto e a validação automatizada de renderização. Os capítulos científicos serão desenvolvidos de forma incremental nos marcos subsequentes.\n\n\n\n\nBronstein, Michael M., Joan Bruna, Taco Cohen, e Petar Veličković. 2021. “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”. arXiv preprint arXiv:2104.13478. https://arxiv.org/abs/2104.13478.\n\n\nDressel, Justin, Konstantin Y. Bliokh, e Franco Nori. 2015. “Spacetime Algebra as a Powerful Tool for Electromagnetism”. Physics Reports 589: 1–71. https://doi.org/10.1016/j.physrep.2015.06.001.\n\n\nPfaff, Tobias, Meire Fortunato, Alvaro Sanchez-Gonzalez, e Peter W. Battaglia. 2021. “Learning Mesh-Based Simulation with Graph Networks”. International Conference on Learning Representations.\n\n\nThoulon, C., G. Roge, e O. Pironneau. 2024. “Gradient-Based Aero-Stealth Optimization of a Simplified Aircraft”. Fluids 9 (8): 174. https://doi.org/10.3390/fluids9080174.",
+    "crumbs": [
+      "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
+    ]
+  },
+  {
+    "objectID": "chapters/01_problem.html",
+    "href": "chapters/01_problem.html",
+    "title": "1  Aero-Stealth Optimization of a UCAV Flying-Wing",
+    "section": "",
+    "text": "1.1 UCAV flying-wing e problema aero-stealth\nEste capítulo definirá o problema de engenharia que motiva todo o framework. Seu propósito é estabelecer o escopo antes de introduzir Álgebra Geométrica, GNNs ou algoritmos de otimização.\nConteúdo a desenvolver no M1:",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aero-Stealth Optimization of a UCAV Flying-Wing</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_problem.html#ucav-flying-wing-e-problema-aero-stealth",
+    "href": "chapters/01_problem.html#ucav-flying-wing-e-problema-aero-stealth",
+    "title": "1  Aero-Stealth Optimization of a UCAV Flying-Wing",
+    "section": "",
+    "text": "configuração UCAV flying-wing;\nRadar Cross Section (RCS) e baixa observabilidade;\ndesempenho aerodinâmico subsônico;\nconflito e sinergias entre requisitos aerodinâmicos e eletromagnéticos;\nparametrização geométrica relevante ao problema.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aero-Stealth Optimization of a UCAV Flying-Wing</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_problem.html#gargalo-computacional",
+    "href": "chapters/01_problem.html#gargalo-computacional",
+    "title": "1  Aero-Stealth Optimization of a UCAV Flying-Wing",
+    "section": "1.2 Gargalo computacional",
+    "text": "1.2 Gargalo computacional\nO capítulo caracterizará o custo de avaliações CEM e CFD e explicará por que a exploração direta do espaço de projeto com solvers de alta fidelidade pode se tornar proibitiva.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aero-Stealth Optimization of a UCAV Flying-Wing</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_problem.html#formulação-multidisciplinar-preliminar",
+    "href": "chapters/01_problem.html#formulação-multidisciplinar-preliminar",
+    "title": "1  Aero-Stealth Optimization of a UCAV Flying-Wing",
+    "section": "1.3 Formulação multidisciplinar preliminar",
+    "text": "1.3 Formulação multidisciplinar preliminar\nSerão definidos progressivamente:\n\nvariáveis de projeto;\ncondições operacionais;\nfunções objetivo de RCS e aerodinâmica;\nrestrições geométricas e físicas;\nníveis de fidelidade disponíveis.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aero-Stealth Optimization of a UCAV Flying-Wing</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_problem.html#objetivo-e-questão-de-pesquisa",
+    "href": "chapters/01_problem.html#objetivo-e-questão-de-pesquisa",
+    "title": "1  Aero-Stealth Optimization of a UCAV Flying-Wing",
+    "section": "1.4 Objetivo e questão de pesquisa",
+    "text": "1.4 Objetivo e questão de pesquisa\nO objetivo central será formulado em termos da aceleração da otimização por GNNs multifidelidade, preservando precisão suficiente para revalidação de soluções candidatas em alta fidelidade.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aero-Stealth Optimization of a UCAV Flying-Wing</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_problem.html#hipóteses-e-métricas",
+    "href": "chapters/01_problem.html#hipóteses-e-métricas",
+    "title": "1  Aero-Stealth Optimization of a UCAV Flying-Wing",
+    "section": "1.5 Hipóteses e métricas",
+    "text": "1.5 Hipóteses e métricas\nSerão explicitadas hipóteses sobre:\n\nganho por representação em grafos;\nganho por multifidelidade;\nganho por regularização física;\ncontribuição incremental da Álgebra Geométrica;\nspeed-up de avaliação e da otimização completa;\nqualidade da fronteira de Pareto revalidada.\n\n\nStatus M0: estrutura editorial preparada. O conteúdo científico será desenvolvido no M1 a partir do TCC, do relatório sobre GNNs e das referências bibliográficas revisadas.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aero-Stealth Optimization of a UCAV Flying-Wing</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_geometric_algebra.html",
+    "href": "chapters/02_geometric_algebra.html",
+    "title": "2  Geometric Algebra for Physical and Geometric Representation",
+    "section": "",
+    "text": "2.1 Da álgebra linear e tensorial à Álgebra Geométrica\nEste capítulo apresentará a Álgebra Geométrica (AG) como linguagem de representação para geometria, campos e regularização física das GNNs. O projeto não assume a priori que AG reduz custo computacional; essa possibilidade será avaliada empiricamente.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Geometric Algebra for Physical and Geometric Representation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_geometric_algebra.html#da-álgebra-linear-e-tensorial-à-álgebra-geométrica",
+    "href": "chapters/02_geometric_algebra.html#da-álgebra-linear-e-tensorial-à-álgebra-geométrica",
+    "title": "2  Geometric Algebra for Physical and Geometric Representation",
+    "section": "",
+    "text": "vetores e covetores;\ntensores e transformações multilineares;\nmétrica;\nálgebra exterior e produto exterior;\nrelação entre formas diferenciais e multivetores.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Geometric Algebra for Physical and Geometric Representation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_geometric_algebra.html#álgebra-de-clifford",
+    "href": "chapters/02_geometric_algebra.html#álgebra-de-clifford",
+    "title": "2  Geometric Algebra for Physical and Geometric Representation",
+    "section": "2.2 Álgebra de Clifford",
+    "text": "2.2 Álgebra de Clifford\n\nproduto geométrico;\nescalares, vetores, bivetores e multivetores;\nprojeção por grau;\npseudoescalar e dualidade;\nreversão, norma e inversa;\nversores e rotores.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Geometric Algebra for Physical and Geometric Representation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_geometric_algebra.html#matrizes-tensores-e-sistemas-de-equações",
+    "href": "chapters/02_geometric_algebra.html#matrizes-tensores-e-sistemas-de-equações",
+    "title": "2  Geometric Algebra for Physical and Geometric Representation",
+    "section": "2.3 Matrizes, tensores e sistemas de equações",
+    "text": "2.3 Matrizes, tensores e sistemas de equações\nO capítulo distinguirá objetos geométricos de suas representações matriciais e discutirá como operadores lineares, tensores e sistemas de equações podem ser expressos e implementados sem identificar indevidamente todo tensor com um multivetor.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Geometric Algebra for Physical and Geometric Representation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_geometric_algebra.html#representação-de-malhas",
+    "href": "chapters/02_geometric_algebra.html#representação-de-malhas",
+    "title": "2  Geometric Algebra for Physical and Geometric Representation",
+    "section": "2.4 Representação de malhas",
+    "text": "2.4 Representação de malhas\nSerão investigadas representações de faces, arestas, normais, áreas orientadas e transformações relativas adequadas a grafos derivados de malhas CEM/CFD.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Geometric Algebra for Physical and Geometric Representation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_geometric_algebra.html#papel-da-ag-no-aprendizado",
+    "href": "chapters/02_geometric_algebra.html#papel-da-ag-no-aprendizado",
+    "title": "2  Geometric Algebra for Physical and Geometric Representation",
+    "section": "2.5 Papel da AG no aprendizado",
+    "text": "2.5 Papel da AG no aprendizado\nA contribuição da AG será testada por estudos de ablação, comparando representações cartesianas convencionais com representações geométricas estruturadas.\n\nStatus M0: estrutura editorial preparada; a fundamentação será expandida após a consolidação do corpus bibliográfico de AG.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Geometric Algebra for Physical and Geometric Representation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_physics.html",
+    "href": "chapters/03_physics.html",
+    "title": "3  Electromagnetic and Aerodynamic Governing Equations",
+    "section": "",
+    "text": "3.1 Electromagnetics\nEste capítulo reunirá os dois domínios físicos que geram os dados e as restrições usadas pelas GNNs.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Electromagnetic and Aerodynamic Governing Equations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_physics.html#electromagnetics",
+    "href": "chapters/03_physics.html#electromagnetics",
+    "title": "3  Electromagnetic and Aerodynamic Governing Equations",
+    "section": "",
+    "text": "3.1.1 Maxwell equations\nApresentação convencional das equações de Maxwell, condições constitutivas e condições de contorno relevantes ao espalhamento eletromagnético.\n\n\n3.1.2 Differential-form representation\nPonte entre cálculo vetorial, formas diferenciais e formulações independentes de coordenadas.\n\n\n3.1.3 Geometric Algebra formulation\nMaxwell será investigado em Álgebra Geométrica/Álgebra do Espaço-Tempo como unificação compacta das equações, e não como uma suposta linearização de um sistema que já é linear nos campos em meios lineares.\n\n\n3.1.4 Electromagnetic scattering and RCS\n\ncampo incidente e espalhado;\ncondições PEC e materiais;\ncorrentes superficiais;\ncampo distante;\nRCS e polarizações;\nfidelidades CEM relevantes.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Electromagnetic and Aerodynamic Governing Equations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_physics.html#aerodynamics",
+    "href": "chapters/03_physics.html#aerodynamics",
+    "title": "3  Electromagnetic and Aerodynamic Governing Equations",
+    "section": "3.2 Aerodynamics",
+    "text": "3.2 Aerodynamics\n\n3.2.1 Perfect gas and inviscid subsonic flow\nDefinição do modelo físico e domínio de validade.\n\n\n3.2.2 Euler equations\n\nconservação de massa;\nconservação de quantidade de movimento;\nconservação de energia;\nequação de estado de gás perfeito;\ncondições de contorno.\n\n\n\n3.2.3 Geometric Algebra formulation\nA AG será usada para investigar uma reformulação geometricamente estruturada das equações de Euler. A não linearidade física das equações de Euler deverá ser preservada e tratada explicitamente.\n\n\n3.2.4 Aerodynamic outputs\n\ndistribuição de pressão;\n\\(C_L\\);\n\\(C_D\\);\n\\(C_m\\);\n\\(L/D\\);\nfidelidades aerodinâmicas de referência.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Electromagnetic and Aerodynamic Governing Equations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_physics.html#uso-na-regularização-das-gnns",
+    "href": "chapters/03_physics.html#uso-na-regularização-das-gnns",
+    "title": "3  Electromagnetic and Aerodynamic Governing Equations",
+    "section": "3.3 Uso na regularização das GNNs",
+    "text": "3.3 Uso na regularização das GNNs\nO capítulo culminará na definição de resíduos físicos e condições de contorno que possam ser incorporados às funções de perda dos modelos aprendidos.\n\nStatus M0: estrutura editorial preparada; as derivações serão incluídas após revisão específica da literatura de Maxwell/GA e Euler/GA.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Electromagnetic and Aerodynamic Governing Equations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html",
+    "href": "chapters/04_graph_neural_networks.html",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "",
+    "text": "4.1 Why graphs?\nAs Graph Neural Networks constituem a principal contribuição computacional do projeto: substituir grande parte das avaliações repetidas dos solvers físicos por inferências rápidas dentro do processo de otimização, mantendo revalidação de alta fidelidade para as soluções relevantes.\nA justificativa partirá da correspondência natural entre malhas CEM/CFD e estruturas de grafo.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#meshes-as-graphs",
+    "href": "chapters/04_graph_neural_networks.html#meshes-as-graphs",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.2 Meshes as graphs",
+    "text": "4.2 Meshes as graphs\nSerão avaliadas representações por nós, arestas, faces e, quando necessário, células volumétricas.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#message-passing",
+    "href": "chapters/04_graph_neural_networks.html#message-passing",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.3 Message passing",
+    "text": "4.3 Message passing\nFormalização do ciclo mensagem–agregação–atualização–readout e sua interpretação em problemas de PDEs discretizadas.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#node-edge-and-face-features",
+    "href": "chapters/04_graph_neural_networks.html#node-edge-and-face-features",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.4 Node, edge and face features",
+    "text": "4.4 Node, edge and face features\nFeatures geométricas, físicas, operacionais e, posteriormente, atributos derivados de Álgebra Geométrica.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#geometric-representations",
+    "href": "chapters/04_graph_neural_networks.html#geometric-representations",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.5 Geometric representations",
+    "text": "4.5 Geometric representations\nComparação entre coordenadas cartesianas, invariantes geométricos, representações equivariantes e possíveis objetos multivetoriais.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#equivariance-and-invariance",
+    "href": "chapters/04_graph_neural_networks.html#equivariance-and-invariance",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.6 Equivariance and invariance",
+    "text": "4.6 Equivariance and invariance\nDefinição das propriedades desejáveis frente a rotações, translações, mudança de orientação e remalhamento.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#physics-informed-gnns",
+    "href": "chapters/04_graph_neural_networks.html#physics-informed-gnns",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.7 Physics-informed GNNs",
+    "text": "4.7 Physics-informed GNNs\nA física será incorporada prioritariamente como regularização, supervisão auxiliar ou informação de baixa fidelidade, evitando pressupor que uma PINN completa seja a solução adequada ao loop de otimização.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#electromagnetic-surrogate",
+    "href": "chapters/04_graph_neural_networks.html#electromagnetic-surrogate",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.8 Electromagnetic surrogate",
+    "text": "4.8 Electromagnetic surrogate\nEntradas, saídas de RCS/campo e tarefas auxiliares serão especificadas durante o desenvolvimento.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#aerodynamic-surrogate",
+    "href": "chapters/04_graph_neural_networks.html#aerodynamic-surrogate",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.9 Aerodynamic surrogate",
+    "text": "4.9 Aerodynamic surrogate\nPredição de coeficientes e, quando necessário, campos intermediários adequados à regularização pelas equações de Euler.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#uncertainty-quantification",
+    "href": "chapters/04_graph_neural_networks.html#uncertainty-quantification",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.10 Uncertainty quantification",
+    "text": "4.10 Uncertainty quantification\nA incerteza epistemológica será usada tanto para validação quanto para active learning.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_graph_neural_networks.html#estudos-de-ablação",
+    "href": "chapters/04_graph_neural_networks.html#estudos-de-ablação",
+    "title": "4  Graph Neural Networks for Physics-Based Surrogate Modeling",
+    "section": "4.11 Estudos de ablação",
+    "text": "4.11 Estudos de ablação\nO projeto deverá separar empiricamente os ganhos de:\n\nuso de grafo;\nrepresentação geométrica/AG;\nregularização física;\nmultifidelidade.\n\n\nStatus M0: estrutura editorial preparada; este capítulo será priorizado após a definição do problema no M1.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks for Physics-Based Surrogate Modeling</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html",
+    "href": "chapters/05_multifidelity.html",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "",
+    "text": "5.1 Computational cost hierarchy\nA multifidelidade é central para tornar o treinamento das GNNs economicamente viável quando dados de alta fidelidade são caros.\nCaracterização explícita do custo dos diferentes níveis de solver.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#low--and-high-fidelity-models",
+    "href": "chapters/05_multifidelity.html#low--and-high-fidelity-models",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.2 Low- and high-fidelity models",
+    "text": "5.2 Low- and high-fidelity models\nDefinição de baixa, média e alta fidelidade e critérios de compatibilidade entre respostas.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#electromagnetic-fidelity-hierarchy",
+    "href": "chapters/05_multifidelity.html#electromagnetic-fidelity-hierarchy",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.3 Electromagnetic fidelity hierarchy",
+    "text": "5.3 Electromagnetic fidelity hierarchy\nEstrutura preliminar a revisar durante o projeto:\n\\[\n\\text{PO/LE-PO}\n\\rightarrow\n\\text{SBR+/UTD/PTD ou equivalente HF}\n\\rightarrow\n\\text{validação experimental, quando disponível}.\n\\]",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#aerodynamic-fidelity-hierarchy",
+    "href": "chapters/05_multifidelity.html#aerodynamic-fidelity-hierarchy",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.4 Aerodynamic fidelity hierarchy",
+    "text": "5.4 Aerodynamic fidelity hierarchy\nEstrutura preliminar:\n\\[\n\\text{painel/VSPAERO}\n\\rightarrow\n\\text{Euler}\n\\rightarrow\n\\text{RANS/CFD de referência}.\n\\]",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#multi-fidelity-gnns",
+    "href": "chapters/05_multifidelity.html#multi-fidelity-gnns",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.5 Multi-Fidelity GNNs",
+    "text": "5.5 Multi-Fidelity GNNs\nUma hipótese de referência será aprender a discrepância entre níveis:\n\\[\ny_{HF} = y_{LF} + \\Delta_\\theta(G, y_{LF}).\n\\]",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#residual-correction-and-transfer-learning",
+    "href": "chapters/05_multifidelity.html#residual-correction-and-transfer-learning",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.6 Residual correction and transfer learning",
+    "text": "5.6 Residual correction and transfer learning\nSerão comparadas estratégias de correção residual, coarse-to-fine, currículo e transferência entre fidelidades.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#active-learning",
+    "href": "chapters/05_multifidelity.html#active-learning",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.7 Active learning",
+    "text": "5.7 Active learning\nA aquisição de novos casos deverá considerar:\n\nincerteza epistemológica;\ndiscrepância LF–HF;\nproximidade de regiões promissoras para a fronteira de Pareto;\nrisco de picos de RCS ou degradação aerodinâmica.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#uncertainty-driven-sampling",
+    "href": "chapters/05_multifidelity.html#uncertainty-driven-sampling",
+    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "section": "5.8 Uncertainty-driven sampling",
+    "text": "5.8 Uncertainty-driven sampling\nA incerteza será avaliada como componente explícito do ciclo de geração de dados.\n\nStatus M0: estrutura editorial preparada; o conteúdo será expandido após o capítulo de GNNs.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html",
+    "href": "chapters/06_optimization.html",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "",
+    "text": "6.1 Design variables\nEste capítulo integrará os surrogates eletromagnético e aerodinâmico ao processo de otimização multidisciplinar.\nVariáveis contínuas, inteiras e categóricas serão definidas a partir da parametrização real do UCAV.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#objectives",
+    "href": "chapters/06_optimization.html#objectives",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.2 Objectives",
+    "text": "6.2 Objectives\nSerão investigadas funções objetivo relacionadas a RCS, risco de picos e desempenho aerodinâmico.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#constraints",
+    "href": "chapters/06_optimization.html#constraints",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.3 Constraints",
+    "text": "6.3 Constraints\nRestrições físicas, geométricas e operacionais serão explicitadas antes da escolha final do algoritmo de otimização.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#nlp-and-minlp",
+    "href": "chapters/06_optimization.html#nlp-and-minlp",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.4 NLP and MINLP",
+    "text": "6.4 NLP and MINLP\nO problema será classificado como NLP ou MINLP somente após a definição das variáveis discretas. A Álgebra Geométrica estruturará representações e modelos físicos, enquanto os solvers de otimização operarão sobre objetivos e restrições escalares.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#multiobjective-optimization",
+    "href": "chapters/06_optimization.html#multiobjective-optimization",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.5 Multiobjective optimization",
+    "text": "6.5 Multiobjective optimization\nA análise será orientada à fronteira de Pareto aero-stealth.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#surrogate-assisted-optimization",
+    "href": "chapters/06_optimization.html#surrogate-assisted-optimization",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.6 Surrogate-assisted optimization",
+    "text": "6.6 Surrogate-assisted optimization\nA GNN será usada para substituir avaliações caras durante grande parte da busca, com chamadas HF seletivas para calibração e validação.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#high-fidelity-revalidation",
+    "href": "chapters/06_optimization.html#high-fidelity-revalidation",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.7 High-fidelity revalidation",
+    "text": "6.7 High-fidelity revalidation\nSoluções candidatas deverão ser reavaliadas nos solvers de referência antes de conclusões de engenharia.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#computational-speed-up",
+    "href": "chapters/06_optimization.html#computational-speed-up",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.8 Computational speed-up",
+    "text": "6.8 Computational speed-up\nUma métrica central será o speed-up da otimização completa:\n\\[\nS_{\\mathrm{MDO}}\n=\n\\frac{T_{\\mathrm{MDO,baseline}}}{T_{\\mathrm{MDO,GNN}}}.\n\\]\nO tempo total deverá incluir geração dos dados, treinamento, otimização e revalidação para evitar estimativas artificiais de aceleração.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#pareto-quality",
+    "href": "chapters/06_optimization.html#pareto-quality",
+    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "section": "6.9 Pareto quality",
+    "text": "6.9 Pareto quality\nSerão definidas métricas para comparar a fronteira produzida pelo surrogate com soluções revalidadas em alta fidelidade.\n\nStatus M0: estrutura editorial preparada; a formulação final será desenvolvida após a consolidação das disciplinas físicas e dos surrogates.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+    ]
+  }
+]
