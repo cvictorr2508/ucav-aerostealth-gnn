@@ -1,6 +1,8 @@
 # UCAV Aero-Stealth GNN
 
-Multifidelity Graph Neural Networks with Geometric Algebra and physics-informed learning for accelerated aero-stealth optimization of UCAV flying-wing configurations.
+Multifidelity Graph Neural Networks with Geometric Algebra and physics-informed learning for accelerated aero-stealth optimization of low-observable UCAV configurations.
+
+> **Terminology:** UCAV denotes a functional class of unmanned combat aircraft/air vehicles; it is not synonymous with a flying-wing aerodynamic configuration. Flying-wing, tailless, blended-wing-body, or other layouts may be considered as specific design families.
 
 ## Objective
 
@@ -47,7 +49,7 @@ Changes from `develop` to `main` should be reviewed through pull requests.
 
 ## Repository status
 
-Research and development in progress. The current milestone establishes the reproducible Quarto foundation before scientific chapters and computational experiments are expanded.
+Research and development in progress. M1 expands the UCAV engineering context, literature gap, objectives, hypotheses, and evaluation criteria before implementation milestones begin.
 
 ## License
 
