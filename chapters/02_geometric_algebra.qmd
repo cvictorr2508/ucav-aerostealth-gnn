@@ -241,6 +241,28 @@ $$
 
 A não comutatividade não é uma inconveniência algébrica; ela carrega informação geométrica. A diferença entre \(ab\) e \(ba\) contém precisamente a orientação expressa pelo produto exterior.
 
+### Produto de um vetor por um elemento de grau definido
+
+A decomposição \(ab=a\cdot b+a\wedge b\) não se limita a dois vetores. Se \(A_r\) é homogêneo de grau \(r\), o produto \(aA_r\) possui, em geral, uma parcela de grau \(r-1\) e outra de grau \(r+1\):
+
+$$
+aA_r=a\cdot A_r+a\wedge A_r.
+$$
+
+Com a convenção de contração utilizada neste texto,
+
+$$
+a\cdot A_r
+=\frac{1}{2}\left(aA_r-(-1)^rA_ra\right),
+$$
+
+$$
+a\wedge A_r
+=\frac{1}{2}\left(aA_r+(-1)^rA_ra\right).
+$$
+
+Para \(r=1\), essas fórmulas recuperam exatamente o produto interno e o produto exterior de dois vetores. Para \(r=2\), o produto de um vetor com um bivetor pode produzir uma parte vetorial e uma parte trivetorial. Essa regra de “baixar ou subir o grau” será útil mais adiante para derivadas geométricas e para separar equações multivetoriais por conteúdo geométrico.
+
 ## Grades, blades e multivetores
 
 ### O que significa grau
