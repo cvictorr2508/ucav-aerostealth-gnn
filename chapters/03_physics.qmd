@@ -2,7 +2,7 @@
 
 Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth: a **assinatura eletromagnética**, representada principalmente pela **Radar Cross Section (RCS)**, e o **desempenho aerodinâmico**, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição que serão usados ao longo do livro: a formulação física convencional, sua interpretação em **Álgebra Geométrica (AG)** e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em **Graph Neural Networks (GNNs)**.
 
-A organização segue a mesma orientação didática adotada no capítulo anterior. Cada bloco começa pelos conceitos físicos fundamentais, introduz as variáveis antes das equações, explicita hipóteses e condições de validade e, somente então, apresenta a formulação matemática. A AG é empregada como linguagem estruturante quando ela oferece uma representação geometricamente natural; isso não implica substituir indiscriminadamente todos os tensores, matrizes ou discretizações numéricas por multivetores.
+A organização segue a orientação didática do capítulo anterior. Cada bloco começa pelos conceitos físicos fundamentais, introduz as variáveis antes das equações, explicita hipóteses e condições de validade e, somente então, apresenta a formulação matemática. A AG é empregada como linguagem estruturante quando ela oferece uma representação geometricamente natural; isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores.
 
 Os dois domínios possuem naturezas distintas. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da **Spacetime Algebra (STA)** é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente [@dressel2015; @doran2003]. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.
 
@@ -72,7 +72,7 @@ $$
 \mathbf J+\frac{\partial\mathbf D}{\partial t}.
 $$
 
-A primeira equação é a lei de Gauss para o campo elétrico: cargas elétricas atuam como fontes ou sumidouros do fluxo elétrico. A segunda exprime a ausência de monopolos magnéticos no modelo clássico: as linhas de fluxo magnético não começam nem terminam em cargas magnéticas isoladas. A terceira é a lei de Faraday, segundo a qual campos magnéticos variáveis induzem campos elétricos. A quarta é a lei de Ampère-Maxwell, na qual correntes elétricas e campos elétricos variáveis contribuem para a circulação do campo magnético.
+A primeira equação é a lei de Gauss para o campo elétrico: cargas elétricas atuam como fontes ou sumidouros do fluxo elétrico. A segunda exprime a ausência de monopolos magnéticos no modelo clássico. A terceira é a lei de Faraday, segundo a qual campos magnéticos variáveis induzem campos elétricos. A quarta é a lei de Ampère-Maxwell, na qual correntes elétricas e campos elétricos variáveis contribuem para a circulação do campo magnético.
 
 Essas quatro equações não devem ser vistas como relações independentes sem conexão. Elas compõem um único sistema de conservação e evolução dos campos. Essa observação é precisamente o ponto em que a AG fornecerá uma representação mais compacta.
 
@@ -267,7 +267,7 @@ Essa característica explica por que pequenas alterações de geometria podem mo
 
 ## Métodos numéricos e níveis de fidelidade eletromagnética
 
-Não existe um único método numérico adequado a todas as frequências, geometrias e materiais. O método de Yee, por exemplo, constitui uma referência clássica para discretizações em diferenças finitas no domínio do tempo [@yee1966]. Formulações integrais de superfície com funções de base do tipo Rao-Wilton-Glisson constituem outra família fundamental para problemas de espalhamento em superfícies condutoras [@rao1982].
+Não existe um único método numérico adequado a todas as frequências, geometrias e materiais. O método de @yee1966 constitui uma referência clássica para discretizações em diferenças finitas no domínio do tempo. Formulações integrais de superfície com funções de base do tipo Rao-Wilton-Glisson constituem outra família fundamental para problemas de espalhamento em superfícies condutoras [@rao1982].
 
 Em aplicações aero-stealth, também são comuns aproximações assintóticas de alta frequência, como **Physical Optics (PO)** e técnicas baseadas em raios. Essas aproximações podem reduzir significativamente a demanda de recursos em regimes nos quais suas hipóteses são adequadas, enquanto métodos de onda completa tendem a representar uma faixa mais ampla de interações físicas com maior demanda de memória e processamento.
 
@@ -376,7 +376,7 @@ O segundo domínio físico é a aerodinâmica externa da configuração UCAV. O 
 
 A hipótese invíscida significa que tensões viscosas e condução térmica são omitidas das equações governantes. Isso não significa que a viscosidade real do ar seja zero; significa que, no nível de fidelidade considerado, os efeitos viscosos não são representados explicitamente. Consequentemente, fenômenos fortemente dependentes de camada limite, separação viscosa e atrito de parede exigem modelos de fidelidade superior, como as equações de Navier-Stokes com fechamento turbulento apropriado.
 
-O regime subsonico de interesse é caracterizado por
+O regime subsônico de interesse é caracterizado por
 
 $$
 M_\infty<1,
@@ -401,7 +401,7 @@ $$
 E=e+\frac12\|\mathbf u\|^2.
 $$
 
-Para um gás perfeito caloricamente perfeito,
+Para um gás caloricamente perfeito,
 
 $$
 p=\rho RT,
@@ -536,7 +536,7 @@ $$
 }.
 $$
 
-Uma formulação em AG deve preservar essa diferença e representar o fluxo de quantidade de movimento como operador/extensor quando necessário.
+Uma formulação em AG deve preservar essa diferença e representar o fluxo de quantidade de movimento como operador ou extensor quando necessário.
 
 ## Conservação de energia
 
@@ -623,8 +623,7 @@ Quando a geometria e a condição de voo admitem simetria, uma fronteira de sime
 Em Euler invíscido, a tração na parede decorre apenas da pressão. Para uma superfície \(S\) com normal externa \(\hat{\mathbf n}\), a força aerodinâmica é
 
 $$
-\mathbf F_{
-\mathrm{aero}}
+\mathbf F_{\mathrm{aero}}
 =
 -\int_S p\hat{\mathbf n}\,dS.
 $$
@@ -692,7 +691,7 @@ $$
 
 representa a estrutura rotacional local do escoamento. Em três dimensões, sua representação dual corresponde à vorticidade vetorial convencional. Na AG, porém, o objeto primário é o bivetor que representa diretamente o plano orientado de rotação.
 
-@sen2023 emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O trabalho mostra que quantidades tradicionalmente representadas como pseudovetores podem ser tratadas como bivetores, preservando a estrutura geométrica do plano de rotação. fileciteturn389file0L18-L28
+@sen2023 emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O trabalho mostra que quantidades tradicionalmente representadas como pseudovetores podem ser tratadas como bivetores, preservando a estrutura geométrica do plano de rotação.
 
 ## O termo convectivo e a não linearidade de Euler
 
@@ -720,7 +719,7 @@ $$
 
 no espaço euclidiano, a segunda parcela é o gradiente da energia cinética específica, enquanto a primeira relaciona a velocidade à estrutura bivetorial de rotação. Essa forma evidencia componentes geométricas úteis, mas **não elimina a não linearidade**, pois \(\Omega=\nabla\wedge\mathbf u\) continua dependendo de \(\mathbf u\), e os produtos entre campos permanecem presentes.
 
-Essa cautela é particularmente importante ao interpretar formulações de fluidos inspiradas em Maxwell. @sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para classes de escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. O próprio artigo, entretanto, parte das equações não lineares da dinâmica dos fluidos e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem sistemas lineares por uso de AG. fileciteturn389file0L18-L26
+Essa cautela é particularmente importante ao interpretar formulações de fluidos inspiradas em Maxwell. @sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para classes de escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. O próprio artigo, entretanto, parte das equações não lineares da dinâmica dos fluidos e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem sistemas lineares por uso de AG.
 
 ## Vorticidade, vetor de Lamb e analogias com Maxwell
 
@@ -746,7 +745,7 @@ $$
 \Omega=\nabla\wedge\mathbf u.
 $$
 
-Em construções espaço-temporais mais amplas, é possível combinar quantidades análogas à vorticidade e ao vetor de Lamb em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como um conjunto de quatro equações análogas às de Maxwell pode ser reunido em uma única equação multivetorial. O artigo também associa o dual de Hodge de um bivetor à multiplicação pelo pseudoescalar e explicita a correspondência entre vorticidade, vetor de Lamb e componentes bivetoriais. fileciteturn389file4L265-L296
+Em construções espaço-temporais mais amplas, é possível combinar quantidades análogas à vorticidade e ao vetor de Lamb em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como um conjunto de quatro equações análogas às de Maxwell pode ser reunido em uma única equação multivetorial. O artigo também associa o dual de Hodge de um bivetor à multiplicação pelo pseudoescalar e explicita a correspondência entre vorticidade, vetor de Lamb e componentes bivetoriais.
 
 Essas analogias são matematicamente interessantes para este projeto porque sugerem representações estruturadas de campos para aprendizado. Entretanto, elas não devem ser confundidas com a formulação conservativa completa de Euler utilizada por um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e equação de estado. Portanto, uma formulação computacional para o projeto deve manter esses objetos físicos explicitamente identificados.
 
@@ -758,13 +757,13 @@ $$
 \rho\mathbf u\otimes\mathbf u+p\mathsf I
 $$
 
-não é um bivetor. Trata-se de um operador de segunda ordem. Em AG, sua representação adequada deve utilizar uma aplicação linear/extensor ou outra estrutura equivalente, e não uma identificação indevida com um multivetor de grau fixo.
+não é um bivetor. Trata-se de um operador de segunda ordem. Em AG, sua representação adequada deve utilizar uma aplicação linear, extensor ou outra estrutura equivalente, e não uma identificação indevida com um multivetor de grau fixo.
 
 Essa separação é metodologicamente importante. A meta não é forçar toda a física para dentro de um único multivetor, mas usar a AG onde ela preserva e explicita estrutura geométrica, mantendo tensores e operadores quando a natureza matemática do objeto assim exigir.
 
 ## Fidelidade aerodinâmica
 
-Assim como no eletromagnetismo, um rótulo de fidelidade aerodinâmica deve refletir o conteúdo físico e numérico do modelo. Uma possível hierarquia para estudos de configuração pode incluir métodos potenciais ou de painéis, Euler compressível e, como referência de maior conteúdo físico, Reynolds-Averaged Navier-Stokes (RANS) ou modelos ainda mais completos quando necessários.
+Assim como no eletromagnetismo, um rótulo de fidelidade aerodinâmica deve refletir o conteúdo físico e numérico do modelo. Uma possível hierarquia para estudos de configuração pode incluir métodos potenciais ou de painéis, Euler compressível e, como referência de maior conteúdo físico, **Reynolds-Averaged Navier-Stokes (RANS)** ou modelos ainda mais completos quando necessários.
 
 Essa hierarquia não é universal. Um modelo Euler muito refinado pode demandar mais recursos que um RANS grosseiro em um caso particular, e um método de painéis pode deixar de ser adequado em regimes com forte separação ou efeitos compressíveis relevantes. Por isso, a fidelidade será definida por hipóteses, discretização, condições de contorno e recursos requeridos, e não apenas pelo nome do método.
 
@@ -822,7 +821,7 @@ Uma GNN pode ser treinada apenas contra dados produzidos por solvers, mas també
 Se a rede prevê campos eletromagnéticos compatíveis com uma formulação diferencial, podem ser definidos resíduos associados a Maxwell, por exemplo
 
 $$
-\mathcal R_{\mathrm{M}}
+\mathcal R_{\mathrm M}
 =
 \nabla F-J,
 $$
