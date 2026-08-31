@@ -331,7 +331,19 @@ $$
 \dim\Lambda^rV={n\choose r}.
 $$
 
-Somando todos os graus,
+Os coeficientes binomiais \({n\choose r}\) são exatamente os números que aparecem na linha de ordem \(n\) do **triângulo de Pascal**. Cada coeficiente conta quantas maneiras existem de escolher \(r\) direções distintas entre os \(n\) vetores de uma base; em AG, essas escolhas correspondem aos blades de base de grau \(r\). Para \(n=3\), a linha
+
+$$
+1\quad 3\quad 3\quad 1
+$$
+
+indica, respectivamente, um elemento de base de grau \(0\), três de grau \(1\), três de grau \(2\) e um de grau \(3\). A soma dos elementos dessa linha é obtida também pelo binômio de Newton:
+
+$$
+(1+1)^n=\sum_{r=0}^{n}{n\choose r}=2^n.
+$$
+
+Portanto,
 
 $$
 \dim Cl(V,g)=\sum_{r=0}^{n}{n\choose r}=2^n.
@@ -754,7 +766,7 @@ Essa distinção é importante para evitar uma identificação frequente: **matr
 
 ### Dyadics como operadores lineares
 
-Na análise diádica, um *dyadic* pode ser escrito como combinação de produtos diádicos de vetores e atua como operador linear sobre outro vetor. Van Bladel mostra que a mesma transformação vetorial pode ser apresentada tanto em forma matricial quanto em forma diádica [@vanbladel2007].
+Na análise diádica, um *dyadic* pode ser escrito como combinação de produtos diádicos de vetores e atua como operador linear sobre outro vetor. @vanbladel2007 mostra que a mesma transformação vetorial pode ser apresentada tanto em forma matricial quanto em forma diádica.
 
 Para vetores \(a\) e \(b\), o operador diádico \(a\otimes b\) atua sobre \(x\) como
 
@@ -768,7 +780,7 @@ adotada essa convenção de ação. O resultado é um vetor paralelo a \(a\), cu
 
 Um tensor geral representa uma aplicação multilinear. Um \(r\)-vetor, por outro lado, pertence ao espaço exterior \(\Lambda^rV\) e corresponde à parcela totalmente antissimétrica apropriada de uma estrutura tensorial. Portanto, a AG não permite identificar automaticamente qualquer tensor com um multivetor.
 
-Um exemplo decisivo para este trabalho aparece no fluxo de quantidade de movimento das equações de Euler:
+Um exemplo decisivo para este trabalho aparece no fluxo de quantidade de movimento das equações de Euler para um fluido compressível. Nesse contexto, \(\rho\) representa a densidade do fluido, \(u\) é o vetor velocidade, \(p\) é a pressão termodinâmica e \(\mathsf I\) é o tensor identidade. O fluxo convectivo de quantidade de movimento e a contribuição isotrópica da pressão aparecem combinados na estrutura
 
 $$
 \rho\,u\otimes u+p\,\mathsf I.
@@ -1077,7 +1089,7 @@ $$
 \Omega=\nabla\wedge u.
 $$
 
-O bivetor identifica o plano local de rotação do campo de velocidade. Sen emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb, e Parameswaran, Panakkal e Vedan desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo [@sen2023; @parameswaran2024].
+O bivetor identifica o plano local de rotação do campo de velocidade. @sen2023 emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, @parameswaran2024 desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.
 
 ### O termo convectivo continua não linear
 
@@ -1107,7 +1119,7 @@ Uma GNN processa dados por meio de nós, arestas e agregação de mensagens. Em 
 
 Codificar essas grandezas apenas como uma sequência de números é possível, mas transfere para a rede a responsabilidade de aprender, a partir dos dados, relações geométricas que já são conhecidas analiticamente. A AG oferece uma forma de manter parte dessa estrutura explícita.
 
-Zhong e Cao propõem uma **Graph Geometric Algebra Network (GGAN)** na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança [@zhong2025]. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.
+@zhong2025 propõem uma **Graph Geometric Algebra Network (GGAN)** na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.
 
 ### Uma mensagem geometricamente estruturada
 
