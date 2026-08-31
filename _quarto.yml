@@ -25,11 +25,13 @@ bibliography: references.bib
 
 format:
   html:
+    from: markdown+tex_math_single_backslash
     theme: cosmo
     toc: true
     number-sections: true
     code-fold: true
   pdf:
+    from: markdown+tex_math_single_backslash
     documentclass: scrreprt
     toc: true
     number-sections: true
