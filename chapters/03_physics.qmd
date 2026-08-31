@@ -1,6 +1,6 @@
 # Física governante: eletromagnetismo, RCS e aerodinâmica compressível
 
-Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth: a **assinatura eletromagnética**, representada principalmente pela **Radar Cross Section (RCS)**, e o **desempenho aerodinâmico**, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição usados ao longo do livro: a formulação física convencional, sua interpretação em **Álgebra Geométrica (AG)** e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em **Graph Neural Networks (GNNs)**.
+Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth de configurações de **Unmanned Combat Aerial Vehicle (UCAV)**: a **assinatura eletromagnética**, representada principalmente pela **Radar Cross Section (RCS)**, e o **desempenho aerodinâmico**, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição usados ao longo do livro: a formulação física convencional, sua interpretação em **Álgebra Geométrica (AG)** e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em **Graph Neural Networks (GNNs)**.
 
 O texto foi organizado para leitores de formações diferentes. Um especialista em eletromagnetismo deve poder acompanhar o bloco aerodinâmico sem pressupor familiaridade recente com dinâmica dos fluidos compressível; um especialista em aerodinâmica deve poder retomar Maxwell, fasores e espalhamento sem depender de uma revisão externa; e um engenheiro de outra área deve encontrar contexto suficiente para compreender as hipóteses e o papel das principais equações. Por isso, sempre que há ganho didático, a exposição privilegia a sequência **intuição → definição → exemplo → aplicação**.
 
@@ -911,7 +911,7 @@ $$
 
 no espaço euclidiano, a segunda parcela é o gradiente da energia cinética por unidade de massa e a primeira relaciona a velocidade à estrutura bivetorial de rotação. A decomposição revela geometria, mas **não elimina a não linearidade**: \(\nabla\wedge\mathbf u\) continua dependendo de \(\mathbf u\), e produtos entre campos permanecem presentes.
 
-@sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb. fileciteturn389file0L18-L28
+@sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb.
 
 ## Vorticidade, vetor de Lamb e analogias com Maxwell
 
@@ -939,7 +939,7 @@ $$
 \nabla\wedge\mathbf u.
 $$
 
-Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar. fileciteturn389file4L265-L296
+Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar.
 
 A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogias são úteis para representar **estrutura geométrica dos campos**, mas não equivalem automaticamente à formulação conservativa completa de Euler empregada em um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e uma equação de estado. Logo, uma implementação deve manter esses objetos explicitamente identificados.
 
