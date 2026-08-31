@@ -1,10 +1,10 @@
 # Física governante: eletromagnetismo, RCS e aerodinâmica compressível
 
-Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth: a **assinatura eletromagnética**, representada principalmente pela **Radar Cross Section (RCS)**, e o **desempenho aerodinâmico**, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição que serão usados ao longo do livro: a formulação física convencional, sua interpretação em **Álgebra Geométrica (AG)** e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em **Graph Neural Networks (GNNs)**.
+Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth: a **assinatura eletromagnética**, representada principalmente pela **Radar Cross Section (RCS)**, e o **desempenho aerodinâmico**, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição usados ao longo do livro: a formulação física convencional, sua interpretação em **Álgebra Geométrica (AG)** e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em **Graph Neural Networks (GNNs)**.
 
-A organização segue a orientação didática do capítulo anterior. Cada bloco começa pelos conceitos físicos fundamentais, introduz as variáveis antes das equações, explicita hipóteses e condições de validade e, somente então, apresenta a formulação matemática. A AG é empregada como linguagem estruturante quando ela oferece uma representação geometricamente natural; isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores.
+O texto foi organizado para leitores de formações diferentes. Um especialista em eletromagnetismo deve poder acompanhar o bloco aerodinâmico sem pressupor familiaridade recente com dinâmica dos fluidos compressível; um especialista em aerodinâmica deve poder retomar Maxwell, fasores e espalhamento sem depender de uma revisão externa; e um engenheiro de outra área deve encontrar contexto suficiente para compreender as hipóteses e o papel das principais equações. Por isso, sempre que há ganho didático, a exposição privilegia a sequência **intuição → definição → exemplo → aplicação**.
 
-Os dois domínios possuem naturezas distintas. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da **Spacetime Algebra (STA)** é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente [@dressel2015; @doran2003]. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.
+A AG é empregada como linguagem estruturante quando oferece uma representação geometricamente natural. Isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da **Álgebra do Espaço-Tempo (*Spacetime Algebra*, STA)** é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente [@dressel2015; @doran2003]. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.
 
 ## Parte I — Eletromagnetismo, espalhamento e Radar Cross Section
 
@@ -12,7 +12,9 @@ Os dois domínios possuem naturezas distintas. No eletromagnetismo, as equaçõe
 
 ### Campos, fontes e meio material
 
-O eletromagnetismo clássico descreve como cargas e correntes produzem campos elétricos e magnéticos e como esses campos se propagam e interagem com a matéria. No Sistema Internacional de Unidades, as grandezas fundamentais utilizadas aqui são:
+Uma forma intuitiva de organizar o eletromagnetismo clássico é separar três perguntas. **Quais campos existem em cada ponto do espaço?** **Quais fontes os produzem?** **Como o material responde a esses campos?** As equações de Maxwell conectam as duas primeiras perguntas; as relações constitutivas respondem à terceira.
+
+No Sistema Internacional de Unidades, as grandezas fundamentais utilizadas aqui são:
 
 - \(\mathbf E\): campo elétrico, em volts por metro \((\mathrm{V/m})\);
 - \(\mathbf H\): campo magnético, em ampères por metro \((\mathrm{A/m})\);
@@ -35,7 +37,7 @@ $$
 \mathbf J=\sigma_c\mathbf E,
 $$
 
-com \(\sigma_c\) representando a condutividade elétrica. Essas relações constitutivas são parte do modelo físico: mudar o material significa alterar a forma pela qual os campos se relacionam dentro do domínio.
+com \(\sigma_c\) representando a condutividade elétrica. Essas relações não são meros detalhes auxiliares: mudar o material altera a forma pela qual os campos se relacionam e, portanto, altera a solução de espalhamento.
 
 No vácuo,
 
@@ -51,9 +53,13 @@ $$
 c=\frac{1}{\sqrt{\mu_0\varepsilon_0}}.
 $$
 
+Para grande parte do domínio externo de um problema radar atmosférico, o ar pode ser aproximado eletromagneticamente pelo vácuo. Essa aproximação não elimina a necessidade de modelar corretamente a superfície do alvo e, quando relevantes, revestimentos, radomes, materiais absorvedores ou cavidades.
+
 ### As quatro equações de Maxwell
 
-Na forma diferencial convencional, as equações de Maxwell podem ser escritas como
+Antes de escrever as equações, convém separar duas ideias. O **divergente** mede, localmente, se um campo apresenta comportamento de fonte ou sumidouro. O **rotacional** mede sua tendência de circulação. As quatro equações de Maxwell combinam essas duas estruturas com as fontes elétricas e com a variação temporal dos campos.
+
+Na forma diferencial convencional,
 
 $$
 \nabla\cdot\mathbf D=\rho_e,
@@ -72,47 +78,127 @@ $$
 \mathbf J+\frac{\partial\mathbf D}{\partial t}.
 $$
 
-A primeira equação é a lei de Gauss para o campo elétrico: cargas elétricas atuam como fontes ou sumidouros do fluxo elétrico. A segunda exprime a ausência de monopolos magnéticos no modelo clássico. A terceira é a lei de Faraday, segundo a qual campos magnéticos variáveis induzem campos elétricos. A quarta é a lei de Ampère-Maxwell, na qual correntes elétricas e campos elétricos variáveis contribuem para a circulação do campo magnético.
+A primeira equação é a lei de Gauss para o campo elétrico: a densidade de carga atua como fonte do fluxo elétrico. A segunda exprime a ausência de monopolos magnéticos no modelo clássico. A terceira é a lei de Faraday: um campo magnético variável está associado à circulação de campo elétrico. A quarta é a lei de Ampère-Maxwell: corrente elétrica e variação do fluxo elétrico estão associadas à circulação do campo magnético.
 
-Essas quatro equações não devem ser vistas como relações independentes sem conexão. Elas compõem um único sistema de conservação e evolução dos campos. Essa observação é precisamente o ponto em que a AG fornecerá uma representação mais compacta.
+Em uma região homogênea sem cargas nem correntes impostas, \(\rho_e=0\) e \(\mathbf J=0\), mas os campos não precisam desaparecer. Uma onda eletromagnética que se propaga no espaço livre é precisamente um exemplo em que \(\mathbf E\) e \(\mathbf B\) continuam acoplados por Faraday e Ampère-Maxwell mesmo na ausência de fontes locais.
 
-### Regime harmônico
+Essas quatro relações compõem um único sistema físico. Essa unidade ficará particularmente clara quando o sistema for retomado em STA.
 
-Problemas de espalhamento radar são frequentemente analisados em regime senoidal permanente. Assume-se então uma dependência temporal da forma
+## Do domínio do tempo ao domínio da frequência
 
-$$
-\mathbf E(\mathbf x,t)=\Re\{\widetilde{\mathbf E}(\mathbf x)e^{j\omega t}\},
-$$
+### Por que usar fasores?
 
-onde \(\omega=2\pi f\) é a frequência angular, \(f\) é a frequência em hertz e \(\widetilde{\mathbf E}\) é o fasor complexo do campo elétrico. De modo análogo, escrevem-se fasores para os demais campos.
+No **domínio do tempo**, os campos são funções de posição e tempo, como \(\mathbf E(\mathbf x,t)\). Essa representação é indispensável quando se deseja acompanhar transientes, pulsos ou respostas não estacionárias. Entretanto, muitos problemas de RCS consideram uma iluminação senoidal permanente em uma frequência conhecida. Depois que os transientes desaparecem, todos os campos de um sistema linear excitado em uma única frequência oscilam na mesma frequência angular \(\omega\), embora possam apresentar amplitudes e fases diferentes em cada ponto.
 
-Com essa convenção,
+A ideia do fasor é retirar da equação a oscilação temporal conhecida e manter apenas sua **amplitude complexa**. Considere primeiro uma grandeza escalar simples,
 
 $$
-\frac{\partial}{\partial t}\longrightarrow j\omega,
+x(t)=A\cos(\omega t+\phi).
 $$
 
-e as equações de Maxwell tornam-se equações diferenciais espaciais complexas. Em meio homogêneo sem fontes, por exemplo, resulta a equação vetorial de Helmholtz
+Pela fórmula de Euler, essa oscilação pode ser escrita como
 
 $$
-\nabla^2\widetilde{\mathbf E}+k^2\widetilde{\mathbf E}=0,
+x(t)=\Re\left\{\widetilde x e^{j\omega t}\right\},
+\qquad
+\widetilde x=Ae^{j\phi},
 $$
 
-com número de onda
+onde \(\widetilde x\) armazena simultaneamente amplitude \(A\) e fase \(\phi\). Derivar no tempo fornece
 
 $$
-k=\omega\sqrt{\mu\varepsilon}=\frac{2\pi}{\lambda},
+\frac{dx}{dt}
+=
+\Re\left\{j\omega\widetilde x e^{j\omega t}\right\}.
 $$
 
-onde \(\lambda\) é o comprimento de onda.
+Portanto, na representação fasorial,
 
-Essa relação é particularmente importante para RCS porque a razão entre as dimensões geométricas do alvo e \(\lambda\) influencia quais mecanismos de espalhamento dominam e qual nível de discretização é necessário.
+$$
+\boxed{
+\frac{\partial}{\partial t}
+\longleftrightarrow
+j\omega
+}
+$$
+
+e, analogamente,
+
+$$
+\frac{\partial^2}{\partial t^2}
+\longleftrightarrow
+-\omega^2.
+$$
+
+Esse é o ganho essencial da passagem para o **domínio da frequência**: as derivadas **temporais** tornam-se multiplicações algébricas por \(j\omega\). Em problemas lineares de frequência única, isso simplifica fortemente a dependência temporal. A transformação, contudo, não converte todo o problema de Maxwell em um sistema puramente algébrico: os operadores espaciais \(\nabla\cdot\), \(\nabla\times\) e \(\nabla^2\) permanecem diferenciais até que também sejam discretizados numericamente.
+
+### Maxwell no domínio da frequência
+
+Assumindo a convenção temporal \(e^{j\omega t}\), escreve-se, por exemplo,
+
+$$
+\mathbf E(\mathbf x,t)
+=
+\Re\left\{
+\widetilde{\mathbf E}(\mathbf x)e^{j\omega t}
+\right\}.
+$$
+
+A lei de Faraday passa de
+
+$$
+\nabla\times\mathbf E
+=-\frac{\partial\mathbf B}{\partial t}
+$$
+
+para
+
+$$
+\boxed{
+\nabla\times\widetilde{\mathbf E}
+=-j\omega\widetilde{\mathbf B}
+}.
+$$
+
+De forma semelhante, a lei de Ampère-Maxwell torna-se
+
+$$
+\boxed{
+\nabla\times\widetilde{\mathbf H}
+=
+\widetilde{\mathbf J}
++j\omega\widetilde{\mathbf D}
+}.
+$$
+
+Em meio homogêneo, linear e sem fontes, a combinação das equações conduz à equação vetorial de Helmholtz,
+
+$$
+\nabla^2\widetilde{\mathbf E}
++k^2\widetilde{\mathbf E}=0,
+$$
+
+com
+
+$$
+k
+=
+\omega\sqrt{\mu\varepsilon}
+=
+\frac{2\pi}{\lambda},
+$$
+
+onde \(k\) é o número de onda e \(\lambda\) o comprimento de onda.
+
+Como exemplo, uma frequência maior implica \(\lambda\) menor no mesmo meio. Uma borda, cavidade ou detalhe geométrico de dimensão fixa torna-se, portanto, **eletricamente maior** quando a frequência aumenta. Essa razão entre dimensão física e comprimento de onda ajuda a determinar mecanismos dominantes de espalhamento, resolução de malha e adequação de aproximações assintóticas.
+
+Para RCS em regime harmônico, a aplicação prática é direta: cada frequência é tratada como um problema fasorial. Uma varredura em frequência exige resolver ou aproximar vários desses problemas. Para pulsos de banda larga, materiais não lineares ou fenômenos transientes, a formulação no domínio do tempo pode voltar a ser mais apropriada.
 
 ## O problema de espalhamento eletromagnético
 
 ### Campo incidente, campo espalhado e campo total
 
-Para analisar a assinatura radar de uma configuração UCAV, considera-se inicialmente uma onda eletromagnética que incide sobre o veículo. Essa onda é o **campo incidente**. A interação com a geometria e com os materiais induz cargas e correntes que produzem um novo campo: o **campo espalhado**.
+A intuição do espalhamento é a mesma de muitas situações ondulatórias: existe uma onda que chegaria à região mesmo se o objeto não estivesse presente; o objeto perturba essa onda; e a perturbação se propaga para longe. No problema radar, a primeira parcela é o **campo incidente** e a perturbação produzida pelo alvo é o **campo espalhado**.
 
 O campo total é escrito como
 
@@ -132,19 +218,27 @@ $$
 \mathbf H_{\mathrm{sca}}.
 $$
 
-Essa decomposição é conceitualmente simples, mas central para o problema. A RCS não mede diretamente a intensidade do campo incidente nem do campo total na vizinhança do alvo; ela caracteriza a parcela de energia eletromagnética que o alvo redireciona para uma determinada direção no campo distante [@knott1993].
+A RCS não mede diretamente o campo total na vizinhança do alvo. Ela caracteriza a intensidade com que o objeto redireciona energia eletromagnética para uma determinada direção no campo distante [@knott1993].
 
 ### Onda plana incidente
 
-Uma aproximação básica para iluminação radar a distâncias suficientemente grandes é a onda plana. Em meio homogêneo,
+Quando o radar está suficientemente distante em comparação com a dimensão do alvo, uma pequena região ao redor do veículo pode ser iluminada aproximadamente por frentes de onda planas. Em meio homogêneo,
 
 $$
 \widetilde{\mathbf E}_{\mathrm{inc}}(\mathbf x)
 =
-\mathbf E_0 e^{-j\mathbf k\cdot\mathbf x},
+\mathbf E_0e^{-j\mathbf k\cdot\mathbf x},
 $$
 
-onde \(\mathbf k=k\hat{\mathbf k}\) indica a direção de propagação. O campo magnético associado satisfaz
+onde
+
+$$
+\mathbf k=k\hat{\mathbf k}
+$$
+
+é o vetor de onda. Sua direção \(\hat{\mathbf k}\) indica a propagação e seu módulo \(k\) controla a variação de fase no espaço. Se a propagação ocorre, por exemplo, ao longo de \(+x\), então \(\mathbf k\cdot\mathbf x=kx\) e superfícies com mesmo \(x\) possuem a mesma fase.
+
+O campo magnético associado, para uma onda plana em meio isotrópico sem perdas, satisfaz
 
 $$
 \widetilde{\mathbf H}_{\mathrm{inc}}
@@ -154,42 +248,53 @@ $$
 \widetilde{\mathbf E}_{\mathrm{inc}},
 $$
 
-com impedância intrínseca do meio
+com impedância intrínseca
 
 $$
 \eta=\sqrt{\frac{\mu}{\varepsilon}}.
 $$
 
-O vetor \(\mathbf E_0\) determina a amplitude e a polarização da onda. Assim, frequência, direção de incidência e polarização devem ser consideradas condições de entrada do problema eletromagnético e, posteriormente, também do modelo substituto.
+Assim, \(\widetilde{\mathbf E}\), \(\widetilde{\mathbf H}\) e \(\hat{\mathbf k}\) formam direções mutuamente ortogonais no caso ideal de onda plana. O vetor \(\mathbf E_0\) define amplitude e polarização. Para o problema aero-stealth, frequência, direção de incidência e polarização são, portanto, entradas físicas tão importantes quanto a própria geometria.
 
 ### Condições de contorno
 
-As equações de Maxwell no domínio não são suficientes para determinar uma solução única; é necessário impor condições de contorno nas interfaces materiais e condições de radiação no infinito.
+As equações no domínio não bastam para determinar uma solução única: é preciso informar o que acontece nas interfaces materiais e exigir que o campo espalhado se propague para fora do domínio.
 
-Para um **Perfect Electric Conductor (PEC)** ideal, o campo elétrico tangencial total na superfície é nulo:
-
-$$
-\hat{\mathbf n}\times\mathbf E_{\mathrm{tot}}=0,
-$$
-
-onde \(\hat{\mathbf n}\) é a normal unitária à superfície. A condição força o rearranjo das cargas livres no condutor e induz uma corrente superficial. Uma forma usual de representar essa corrente é
+Para um **Perfect Electric Conductor (PEC)** ideal, cargas livres se reorganizam de modo que o campo elétrico tangencial total na superfície seja nulo:
 
 $$
-\mathbf J_s=
+\boxed{
+\hat{\mathbf n}\times\mathbf E_{\mathrm{tot}}=0
+},
+$$
+
+onde \(\hat{\mathbf n}\) é a normal unitária à superfície. A corrente superficial associada pode ser representada por
+
+$$
+\mathbf J_s
+=
 \hat{\mathbf n}\times\mathbf H_{\mathrm{tot}}.
 $$
 
-Em materiais dielétricos, magnéticos ou absorvedores, as condições são mais gerais e envolvem continuidade apropriada das componentes tangenciais e normais dos campos, além das relações constitutivas de cada meio.
+Geometricamente, a condição PEC conecta diretamente a orientação local da superfície aos campos. Em uma malha triangular, a normal e o bivetor orientado de cada face tornam-se, por isso, atributos naturais para uma representação física em grafo.
 
-No exterior do alvo, a solução espalhada deve representar uma onda que se afasta do objeto. Essa exigência é formalizada por uma condição de radiação de campo distante. Sem ela, soluções matematicamente admissíveis poderiam incluir ondas artificiais provenientes do infinito.
+Em materiais dielétricos, magnéticos ou absorvedores, as condições são mais gerais e envolvem continuidade apropriada das componentes tangenciais e normais, além das relações constitutivas de cada meio. No exterior do alvo, uma condição de radiação exclui soluções artificiais que chegariam do infinito.
 
 ## Do campo próximo ao campo distante
 
-### Campo próximo e campo distante
+### Intuição física
 
-A distribuição de campo nas proximidades de uma aeronave pode apresentar forte dependência espacial, acoplamentos entre superfícies e comportamento que ainda não possui a estrutura simples de uma onda esférica radiada. Essa região é denominada genericamente **campo próximo**.
+Muito perto de um objeto espalhador, o campo registra detalhes locais: correntes, acoplamentos entre superfícies, cavidades e variações rápidas de fase e amplitude. À medida que o observador se afasta, esses detalhes deixam de ser percebidos separadamente e o campo assume a estrutura assintótica de uma onda que se propaga radialmente. A primeira situação é associada ao **campo próximo**; a segunda, ao **campo distante**.
 
-A distâncias suficientemente grandes, o campo espalhado assume assintoticamente uma forma do tipo
+Para um alvo com dimensão característica máxima \(D\), a ordem de grandeza
+
+$$
+r\gg\frac{2D^2}{\lambda}
+$$
+
+é frequentemente usada como referência de região de Fraunhofer, embora a fronteira exata dependa da geometria e do critério adotado [@knott1993]. O ponto conceitual importante é que a distância necessária para observar comportamento de campo distante também depende do comprimento de onda.
+
+No limite assintótico,
 
 $$
 \widetilde{\mathbf E}_{\mathrm{sca}}(r,\hat{\mathbf r})
@@ -199,13 +304,13 @@ $$
 \qquad r\rightarrow\infty,
 $$
 
-onde \(\mathbf F_E\) é a amplitude vetorial de espalhamento e \(\hat{\mathbf r}\) define a direção de observação. O fator \(1/r\) mostra que a amplitude do campo decai inversamente com a distância, enquanto a densidade de potência decai aproximadamente como \(1/r^2\).
+onde \(\mathbf F_E\) é a amplitude vetorial de espalhamento e \(\hat{\mathbf r}\) a direção de observação. O fator \(1/r\) descreve o decaimento da amplitude; consequentemente, a densidade de potência decai como \(1/r^2\). A função \(\mathbf F_E\) retém a informação angular e de polarização que interessa à assinatura radar.
 
-A função \(\mathbf F_E\) concentra a dependência angular e de polarização que interessa à assinatura radar.
+### Radar Cross Section como área equivalente
 
-### Definição de Radar Cross Section
+A **Radar Cross Section** pode ser interpretada intuitivamente como uma **área equivalente de espalhamento**: ela responde à pergunta “quão intenso é o campo devolvido por esse alvo, naquela direção, quando comparado à iluminação recebida?”. Essa área equivalente não precisa coincidir com a área geométrica projetada do objeto. Interferência, orientação, materiais, bordas e cavidades podem produzir uma RCS muito maior ou muito menor que uma área física aparente.
 
-A **Radar Cross Section** é uma medida equivalente de capacidade de espalhamento. Para uma direção de observação \(\hat{\mathbf r}\), define-se
+Formalmente,
 
 $$
 \boxed{
@@ -223,7 +328,7 @@ $$
 
 em condições compatíveis de normalização [@knott1993]. A unidade de \(\sigma\) é área, normalmente metros quadrados.
 
-É comum expressar a grandeza em decibéis por metro quadrado:
+Como a variação pode abranger muitas ordens de grandeza, é comum empregar decibéis por metro quadrado:
 
 $$
 \sigma_{\mathrm{dBsm}}
@@ -233,19 +338,19 @@ $$
 \right).
 $$
 
-Essa transformação logarítmica é útil porque valores de RCS podem variar por muitas ordens de grandeza.
+Assim, \(1\ \mathrm{m^2}\) corresponde a \(0\ \mathrm{dBsm}\), \(10^{-2}\ \mathrm{m^2}\) corresponde a \(-20\ \mathrm{dBsm}\) e \(10^{2}\ \mathrm{m^2}\) corresponde a \(+20\ \mathrm{dBsm}\). O exemplo serve apenas para interpretar a escala logarítmica; não associa esses valores a uma plataforma específica.
 
 ### RCS monoestática e biestática
 
-Na configuração **monoestática**, transmissor e receptor ocupam essencialmente a mesma direção em relação ao alvo. A RCS é então avaliada na direção de retroespalhamento. Essa é uma configuração particularmente relevante para radares convencionais de detecção.
+Na configuração **monoestática**, transmissor e receptor estão essencialmente co-localizados. O receptor observa, portanto, o retroespalhamento na direção de retorno ao radar. Na configuração **biestática**, transmissor e receptor ocupam posições diferentes e a direção de observação não coincide, em geral, com a direção de retorno.
 
-Na configuração **biestática**, transmissor e receptor estão separados e a direção de observação difere da direção de incidência. O resultado passa a depender simultaneamente das duas geometrias angulares.
-
-Para o framework deste livro, a curva angular de RCS deve ser tratada como uma resposta física rica, e não reduzida prematuramente a um único escalar médio. Métricas agregadas podem ser calculadas posteriormente, mas a representação angular preserva lóbulos, picos especulares e regiões de baixa assinatura.
+Essa distinção importa porque um mesmo alvo pode apresentar um pico intenso em uma direção e baixa assinatura em outra. Para o framework deste livro, a curva angular de RCS deve ser tratada como uma resposta física rica, e não reduzida prematuramente a um único valor médio. Métricas agregadas podem ser calculadas posteriormente, preservando-se antes os lóbulos, picos especulares e regiões de baixa assinatura.
 
 ### Polarização
 
-O espalhamento depende também da polarização. Em uma base de polarização escolhida, podem ser consideradas componentes co-polarizadas e cruzadas, por exemplo HH, VV, HV e VH. Consequentemente, uma representação abstrata adequada para o problema é
+A polarização especifica a orientação e a evolução temporal do campo elétrico transversal à direção de propagação. Em problemas radar, escolhe-se uma base de polarização — frequentemente descrita como horizontal e vertical em relação a uma convenção geométrica — e mede-se como o alvo transforma a componente transmitida na componente recebida.
+
+Podem ser consideradas respostas co-polarizadas e cruzadas, como HH, VV, HV e VH. Os rótulos dependem da base de referência escolhida e, por isso, a convenção deve acompanhar os dados. Uma representação abstrata é
 
 $$
 \sigma
@@ -253,33 +358,35 @@ $$
 \sigma(\theta_i,\phi_i,\theta_s,\phi_s,f,\mathrm{pol}),
 $$
 
-onde os índices \(i\) e \(s\) indicam incidência e observação, respectivamente.
-
-Em um cenário monoestático, parte dessa parametrização se reduz porque a direção de observação é determinada pela direção incidente, mas frequência e polarização permanecem variáveis essenciais.
+onde os índices \(i\) e \(s\) indicam incidência e observação. Em um cenário monoestático, parte dessa parametrização se reduz geometricamente, mas frequência e polarização continuam sendo variáveis essenciais.
 
 ## Mecanismos de espalhamento e geometria da aeronave
 
-A RCS não é uma propriedade puramente local de cada ponto da superfície. Ela emerge da soma coerente de contribuições espalhadas pela geometria, com amplitudes e fases que podem se reforçar ou cancelar.
+A RCS não é uma soma de “RCS locais” independentes. O campo espalhado é uma soma **coerente**: amplitudes complexas provenientes de diferentes regiões chegam com fases distintas e podem reforçar-se ou cancelar-se.
 
-Em uma configuração aeronáutica, alguns mecanismos típicos são reflexão especular em superfícies aproximadamente planas, difração em bordas, espalhamento por descontinuidades geométricas, interação entre superfícies, cavidades e entradas, além de efeitos de materiais. A importância relativa de cada mecanismo depende do regime eletromagnético e da relação entre dimensões geométricas e comprimento de onda [@knott1993].
+Uma superfície aproximadamente plana e eletricamente grande pode produzir forte reflexão especular em certas direções. Uma borda pode difratar energia para regiões que não receberiam contribuição apenas pela reflexão geométrica. Cavidades e entradas podem sustentar múltiplas interações internas. Pequenas alterações de ângulo ou posição de uma superfície podem modificar fases relativas e deslocar picos angulares [@knott1993].
 
-Essa característica explica por que pequenas alterações de geometria podem modificar significativamente a assinatura em determinadas direções. Também explica por que uma representação de malha para GNN não deve carregar apenas coordenadas dos vértices: normais, áreas, orientação relativa entre faces, conectividade e condições de incidência são informações fisicamente relevantes.
+Essa dependência explica por que uma representação de malha para GNN não deve carregar apenas coordenadas dos vértices. Normais, áreas, orientação relativa entre faces, conectividade, bordas e condições de incidência carregam informação diretamente relacionada aos mecanismos físicos de espalhamento.
 
 ## Métodos numéricos e níveis de fidelidade eletromagnética
 
-Não existe um único método numérico adequado a todas as frequências, geometrias e materiais. O método de @yee1966 constitui uma referência clássica para discretizações em diferenças finitas no domínio do tempo. Formulações integrais de superfície com funções de base do tipo Rao-Wilton-Glisson constituem outra família fundamental para problemas de espalhamento em superfícies condutoras [@rao1982].
+A escolha do método computacional depende do que precisa ser resolvido e da relação entre dimensão geométrica e comprimento de onda. Métodos de onda completa procuram representar diretamente a solução de Maxwell dentro das hipóteses constitutivas adotadas; aproximações assintóticas exploram regimes em que a estrutura da propagação permite simplificações controladas.
 
-Em aplicações aero-stealth, também são comuns aproximações assintóticas de alta frequência, como **Physical Optics (PO)** e técnicas baseadas em raios. Essas aproximações podem reduzir significativamente a demanda de recursos em regimes nos quais suas hipóteses são adequadas, enquanto métodos de onda completa tendem a representar uma faixa mais ampla de interações físicas com maior demanda de memória e processamento.
+O método de @yee1966 constitui uma referência clássica para **Finite-Difference Time-Domain (FDTD)**: espaço e tempo são discretizados e os campos evoluem passo a passo. Uma vantagem conceitual é que uma única excitação transitória pode conter várias frequências; em contrapartida, o domínio volumétrico e a resolução exigida pelo menor comprimento de onda podem elevar a demanda de memória e processamento.
 
-Por isso, **fidelidade** não deve ser confundida com o nome de um solver específico. Um nível de fidelidade é definido pelo conteúdo físico e numérico efetivamente representado: tipo de aproximação, resolução de malha, tratamento de bordas e cavidades, propriedades materiais, frequência, critérios de convergência e demais hipóteses. Essa definição será retomada no capítulo de modelagem multifidelidade.
+Em alvos PEC, formulações integrais de superfície podem reduzir as incógnitas às correntes na superfície. As funções de base de @rao1982 são fundamentais em implementações do **Method of Moments (MoM)** para malhas triangulares. Após a discretização, o problema é convertido em um sistema linear cujas propriedades computacionais dependem do tamanho da malha e da formulação utilizada.
+
+Quando o alvo é eletricamente grande, aproximações de alta frequência, como **Physical Optics (PO)** e técnicas baseadas em raios, podem reduzir a demanda de recursos ao representar mecanismos dominantes sem resolver todos os detalhes de uma formulação de onda completa. Essa economia vem acompanhada de hipóteses adicionais, especialmente relevantes em bordas, regiões de sombra, cavidades ou múltiplas interações.
+
+Por isso, **fidelidade** não deve ser confundida com o nome do solver. Um nível de fidelidade é definido pelo conteúdo físico e numérico efetivamente representado: aproximações, resolução de malha, tratamento de bordas e cavidades, propriedades materiais, frequência, critérios de convergência e demais hipóteses. A classificação será retomada no capítulo de modelagem multifidelidade.
 
 ## Maxwell em Álgebra Geométrica do espaço-tempo
 
-### Por que mudar de linguagem matemática?
+### Da separação \(\mathbf E\)/\(\mathbf B\) a um único campo geométrico
 
-Na formulação vetorial convencional, campos elétricos e magnéticos aparecem em equações distintas, e operações de divergente e rotacional são tratadas separadamente. Na AG, o capítulo anterior mostrou que a derivada geométrica combina produtos interno e exterior. Essa estrutura permite reunir em uma única expressão partes que, na notação vetorial, aparecem como leis diferentes.
+Na formulação tridimensional usual, campos elétrico e magnético são escritos como vetores separados e aparecem em quatro equações. A STA parte de uma observação diferente: no espaço-tempo relativístico, as componentes que um observador chama de “elétricas” e “magnéticas” pertencem a um único campo eletromagnético. A separação entre \(\mathbf E\) e \(\mathbf B\) depende da escolha do observador, enquanto o campo espaço-temporal completo pode ser representado por um único bivetor [@dressel2015; @doran2003].
 
-A formulação apresentada aqui segue a **Spacetime Algebra**, uma álgebra de Clifford associada ao espaço-tempo de Minkowski [@dressel2015; @doran2003]. A assinatura pode ser escolhida de mais de uma forma na literatura; neste livro adota-se a convenção
+A álgebra adotada é associada ao espaço-tempo de Minkowski. Neste livro utiliza-se a assinatura
 
 $$
 \gamma_0^2=+1,
@@ -288,11 +395,11 @@ $$
 \quad k=1,2,3,
 $$
 
-correspondente a \(Cl(1,3)\). O ponto essencial não é a escolha de sinal em si, mas sua declaração explícita e seu uso consistente.
+correspondente a \(Cl(1,3)\). Outras assinaturas são encontradas na literatura; resultados intermediários podem mudar de sinal quando convenções são trocadas, razão pela qual a assinatura deve ser declarada antes das manipulações.
 
-### Derivada do espaço-tempo
+### O operador derivada no espaço-tempo
 
-Define-se o operador vetorial
+No capítulo anterior, a derivada geométrica reuniu divergência e parte exterior em uma única operação. Em quatro dimensões define-se, analogamente,
 
 $$
 \nabla
@@ -300,9 +407,9 @@ $$
 \gamma^\mu\partial_\mu,
 $$
 
-com soma sobre \(\mu=0,1,2,3\). Em unidades nas quais a coordenada temporal é escrita como \(x^0=ct\), a componente temporal e as componentes espaciais passam a fazer parte do mesmo operador geométrico.
+com soma sobre \(\mu=0,1,2,3\). Usando \(x^0=ct\), a direção temporal e as três direções espaciais fazem parte do mesmo operador.
 
-Assim como no capítulo anterior,
+Quando \(F\) é um bivetor,
 
 $$
 \nabla F
@@ -312,81 +419,81 @@ $$
 \nabla\wedge F.
 $$
 
-Quando \(F\) é um bivetor, a parcela de contração e a parcela exterior possuem graus diferentes. É justamente essa decomposição por grau que permite recuperar diferentes equações de Maxwell de uma única equação multivetorial.
+O produto de um vetor derivada com um bivetor produz partes de graus diferentes: uma parte vetorial e uma parte trivectorial. Essa separação por grau é a chave para recuperar, dentro de uma única equação, os dois pares de equações de Maxwell.
 
-### O campo eletromagnético como bivetor
+### O campo de Faraday como bivetor
 
-O campo eletromagnético é representado por um bivetor \(F\). Dependendo da convenção de base e unidades adotadas, as partes associadas aos campos elétrico e magnético podem ser escritas em uma forma equivalente a
+O campo eletromagnético é representado pelo bivetor \(F\), frequentemente chamado **bivetor de Faraday**. Em uma decomposição relativa a um observador, as componentes elétricas ocupam planos espaço-temporais, enquanto as componentes magnéticas correspondem a planos puramente espaciais. Usando vetores espaciais relativos e unidades compatíveis, essa decomposição pode ser representada esquematicamente por
 
 $$
 F
 =
-\mathbf E
-+cI\mathbf B,
+\mathbf E+cI\mathbf B,
 $$
 
-com fatores de escala e sinais ajustados à convenção escolhida. O ponto geométrico essencial é que \(F\) não é simplesmente a concatenação de seis números: ele é um objeto bivetorial do espaço-tempo no qual os graus de liberdade elétricos e magnéticos ocupam uma única estrutura geométrica [@dressel2015].
+com sinais e fatores de \(c\) dependentes da convenção adotada. Aqui, \(I=\gamma_0\gamma_1\gamma_2\gamma_3\) é o pseudoescalar do espaço-tempo. A expressão não deve ser lida como simples concatenação de seis componentes: \(F\) é um objeto bivetorial cuja decomposição em partes elétrica e magnética depende do observador [@dressel2015].
 
-Com fontes reunidas em um vetor de quatro-corrente \(J\), as equações de Maxwell podem ser escritas compactamente, em convenções normalizadas apropriadas, como
+As fontes podem ser reunidas em um quatro-vetor de corrente. Para evitar esconder fatores de unidades, denota-se por \(\mathcal J\) o quatro-vetor fonte já escalado de acordo com a convenção de \(F\), \(c\), \(\varepsilon_0\) e \(\mu_0\) adotada. Em unidades e normalizações compatíveis,
 
 $$
-\boxed{\nabla F=J}.
+\boxed{
+\nabla F=\mathcal J
+}.
 $$
 
 No vácuo sem fontes,
 
 $$
-\boxed{\nabla F=0}.
+\boxed{
+\nabla F=0
+}.
 $$
 
-A igualdade deve ser entendida por graus. A parte correspondente a \(\nabla\cdot F\) contém as equações com fontes, enquanto \(\nabla\wedge F\) contém as equações homogêneas. Portanto, a expressão única não apaga as quatro leis: ela as reúne dentro de uma estrutura algébrica que preserva sua distinção geométrica.
+A igualdade deve ser entendida por graus: a parte \(\nabla\cdot F\) contém as equações não homogêneas associadas às fontes; a parte \(\nabla\wedge F\) contém as equações homogêneas. A escrita única não apaga as quatro leis — ela mostra que elas são projeções de grau de uma mesma relação geométrica. @dressel2015 discute extensamente essa unificação do campo eletromagnético em STA.
 
-### O que essa formulação não significa
+### O que a formulação compacta faz — e o que não faz
 
-É importante evitar uma interpretação incorreta. A escrita
+A escrita
 
 $$
-\nabla F=J
+\nabla F=\mathcal J
 $$
 
-não transforma um problema eletromagnético não linear em linear. Em meios lineares, as equações de Maxwell já são lineares nos campos. A contribuição da STA é de **unificação representacional**, simplificação de manipulações geométricas e explicitação de invariantes e transformações [@dressel2015].
+não “lineariza” Maxwell. Em meios lineares, o sistema já é linear nos campos. A contribuição da STA é de **unificação representacional**, manipulação geométrica e acesso natural a invariantes e transformações de Lorentz [@dressel2015].
 
-Da mesma forma, uma formulação compacta não implica automaticamente menor tempo computacional. Um solver de espalhamento ainda precisa discretizar a geometria, impor condições constitutivas e de contorno, resolver o sistema resultante e extrair o campo distante. Qualquer alegação de ganho de processamento decorrente da representação em AG deverá ser demonstrada por benchmark, não assumida a priori.
+Também não se conclui, apenas pela compacidade da notação, que um solver em AG será mais rápido. Um cálculo de RCS ainda precisa discretizar geometria e materiais, impor condições de contorno, resolver as incógnitas e extrair o campo distante. Eventual redução de tempo, memória ou número de operações deve ser demonstrada por benchmark com implementações comparáveis.
 
 ## Validação eletromagnética progressiva
 
-Uma implementação confiável deve ser validada em problemas cuja solução ou comportamento é bem conhecido antes de ser aplicada a uma geometria UCAV completa. Uma sequência natural é:
-
-1. propagação de onda plana em meio homogêneo;
-2. reflexão por plano PEC;
-3. espalhamento por esfera condutora;
-4. espalhamento por placa ou face triangular;
-5. geometria aeronáutica progressivamente mais complexa;
-6. configuração UCAV de interesse.
-
-Essa progressão separa erros de convenção, discretização, condição de contorno e extração de RCS de dificuldades específicas de uma geometria complexa.
+A validação deve separar erros de formulação de dificuldades introduzidas pela geometria. Uma sequência apropriada começa com propagação de onda plana em meio homogêneo, passa pela reflexão em plano PEC, pelo espalhamento em esfera condutora e por uma placa ou face triangular, e somente depois avança para geometrias aeronáuticas e para a configuração UCAV de interesse. Em cada etapa devem ser verificadas convenções de fase, polarização, orientação de normais, condições de contorno e extração do campo distante antes de se atribuir discrepâncias à complexidade do alvo.
 
 ## Parte II — Aerodinâmica compressível e equações de Euler
 
-## Do escoamento às variáveis conservativas
+## Do escoamento contínuo ao sistema de conservação
+
+### O que o modelo de fluido representa
+
+Na aerodinâmica contínua, o ar não é acompanhado molécula por molécula. Assume-se que grandezas como densidade, pressão, temperatura e velocidade podem ser definidas como campos contínuos no espaço e no tempo. Essa hipótese transforma o problema microscópico em um sistema de leis de conservação aplicadas a pequenos volumes de fluido.
+
+Uma maneira útil de antecipar as equações é pensar em qualquer volume de controle: **acumulação dentro do volume + fluxo líquido através da fronteira = fontes externas**. As equações de Euler aplicam essa ideia à massa, à quantidade de movimento e à energia, sob hipóteses específicas sobre o fluido.
 
 ### Hipóteses do modelo
 
-O segundo domínio físico é a aerodinâmica externa da configuração UCAV. O modelo de referência introduzido neste capítulo é o escoamento **compressível, invíscido e de gás perfeito**, descrito pelas equações de Euler.
+O modelo introduzido neste capítulo é o escoamento externo **compressível, invíscido e de gás caloricamente perfeito**. A hipótese invíscida omite tensões viscosas e condução térmica das equações governantes. Isso não significa que a viscosidade real do ar seja zero; significa que, neste nível de modelagem, camada limite, atrito de parede, dissipação viscosa e separação controlada pela viscosidade não são representados explicitamente.
 
-A hipótese invíscida significa que tensões viscosas e condução térmica são omitidas das equações governantes. Isso não significa que a viscosidade real do ar seja zero; significa que, no nível de fidelidade considerado, os efeitos viscosos não são representados explicitamente. Consequentemente, fenômenos fortemente dependentes de camada limite, separação viscosa e atrito de parede exigem modelos de fidelidade superior, como as equações de Navier-Stokes com fechamento turbulento apropriado.
+Essas limitações têm consequência direta para a interpretação dos resultados. Um solver Euler pode representar pressão, ondas de compressão, efeitos de compressibilidade e parte importante da distribuição de carga aerodinâmica, mas não fornece arrasto de atrito e pode não representar adequadamente fenômenos dominados por separação viscosa. Modelos baseados em **Reynolds-Averaged Navier-Stokes (RANS)** ou abordagens mais completas tornam-se necessários quando esses efeitos são relevantes.
 
-O regime subsônico de interesse é caracterizado por
+O regime de interesse é predominantemente subsônico,
 
 $$
 M_\infty<1,
 $$
 
-mas a formulação compressível é preservada. Isso permite representar variações de densidade e efeitos associados ao número de Mach sem recorrer desde o início à aproximação incompressível.
+mas a formulação compressível é preservada. “Subsônico” não significa “incompressível”: a densidade ainda pode variar e a importância dessas variações cresce à medida que a velocidade se aproxima da velocidade do som.
 
-### Variáveis primitivas
+### Variáveis primitivas e significado físico
 
-Considere:
+As variáveis primitivas utilizadas são
 
 - \(\rho\): densidade do fluido;
 - \(\mathbf u=(u,v,w)\): vetor velocidade;
@@ -395,33 +502,30 @@ Considere:
 - \(e\): energia interna específica;
 - \(E\): energia total específica.
 
-A energia total específica é
+A energia total específica soma energia interna e energia cinética:
 
 $$
-E=e+\frac12\|\mathbf u\|^2.
+E
+=
+e+
+\frac12\|\mathbf u\|^2.
 $$
 
 Para um gás caloricamente perfeito,
 
 $$
 p=\rho RT,
-$$
-
-e
-
-$$
+\qquad
 e=c_vT,
 $$
 
-onde \(R\) é a constante específica do gás e \(c_v\) o calor específico a volume constante.
-
-Definindo
+onde \(R\) é a constante específica do gás e \(c_v\) o calor específico a volume constante. Com
 
 $$
 \gamma=\frac{c_p}{c_v},
 $$
 
-obtém-se a relação
+obtém-se
 
 $$
 \boxed{
@@ -433,27 +537,37 @@ p=(\gamma-1)
 }.
 $$
 
-Essa equação fecha o sistema de Euler para um gás perfeito.
+Essa relação fecha o sistema ao conectar a variável conservativa de energia à pressão.
 
 ### Velocidade do som e número de Mach
 
-A velocidade local do som é
+A velocidade do som não é apenas uma constante do ar: ela depende do estado termodinâmico. Para o gás perfeito considerado,
 
 $$
-a=\sqrt{\gamma\frac{p}{\rho}}.
+a
+=
+\sqrt{\gamma\frac{p}{\rho}}
+=
+\sqrt{\gamma RT}.
 $$
 
-O número de Mach é definido por
+O número de Mach é
 
 $$
-M=\frac{\|\mathbf u\|}{a}.
+\boxed{
+M=\frac{\|\mathbf u\|}{a}
+}.
 $$
 
-O valor de \(M\) compara a velocidade do escoamento com a velocidade de propagação de pequenas perturbações de pressão. Mesmo para \(M<1\), o grau de compressibilidade pode ser relevante e aumenta à medida que o escoamento se aproxima do regime transônico.
+Ele compara a velocidade do escoamento com a velocidade de propagação de pequenas perturbações de pressão. Como exemplo meramente ilustrativo, se \(V=240\ \mathrm{m/s}\) e \(a=340\ \mathrm{m/s}\), então \(M\approx0{,}71\). Como \(a\) varia com a temperatura, o mesmo valor de velocidade não corresponde necessariamente ao mesmo Mach em todas as condições atmosféricas.
+
+Para uma configuração UCAV, \(M_\infty\), ângulo de ataque, altitude ou condições equivalentes de \(p_\infty\), \(T_\infty\) e \(\rho_\infty\) fazem parte da definição da condição de voo.
 
 ## Conservação de massa
 
-Considere um volume de controle fixo. A massa só pode variar se houver fluxo através de sua fronteira. Na forma diferencial, a conservação de massa é
+### Intuição: o que entra, o que sai e o que se acumula
+
+Considere um volume de controle fixo. Se mais massa sai pela fronteira do que entra, a massa contida no volume diminui. Em forma local, essa ideia é
 
 $$
 \boxed{
@@ -463,7 +577,15 @@ $$
 }.
 $$
 
-O primeiro termo representa a variação local da densidade. O segundo é a divergência do fluxo de massa \(\rho\mathbf u\). Se mais massa sai de uma pequena região do que entra, a densidade local diminui.
+O primeiro termo mede a variação temporal local da densidade; o segundo mede o balanço espacial do fluxo de massa \(\rho\mathbf u\).
+
+Em um escoamento unidimensional permanente por um tubo cuja área varia lentamente, a mesma conservação conduz à relação familiar
+
+$$
+\rho u A=\text{constante}.
+$$
+
+O exemplo ajuda a interpretar a equação diferencial: se a área diminui e a densidade não compensa integralmente essa mudança, a velocidade deve se ajustar para conservar a vazão mássica.
 
 Em regime permanente,
 
@@ -471,7 +593,7 @@ $$
 \frac{\partial\rho}{\partial t}=0,
 $$
 
-e a equação reduz-se a
+e permanece
 
 $$
 \nabla\cdot(\rho\mathbf u)=0.
@@ -479,7 +601,9 @@ $$
 
 ## Conservação de quantidade de movimento
 
-A quantidade de movimento por unidade de volume é \(\rho\mathbf u\). Sua conservação, na ausência de forças de corpo, é
+### Da segunda lei de Newton ao fluxo por uma superfície
+
+A quantidade de movimento por unidade de volume é \(\rho\mathbf u\). Para um fluido, não basta acompanhar sua variação local: a própria quantidade de movimento é transportada através das superfícies do volume de controle. Na ausência de forças de corpo e de tensões viscosas,
 
 $$
 \boxed{
@@ -494,13 +618,13 @@ $$
 }.
 $$
 
-Nesta expressão, \(\mathsf I\) é o tensor identidade. O termo
+Nesta expressão, \(\mathsf I\) é o tensor identidade. O operador
 
 $$
 \rho\mathbf u\otimes\mathbf u
 $$
 
-é o fluxo convectivo de quantidade de movimento, enquanto
+representa o transporte convectivo da quantidade de movimento, enquanto
 
 $$
 p\mathsf I
@@ -508,7 +632,18 @@ $$
 
 representa a contribuição isotrópica da pressão.
 
-Essa distinção retoma diretamente uma cautela introduzida no capítulo de AG. O produto tensorial \(\mathbf u\otimes\mathbf u\) é um operador de segunda ordem. Sua ação sobre um vetor \(\mathbf v\) é
+A interpretação sobre uma face torna o produto tensorial mais concreto. Se \(\hat{\mathbf n}\) é a normal da face,
+
+$$
+(\rho\mathbf u\otimes\mathbf u)\hat{\mathbf n}
+=
+\rho\mathbf u
+(\mathbf u\cdot\hat{\mathbf n}).
+$$
+
+O escalar \(\mathbf u\cdot\hat{\mathbf n}\) mede quanto do escoamento atravessa a face; multiplicá-lo por \(\rho\mathbf u\) fornece a quantidade de movimento transportada nessa direção. Essa leitura explica por que fluxos e faces orientadas aparecem naturalmente em métodos de volumes finitos.
+
+Também retoma uma cautela central do capítulo de AG. O produto tensorial é um operador de segunda ordem:
 
 $$
 (\mathbf u\otimes\mathbf u)\mathbf v
@@ -536,11 +671,11 @@ $$
 }.
 $$
 
-Uma formulação em AG deve preservar essa diferença e representar o fluxo de quantidade de movimento como operador ou extensor quando necessário.
+Uma formulação em AG deve preservar essa diferença e representar o fluxo de quantidade de movimento como aplicação linear ou extensor quando necessário.
 
 ## Conservação de energia
 
-A energia total por unidade de volume é \(\rho E\). Sua equação conservativa é
+A energia total por unidade de volume é \(\rho E\). Além de ser transportada pelo escoamento, a energia também é transferida pelo trabalho realizado pela pressão. Em Euler,
 
 $$
 \boxed{
@@ -554,11 +689,11 @@ $$
 }.
 $$
 
-O fluxo energético contém a energia transportada pelo movimento do fluido e o trabalho de pressão. Juntamente com massa, quantidade de movimento e equação de estado, essa relação completa o sistema de Euler compressível.
+A parcela \(\rho E\mathbf u\) representa transporte convectivo de energia; \(p\mathbf u\) representa trabalho de pressão. Juntamente com massa, quantidade de movimento e equação de estado, essa relação completa o sistema de Euler compressível.
 
-## Forma vetorial conservativa
+## Por que os solvers usam variáveis conservativas?
 
-Agrupando as variáveis conservativas,
+As variáveis primitivas são intuitivas para interpretar o escoamento, mas as leis físicas são naturalmente formuladas em termos de quantidades conservadas. Agrupam-se então
 
 $$
 \mathbf U=
@@ -568,10 +703,10 @@ $$
 \rho v\\
 \rho w\\
 \rho E
-\end{bmatrix},
+\end{bmatrix}.
 $$
 
-o sistema pode ser escrito, em coordenadas cartesianas, como
+Em coordenadas cartesianas,
 
 $$
 \frac{\partial\mathbf U}{\partial t}
@@ -584,13 +719,13 @@ $$
 =0.
 $$
 
-Essa forma é particularmente importante numericamente porque esquemas de volumes finitos calculam balanços de fluxo através das faces de cada volume de controle. Para o objetivo deste livro, ela também evidencia a conexão natural entre malha, faces orientadas e fluxos físicos.
+Um método de volumes finitos integra essa expressão em cada célula e calcula os fluxos pelas faces. A consequência prática é importante para este livro: a mesma malha que define conectividade geométrica também organiza os balanços físicos. Normais, áreas e orientação das faces não são apenas atributos geométricos; participam diretamente da discretização das leis de conservação.
 
 ## Condições de contorno aerodinâmicas
 
-### Condição de não penetração
+### Parede invíscida: não penetração
 
-Em uma parede sólida invíscida, o fluido não atravessa a superfície. Se \(\hat{\mathbf n}\) é a normal unitária local,
+Em uma parede sólida invíscida, o fluido não atravessa a superfície. Se \(\hat{\mathbf n}\) é a normal unitária,
 
 $$
 \boxed{
@@ -598,11 +733,11 @@ $$
 }.
 $$
 
-Não se impõe, no modelo de Euler, velocidade tangencial nula. Essa diferença separa a parede deslizante invíscida da condição de não deslizamento utilizada em Navier-Stokes viscoso.
+A componente tangencial, contudo, não é forçada a zero. Essa é a condição de parede deslizante de Euler e a diferencia da condição de não deslizamento utilizada em Navier-Stokes viscoso.
 
-### Campo distante
+### Campo distante e condição de voo
 
-Na fronteira externa do domínio, as condições devem ser consistentes com o escoamento livre caracterizado por
+A fronteira externa deve ser compatível com o escoamento livre,
 
 $$
 (\rho_\infty,
@@ -612,15 +747,50 @@ M_\infty,
 \alpha,\beta),
 $$
 
-onde \(\alpha\) é o ângulo de ataque e \(\beta\) o ângulo de derrapagem. Em um solver compressível, condições características são frequentemente utilizadas para distinguir informação que entra e que sai do domínio.
+onde \(\alpha\) é o ângulo de ataque e \(\beta\) o ângulo de derrapagem. Para ilustrar a geometria, em um plano de simetria e com \(\beta=0\), uma convenção simples pode escrever
+
+$$
+\mathbf u_\infty
+=
+V_\infty
+(\cos\alpha\,\mathbf e_x
++
+\sin\alpha\,\mathbf e_z),
+$$
+
+com o sinal de \(\mathbf e_z\) dependente da convenção de eixos adotada. Em um solver compressível, condições características distinguem informação que entra e que sai do domínio; portanto, “impor o campo livre” não significa fixar arbitrariamente todas as variáveis em toda a fronteira.
 
 ### Simetria
 
-Quando a geometria e a condição de voo admitem simetria, uma fronteira de simetria pode reduzir o domínio numérico. Contudo, essa hipótese deve ser removida sempre que a incidência, geometria, controle ou resposta física romper a simetria.
+Quando geometria e condição de voo admitem simetria, uma fronteira de simetria pode reduzir o domínio. A hipótese deve ser removida quando incidência, geometria, controle ou resposta física romperem essa simetria.
 
-## De pressão superficial a forças e momentos
+## Da pressão superficial a forças, momentos e coeficientes
 
-Em Euler invíscido, a tração na parede decorre apenas da pressão. Para uma superfície \(S\) com normal externa \(\hat{\mathbf n}\), a força aerodinâmica é
+### Pressão local
+
+Uma saída local particularmente útil é o coeficiente de pressão,
+
+$$
+\boxed{
+C_p
+=
+\frac{p-p_\infty}{q_\infty}
+},
+$$
+
+onde
+
+$$
+q_\infty
+=
+\frac12\rho_\infty V_\infty^2
+$$
+
+é a pressão dinâmica de referência. O campo \(C_p\) mostra onde a geometria acelera, desacelera e redireciona o escoamento e fornece uma ponte entre predição local e forças integradas.
+
+### Força e momento integrados
+
+Em Euler invíscido, a tração na parede decorre apenas da pressão. Para uma superfície \(S\) com normal externa \(\hat{\mathbf n}\),
 
 $$
 \mathbf F_{\mathrm{aero}}
@@ -628,40 +798,42 @@ $$
 -\int_S p\hat{\mathbf n}\,dS.
 $$
 
-Escolhendo eixos aerodinâmicos adequados, a força é decomposta em sustentação \(L\), arrasto \(D\) e força lateral. Os coeficientes adimensionais são definidos por uma pressão dinâmica de referência
+Após escolher os eixos aerodinâmicos, a força é decomposta em sustentação \(L\), arrasto \(D\) e força lateral. Os coeficientes correspondentes são
 
 $$
-q_\infty
-=\frac12\rho_\infty V_\infty^2.
-$$
-
-Assim,
-
-$$
-C_L=\frac{L}{q_\infty S_{\mathrm{ref}}},
+C_L
+=
+\frac{L}{q_\infty S_{\mathrm{ref}}},
 $$
 
 $$
-C_D=\frac{D}{q_\infty S_{\mathrm{ref}}},
+C_D
+=
+\frac{D}{q_\infty S_{\mathrm{ref}}},
 $$
 
 $$
-C_m=\frac{M_y}{q_\infty S_{\mathrm{ref}}c_{\mathrm{ref}}},
+C_m
+=
+\frac{M_y}
+{q_\infty S_{\mathrm{ref}}c_{\mathrm{ref}}},
 $$
 
-onde \(S_{\mathrm{ref}}\) é uma área de referência e \(c_{\mathrm{ref}}\) um comprimento de referência. A eficiência aerodinâmica pode ser expressa por
+onde \(S_{\mathrm{ref}}\) é uma área de referência e \(c_{\mathrm{ref}}\) um comprimento de referência. A razão
 
 $$
 \frac{L}{D}
 =
-\frac{C_L}{C_D}.
+\frac{C_L}{C_D}
 $$
 
-É essencial registrar a convenção de eixos, sinais, ponto de referência dos momentos e valores de \(S_{\mathrm{ref}}\) e \(c_{\mathrm{ref}}\). Sem essa informação, dois conjuntos de coeficientes numericamente semelhantes podem não representar a mesma grandeza física.
+é uma medida de eficiência aerodinâmica dentro do modelo considerado.
+
+É essencial registrar convenções de eixos, sinais, ponto de referência dos momentos, \(S_{\mathrm{ref}}\) e \(c_{\mathrm{ref}}\). Também é essencial lembrar a física ausente: um \(C_D\) obtido por Euler não contém arrasto de atrito viscoso e pode diferir de uma solução RANS ou experimental quando separação e camada limite forem importantes.
 
 ## A derivada geométrica e a estrutura local do escoamento
 
-No capítulo anterior foi introduzida a decomposição
+No capítulo anterior foi introduzida
 
 $$
 \nabla\mathbf u
@@ -671,17 +843,13 @@ $$
 \nabla\wedge\mathbf u.
 $$
 
-Agora ela ganha interpretação física direta.
-
-A parte escalar
+Agora as duas parcelas recebem interpretação fluidodinâmica. A parte escalar
 
 $$
 \nabla\cdot\mathbf u
 $$
 
-mede expansão ou compressão volumétrica local do campo de velocidade. Para escoamentos compressíveis, ela não precisa ser nula.
-
-A parte bivetorial
+mede expansão ou compressão volumétrica local do campo de velocidade. Em escoamentos compressíveis ela não precisa ser nula. A parte bivetorial
 
 $$
 \Omega
@@ -689,19 +857,43 @@ $$
 \nabla\wedge\mathbf u
 $$
 
-representa a estrutura rotacional local do escoamento. Em três dimensões, sua representação dual corresponde à vorticidade vetorial convencional. Na AG, porém, o objeto primário é o bivetor que representa diretamente o plano orientado de rotação.
+representa a estrutura rotacional local.
 
-@sen2023 emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O trabalho mostra que quantidades tradicionalmente representadas como pseudovetores podem ser tratadas como bivetores, preservando a estrutura geométrica do plano de rotação.
+Dois campos simples ajudam a distinguir as parcelas. Para uma expansão isotrópica idealizada \(\mathbf u=a(x\mathbf e_1+y\mathbf e_2+z\mathbf e_3)\), o divergente é não nulo e a parte rotacional é nula. Para uma rotação rígida no plano \(xy\),
+
+$$
+\mathbf u
+=
+-\Omega_0y\mathbf e_1
++
+\Omega_0x\mathbf e_2,
+$$
+
+o divergente é nulo e \(\nabla\wedge\mathbf u\) é um bivetor no plano \(e_{12}\). Em três dimensões, o dual dessa parte bivetorial corresponde à vorticidade vetorial convencional.
+
+@sen2023 emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O interesse para este trabalho é geométrico: o plano orientado de rotação pode ser tratado diretamente como bivetor, em vez de apenas por seu pseudovetor dual.
 
 ## O termo convectivo e a não linearidade de Euler
 
-Um dos termos mais importantes da dinâmica dos fluidos é a aceleração convectiva
+### Por que um escoamento permanente ainda pode acelerar?
+
+Em dinâmica dos fluidos, “permanente” significa que o campo em um ponto fixo não muda com o tempo. Isso não implica que uma partícula de fluido mantenha a mesma velocidade enquanto se desloca por regiões onde \(\mathbf u\) varia no espaço.
+
+Em uma situação unidimensional idealizada, \(u=u(x)\) e \(\partial u/\partial t=0\), mas a aceleração convectiva é
+
+$$
+u\frac{du}{dx},
+$$
+
+que pode ser não nula. Em três dimensões, o termo correspondente é
 
 $$
 (\mathbf u\cdot\nabla)\mathbf u.
 $$
 
-Ela é não linear porque o próprio campo de velocidade atua como coeficiente diferencial sobre si mesmo. Uma identidade útil reorganiza esse termo como
+Ele é não linear porque o próprio campo de velocidade atua como coeficiente do operador diferencial aplicado a si mesmo.
+
+Uma identidade útil reorganiza essa aceleração como
 
 $$
 (\mathbf u\cdot\nabla)\mathbf u
@@ -717,13 +909,13 @@ $$
 \mathbf u^2=\|\mathbf u\|^2
 $$
 
-no espaço euclidiano, a segunda parcela é o gradiente da energia cinética específica, enquanto a primeira relaciona a velocidade à estrutura bivetorial de rotação. Essa forma evidencia componentes geométricas úteis, mas **não elimina a não linearidade**, pois \(\Omega=\nabla\wedge\mathbf u\) continua dependendo de \(\mathbf u\), e os produtos entre campos permanecem presentes.
+no espaço euclidiano, a segunda parcela é o gradiente da energia cinética por unidade de massa e a primeira relaciona a velocidade à estrutura bivetorial de rotação. A decomposição revela geometria, mas **não elimina a não linearidade**: \(\nabla\wedge\mathbf u\) continua dependendo de \(\mathbf u\), e produtos entre campos permanecem presentes.
 
-Essa cautela é particularmente importante ao interpretar formulações de fluidos inspiradas em Maxwell. @sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para classes de escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. O próprio artigo, entretanto, parte das equações não lineares da dinâmica dos fluidos e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem sistemas lineares por uso de AG.
+@sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb. fileciteturn389file0L18-L28
 
 ## Vorticidade, vetor de Lamb e analogias com Maxwell
 
-Na notação vetorial clássica, a vorticidade é
+A vorticidade vetorial clássica é
 
 $$
 \boldsymbol\omega
@@ -731,7 +923,7 @@ $$
 \nabla\times\mathbf u.
 $$
 
-O vetor de Lamb é frequentemente definido por
+Ela descreve a tendência local de rotação do escoamento. O vetor de Lamb é frequentemente definido por
 
 $$
 \mathbf L
@@ -739,43 +931,46 @@ $$
 \boldsymbol\omega\times\mathbf u,
 $$
 
-com convenções de sinal que podem variar conforme a fonte. Em AG tridimensional, a vorticidade pode ser tratada pelo bivetor
+com convenções de sinal que podem variar entre fontes. Em AG tridimensional, a mesma estrutura rotacional pode ser mantida como o bivetor
 
 $$
-\Omega=\nabla\wedge\mathbf u.
+\Omega
+=
+\nabla\wedge\mathbf u.
 $$
 
-Em construções espaço-temporais mais amplas, é possível combinar quantidades análogas à vorticidade e ao vetor de Lamb em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como um conjunto de quatro equações análogas às de Maxwell pode ser reunido em uma única equação multivetorial. O artigo também associa o dual de Hodge de um bivetor à multiplicação pelo pseudoescalar e explicita a correspondência entre vorticidade, vetor de Lamb e componentes bivetoriais.
+Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar. fileciteturn389file4L265-L296
 
-Essas analogias são matematicamente interessantes para este projeto porque sugerem representações estruturadas de campos para aprendizado. Entretanto, elas não devem ser confundidas com a formulação conservativa completa de Euler utilizada por um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e equação de estado. Portanto, uma formulação computacional para o projeto deve manter esses objetos físicos explicitamente identificados.
+A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogias são úteis para representar **estrutura geométrica dos campos**, mas não equivalem automaticamente à formulação conservativa completa de Euler empregada em um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e uma equação de estado. Logo, uma implementação deve manter esses objetos explicitamente identificados.
 
 ## O que pode ser representado por multivetores — e o que continua sendo operador
 
-A AG oferece uma representação natural para grandezas orientadas como vetores velocidade, bivetores de vorticidade, bivetores de faces de malha e transformações por rotores. Entretanto, o fluxo
+A AG oferece representações naturais para vetores velocidade, bivetores de vorticidade, bivetores de faces e transformações por rotores. Já o fluxo
 
 $$
-\rho\mathbf u\otimes\mathbf u+p\mathsf I
+\rho\mathbf u\otimes\mathbf u
++p\mathsf I
 $$
 
-não é um bivetor. Trata-se de um operador de segunda ordem. Em AG, sua representação adequada deve utilizar uma aplicação linear, extensor ou outra estrutura equivalente, e não uma identificação indevida com um multivetor de grau fixo.
+não é um bivetor. Trata-se de um operador de segunda ordem. Em AG, sua representação adequada deve utilizar uma aplicação linear, extensor ou estrutura equivalente, e não uma identificação indevida com um multivetor de grau fixo.
 
-Essa separação é metodologicamente importante. A meta não é forçar toda a física para dentro de um único multivetor, mas usar a AG onde ela preserva e explicita estrutura geométrica, mantendo tensores e operadores quando a natureza matemática do objeto assim exigir.
+Essa separação é metodologicamente importante. A meta não é forçar toda a física para dentro de um único multivetor, mas usar AG onde ela preserva e explicita estrutura geométrica, mantendo tensores e operadores quando a natureza matemática do objeto assim exigir.
 
-## Fidelidade aerodinâmica
+## Métodos e níveis de fidelidade aerodinâmica
 
-Assim como no eletromagnetismo, um rótulo de fidelidade aerodinâmica deve refletir o conteúdo físico e numérico do modelo. Uma possível hierarquia para estudos de configuração pode incluir métodos potenciais ou de painéis, Euler compressível e, como referência de maior conteúdo físico, **Reynolds-Averaged Navier-Stokes (RANS)** ou modelos ainda mais completos quando necessários.
+Para um leitor vindo do eletromagnetismo, é útil interpretar os principais níveis aerodinâmicos pelo conteúdo físico que adicionam. Métodos potenciais ou de painéis descrevem o escoamento com hipóteses fortes que podem ser adequadas em regimes suaves e longe de efeitos viscosos dominantes. Euler adiciona conservação compressível não linear e permite representar ondas e variações de densidade, mas continua invíscido. RANS acrescenta viscosidade e um fechamento estatístico para os efeitos turbulentos sobre o escoamento médio.
 
-Essa hierarquia não é universal. Um modelo Euler muito refinado pode demandar mais recursos que um RANS grosseiro em um caso particular, e um método de painéis pode deixar de ser adequado em regimes com forte separação ou efeitos compressíveis relevantes. Por isso, a fidelidade será definida por hipóteses, discretização, condições de contorno e recursos requeridos, e não apenas pelo nome do método.
+Essa sequência não constitui uma escala universal de “baixo para alto custo”. Resolução de malha, critérios de convergência, número de condições de voo, modelo turbulento e implementação podem mudar substancialmente o consumo de CPU/GPU, memória e tempo. A fidelidade deve ser definida pelo conteúdo físico e numérico efetivamente representado, juntamente com a demanda de recursos observada.
 
 ## Validação aerodinâmica progressiva
 
-Antes da aplicação a geometrias UCAV completas, uma cadeia de validação deve incluir problemas progressivamente mais complexos: conservação em casos uniformes, escoamentos com solução conhecida ou benchmarks consolidados, perfis bidimensionais, asas simples e, finalmente, a geometria tridimensional de interesse.
+Antes de aplicar o modelo a uma geometria UCAV completa, a validação deve avançar de problemas elementares para problemas integrados: conservação em estados uniformes, casos com solução conhecida ou benchmark consolidado, perfis bidimensionais, asas simples e finalmente a geometria tridimensional de interesse.
 
-Para cada caso, devem ser observados não apenas \(C_L\), \(C_D\) e \(C_m\), mas também campos intermediários como pressão superficial, distribuição de coeficiente de pressão e balanços globais de conservação. Um modelo pode reproduzir um coeficiente integrado por compensação de erros locais; por isso, a validação de campos e integrais deve ser combinada sempre que possível.
+A comparação não deve se restringir a \(C_L\), \(C_D\) e \(C_m\). Campos intermediários, como \(C_p\), pressão superficial e balanços de conservação, ajudam a identificar compensações de erro que poderiam produzir um coeficiente integrado aparentemente correto. Quando houver resultados experimentais ou soluções de referência adequadas, eles devem ser usados para distinguir erro de discretização, limitação do modelo físico e erro do futuro surrogate.
 
 ## Ponte entre os dois domínios físicos e as GNNs
 
-Os domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas distintas. Essa observação sustenta a ideia de um codificador geométrico compartilhável sem pressupor que os dois problemas tenham a mesma física.
+Os domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas diferentes. Isso motiva a investigação de representações geométricas compartilháveis sem pressupor que um único modelo multitarefa seja necessariamente superior.
 
 Uma geometria discretizada pode ser representada por um grafo
 
@@ -783,9 +978,9 @@ $$
 G=(V,E,\mathcal F),
 $$
 
-no qual vértices, arestas ou faces carregam atributos geométricos. A partir do capítulo anterior, exemplos naturais são posição \(\mathbf x_i\), normal \(\hat{\mathbf n}_i\), área \(A_i\), bivetor orientado de face \(B_i\), curvatura local, vetores relativos e rotores que expressem orientação entre elementos vizinhos.
+no qual nós, arestas ou faces carregam atributos. A partir do capítulo anterior, exemplos naturais são posição \(\mathbf x_i\), normal \(\hat{\mathbf n}_i\), área \(A_i\), bivetor orientado de face \(B_i\), curvatura local, vetores relativos e rotores associados à orientação entre elementos vizinhos.
 
-Para o problema eletromagnético, as condições globais incluem frequência, direção de incidência e polarização. Uma representação abstrata do operador aprendido é
+Para o problema eletromagnético, uma representação abstrata é
 
 $$
 \mathcal G_{\mathrm{EM}}:
@@ -794,13 +989,15 @@ $$
 \sigma(\theta_s,\phi_s,\mathrm{pol}_s),
 $$
 
-ou, quando campos intermediários forem utilizados,
+ou, quando campos intermediários forem incluídos,
 
 $$
 \mathcal G_{\mathrm{EM}}:
 (G,c_{\mathrm{EM}})
 \longrightarrow
-(\mathbf J_s,\mathbf E_{\mathrm{sca}},\sigma).
+(\mathbf J_s,
+\mathbf E_{\mathrm{sca}},
+\sigma).
 $$
 
 Para aerodinâmica,
@@ -812,23 +1009,21 @@ $$
 (C_p,C_L,C_D,C_m,\ldots).
 $$
 
-A presença do mesmo \(G\) não implica que um único modelo multitarefa será necessariamente superior a modelos especializados. Essa hipótese deverá ser testada empiricamente.
+O mesmo \(G\) fornece uma base geométrica comum; os condicionantes físicos e as saídas permanecem específicos de cada domínio. Compartilhamento de codificadores, cabeças especializadas ou modelos separados são hipóteses arquiteturais a serem comparadas empiricamente.
 
 ## Resíduos físicos como informação de treinamento
 
-Uma GNN pode ser treinada apenas contra dados produzidos por solvers, mas também é possível incorporar relações físicas ao objetivo de treinamento. Essa ideia deve ser utilizada com cuidado: o resíduo escolhido precisa corresponder ao nível de representação produzido pela rede.
-
-Se a rede prevê campos eletromagnéticos compatíveis com uma formulação diferencial, podem ser definidos resíduos associados a Maxwell, por exemplo
+A incorporação de física ao treinamento só é válida quando o resíduo pode ser calculado a partir das variáveis produzidas pela rede. Se a GNN prevê campos eletromagnéticos compatíveis com a formulação em STA, um resíduo conceitual é
 
 $$
 \mathcal R_{\mathrm M}
 =
-\nabla F-J,
+\nabla F-\mathcal J,
 $$
 
-além de resíduos específicos de condições de contorno e de radiação.
+acompanhado, quando apropriado, por resíduos de condições de contorno e radiação.
 
-Se a rede prevê variáveis conservativas aerodinâmicas, resíduos de Euler podem ser definidos por
+Se a rede prevê variáveis conservativas aerodinâmicas,
 
 $$
 \mathcal R_\rho
@@ -855,9 +1050,9 @@ $$
 \nabla\cdot[(\rho E+p)\mathbf u].
 $$
 
-Entretanto, se a GNN prevê apenas coeficientes integrados, como \(C_L\) ou RCS média, não existe informação suficiente para calcular esses resíduos diferenciais diretamente. Nesse caso, regularizações físicas devem ser formuladas em termos de consistências acessíveis às saídas do modelo, ou campos intermediários precisam ser incluídos explicitamente.
+Por outro lado, uma rede que prevê apenas \(C_L\), \(C_D\) ou uma RCS agregada não contém informação suficiente para calcular diretamente esses resíduos diferenciais. Nesse caso, devem ser usadas consistências compatíveis com as saídas disponíveis ou devem ser previstos campos intermediários.
 
-Uma função de perda genérica pode combinar
+Uma função de perda genérica pode assumir a forma
 
 $$
 \mathcal L
@@ -866,15 +1061,15 @@ $$
 +
 \lambda_{\mathrm{phys}}\mathcal L_{\mathrm{phys}}
 +
-\lambda_{\mathrm{bc}}\mathcal L_{\mathrm{bc}},
+\lambda_{\mathrm{bc}}\mathcal L_{\mathrm{bc}}.
 $$
 
-onde os pesos \(\lambda\) controlam a influência relativa dos termos. Esses pesos não devem ser escolhidos apenas por conveniência numérica; precisam considerar escalas, unidades e o impacto efetivo de cada restrição sobre a qualidade preditiva.
+Como os termos podem possuir unidades e escalas muito diferentes, normalização ou adimensionalização deve ser considerada antes de interpretar os pesos \(\lambda\). Um peso numericamente pequeno não significa, por si só, baixa importância física.
 
 ## Síntese do capítulo
 
-A assinatura radar e o desempenho aerodinâmico derivam de sistemas físicos diferentes, mas ambos são condicionados pela geometria da aeronave e podem ser representados sobre malhas. No domínio eletromagnético, Maxwell governa a evolução dos campos, as condições de contorno geram correntes e campos espalhados, e o campo distante conduz à RCS. Na STA, os campos elétrico e magnético podem ser reunidos em um bivetor \(F\), permitindo escrever as equações de Maxwell em forma multivetorial compacta sem atribuir à AG uma linearização que não existe.
+A assinatura radar e o desempenho aerodinâmico derivam de sistemas físicos diferentes, mas ambos são condicionados pela geometria e podem ser discretizados sobre malhas. No eletromagnetismo, Maxwell conecta fontes, materiais e propagação; a passagem para o domínio da frequência transforma derivadas temporais em multiplicações por \(j\omega\), mantendo a estrutura diferencial espacial; condições de contorno produzem o campo espalhado, e seu comportamento assintótico conduz à RCS. Na STA, os campos elétrico e magnético podem ser reunidos no bivetor de Faraday \(F\), sem atribuir à AG uma linearização que não existe.
 
-Na aerodinâmica, as equações de Euler expressam conservação de massa, quantidade de movimento e energia para um gás perfeito compressível. A derivada geométrica fornece uma decomposição natural entre expansão e rotação local, e bivetores oferecem uma representação adequada para vorticidade. Contudo, o fluxo de quantidade de movimento permanece um operador tensorial e a não linearidade convectiva permanece fisicamente presente.
+Na aerodinâmica, Euler aplica conservação de massa, quantidade de movimento e energia a um gás perfeito compressível e invíscido. A forma conservativa conecta naturalmente fluxos às faces da malha. A derivada geométrica separa expansão e rotação local, enquanto bivetores fornecem uma representação natural para vorticidade. Entretanto, o fluxo de quantidade de movimento permanece um operador tensorial e a não linearidade convectiva continua fisicamente presente.
 
-Esses dois blocos fornecem as variáveis, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. O próximo passo é transformar a geometria e essas condições físicas em representações de grafo capazes de sustentar GNNs que respeitem a estrutura dos problemas sem confundir compactação matemática com simplificação física indevida.
+Esses dois blocos definem variáveis, hipóteses, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. A continuidade metodológica é deliberada: **física → representação geométrica → dados multifidelidade → GNN → otimização determinística**, sem confundir compacidade matemática com simplificação física nem precisão preditiva com validade de engenharia.
