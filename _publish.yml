@@ -1,4 +1,0 @@
-- source: project
-  gh-pages:
-    - id: gh-pages
-      url: https://cvictorr2508.github.io/ucav-aerostealth-gnn/
