@@ -2,20 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Electromagnetic and Aerodynamic Governing Equations – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
+<title>3&nbsp; Física governante: eletromagnetismo, RCS e aerodinâmica compressível – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -23,7 +26,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -41,10 +63,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-631496449bf32ff9b0bb69a6bfd9195d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -74,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -114,7 +136,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03_physics.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Electromagnetic and Aerodynamic Governing Equations</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03_physics.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -164,7 +186,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/03_physics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Electromagnetic and Aerodynamic Governing Equations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -195,21 +217,81 @@ window.Quarto = {
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#electromagnetics" id="toc-electromagnetics" class="nav-link active" data-scroll-target="#electromagnetics"><span class="header-section-number">3.1</span> Electromagnetics</a>
+  <li><a href="#parte-i-eletromagnetismo-espalhamento-e-radar-cross-section" id="toc-parte-i-eletromagnetismo-espalhamento-e-radar-cross-section" class="nav-link active" data-scroll-target="#parte-i-eletromagnetismo-espalhamento-e-radar-cross-section"><span class="header-section-number">3.1</span> Parte I — Eletromagnetismo, espalhamento e Radar Cross Section</a></li>
+  <li><a href="#do-campo-eletromagnético-às-equações-de-maxwell" id="toc-do-campo-eletromagnético-às-equações-de-maxwell" class="nav-link" data-scroll-target="#do-campo-eletromagnético-às-equações-de-maxwell"><span class="header-section-number">3.2</span> Do campo eletromagnético às equações de Maxwell</a>
   <ul class="collapse">
-  <li><a href="#maxwell-equations" id="toc-maxwell-equations" class="nav-link" data-scroll-target="#maxwell-equations"><span class="header-section-number">3.1.1</span> Maxwell equations</a></li>
-  <li><a href="#differential-form-representation" id="toc-differential-form-representation" class="nav-link" data-scroll-target="#differential-form-representation"><span class="header-section-number">3.1.2</span> Differential-form representation</a></li>
-  <li><a href="#geometric-algebra-formulation" id="toc-geometric-algebra-formulation" class="nav-link" data-scroll-target="#geometric-algebra-formulation"><span class="header-section-number">3.1.3</span> Geometric Algebra formulation</a></li>
-  <li><a href="#electromagnetic-scattering-and-rcs" id="toc-electromagnetic-scattering-and-rcs" class="nav-link" data-scroll-target="#electromagnetic-scattering-and-rcs"><span class="header-section-number">3.1.4</span> Electromagnetic scattering and RCS</a></li>
+  <li><a href="#campos-fontes-e-meio-material" id="toc-campos-fontes-e-meio-material" class="nav-link" data-scroll-target="#campos-fontes-e-meio-material"><span class="header-section-number">3.2.1</span> Campos, fontes e meio material</a></li>
+  <li><a href="#as-quatro-equações-de-maxwell" id="toc-as-quatro-equações-de-maxwell" class="nav-link" data-scroll-target="#as-quatro-equações-de-maxwell"><span class="header-section-number">3.2.2</span> As quatro equações de Maxwell</a></li>
   </ul></li>
-  <li><a href="#aerodynamics" id="toc-aerodynamics" class="nav-link" data-scroll-target="#aerodynamics"><span class="header-section-number">3.2</span> Aerodynamics</a>
+  <li><a href="#do-domínio-do-tempo-ao-domínio-da-frequência" id="toc-do-domínio-do-tempo-ao-domínio-da-frequência" class="nav-link" data-scroll-target="#do-domínio-do-tempo-ao-domínio-da-frequência"><span class="header-section-number">3.3</span> Do domínio do tempo ao domínio da frequência</a>
   <ul class="collapse">
-  <li><a href="#perfect-gas-and-inviscid-subsonic-flow" id="toc-perfect-gas-and-inviscid-subsonic-flow" class="nav-link" data-scroll-target="#perfect-gas-and-inviscid-subsonic-flow"><span class="header-section-number">3.2.1</span> Perfect gas and inviscid subsonic flow</a></li>
-  <li><a href="#euler-equations" id="toc-euler-equations" class="nav-link" data-scroll-target="#euler-equations"><span class="header-section-number">3.2.2</span> Euler equations</a></li>
-  <li><a href="#geometric-algebra-formulation-1" id="toc-geometric-algebra-formulation-1" class="nav-link" data-scroll-target="#geometric-algebra-formulation-1"><span class="header-section-number">3.2.3</span> Geometric Algebra formulation</a></li>
-  <li><a href="#aerodynamic-outputs" id="toc-aerodynamic-outputs" class="nav-link" data-scroll-target="#aerodynamic-outputs"><span class="header-section-number">3.2.4</span> Aerodynamic outputs</a></li>
+  <li><a href="#por-que-usar-fasores" id="toc-por-que-usar-fasores" class="nav-link" data-scroll-target="#por-que-usar-fasores"><span class="header-section-number">3.3.1</span> Por que usar fasores?</a></li>
+  <li><a href="#maxwell-no-domínio-da-frequência" id="toc-maxwell-no-domínio-da-frequência" class="nav-link" data-scroll-target="#maxwell-no-domínio-da-frequência"><span class="header-section-number">3.3.2</span> Maxwell no domínio da frequência</a></li>
   </ul></li>
-  <li><a href="#uso-na-regularização-das-gnns" id="toc-uso-na-regularização-das-gnns" class="nav-link" data-scroll-target="#uso-na-regularização-das-gnns"><span class="header-section-number">3.3</span> Uso na regularização das GNNs</a></li>
+  <li><a href="#o-problema-de-espalhamento-eletromagnético" id="toc-o-problema-de-espalhamento-eletromagnético" class="nav-link" data-scroll-target="#o-problema-de-espalhamento-eletromagnético"><span class="header-section-number">3.4</span> O problema de espalhamento eletromagnético</a>
+  <ul class="collapse">
+  <li><a href="#campo-incidente-campo-espalhado-e-campo-total" id="toc-campo-incidente-campo-espalhado-e-campo-total" class="nav-link" data-scroll-target="#campo-incidente-campo-espalhado-e-campo-total"><span class="header-section-number">3.4.1</span> Campo incidente, campo espalhado e campo total</a></li>
+  <li><a href="#onda-plana-incidente" id="toc-onda-plana-incidente" class="nav-link" data-scroll-target="#onda-plana-incidente"><span class="header-section-number">3.4.2</span> Onda plana incidente</a></li>
+  <li><a href="#condições-de-contorno" id="toc-condições-de-contorno" class="nav-link" data-scroll-target="#condições-de-contorno"><span class="header-section-number">3.4.3</span> Condições de contorno</a></li>
+  </ul></li>
+  <li><a href="#do-campo-próximo-ao-campo-distante" id="toc-do-campo-próximo-ao-campo-distante" class="nav-link" data-scroll-target="#do-campo-próximo-ao-campo-distante"><span class="header-section-number">3.5</span> Do campo próximo ao campo distante</a>
+  <ul class="collapse">
+  <li><a href="#intuição-física" id="toc-intuição-física" class="nav-link" data-scroll-target="#intuição-física"><span class="header-section-number">3.5.1</span> Intuição física</a></li>
+  <li><a href="#radar-cross-section-como-área-equivalente" id="toc-radar-cross-section-como-área-equivalente" class="nav-link" data-scroll-target="#radar-cross-section-como-área-equivalente"><span class="header-section-number">3.5.2</span> Radar Cross Section como área equivalente</a></li>
+  <li><a href="#rcs-monoestática-e-biestática" id="toc-rcs-monoestática-e-biestática" class="nav-link" data-scroll-target="#rcs-monoestática-e-biestática"><span class="header-section-number">3.5.3</span> RCS monoestática e biestática</a></li>
+  <li><a href="#polarização" id="toc-polarização" class="nav-link" data-scroll-target="#polarização"><span class="header-section-number">3.5.4</span> Polarização</a></li>
+  </ul></li>
+  <li><a href="#mecanismos-de-espalhamento-e-geometria-da-aeronave" id="toc-mecanismos-de-espalhamento-e-geometria-da-aeronave" class="nav-link" data-scroll-target="#mecanismos-de-espalhamento-e-geometria-da-aeronave"><span class="header-section-number">3.6</span> Mecanismos de espalhamento e geometria da aeronave</a></li>
+  <li><a href="#métodos-numéricos-e-níveis-de-fidelidade-eletromagnética" id="toc-métodos-numéricos-e-níveis-de-fidelidade-eletromagnética" class="nav-link" data-scroll-target="#métodos-numéricos-e-níveis-de-fidelidade-eletromagnética"><span class="header-section-number">3.7</span> Métodos numéricos e níveis de fidelidade eletromagnética</a></li>
+  <li><a href="#maxwell-em-álgebra-geométrica-do-espaço-tempo" id="toc-maxwell-em-álgebra-geométrica-do-espaço-tempo" class="nav-link" data-scroll-target="#maxwell-em-álgebra-geométrica-do-espaço-tempo"><span class="header-section-number">3.8</span> Maxwell em Álgebra Geométrica do espaço-tempo</a>
+  <ul class="collapse">
+  <li><a href="#da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico" id="toc-da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico" class="nav-link" data-scroll-target="#da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico"><span class="header-section-number">3.8.1</span> Da separação <span class="math inline">\(\mathbf E\)</span>/<span class="math inline">\(\mathbf B\)</span> a um único campo geométrico</a></li>
+  <li><a href="#o-operador-derivada-no-espaço-tempo" id="toc-o-operador-derivada-no-espaço-tempo" class="nav-link" data-scroll-target="#o-operador-derivada-no-espaço-tempo"><span class="header-section-number">3.8.2</span> O operador derivada no espaço-tempo</a></li>
+  <li><a href="#o-campo-de-faraday-como-bivetor" id="toc-o-campo-de-faraday-como-bivetor" class="nav-link" data-scroll-target="#o-campo-de-faraday-como-bivetor"><span class="header-section-number">3.8.3</span> O campo de Faraday como bivetor</a></li>
+  <li><a href="#o-que-a-formulação-compacta-faz-e-o-que-não-faz" id="toc-o-que-a-formulação-compacta-faz-e-o-que-não-faz" class="nav-link" data-scroll-target="#o-que-a-formulação-compacta-faz-e-o-que-não-faz"><span class="header-section-number">3.8.4</span> O que a formulação compacta faz — e o que não faz</a></li>
+  </ul></li>
+  <li><a href="#validação-eletromagnética-progressiva" id="toc-validação-eletromagnética-progressiva" class="nav-link" data-scroll-target="#validação-eletromagnética-progressiva"><span class="header-section-number">3.9</span> Validação eletromagnética progressiva</a></li>
+  <li><a href="#parte-ii-aerodinâmica-compressível-e-equações-de-euler" id="toc-parte-ii-aerodinâmica-compressível-e-equações-de-euler" class="nav-link" data-scroll-target="#parte-ii-aerodinâmica-compressível-e-equações-de-euler"><span class="header-section-number">3.10</span> Parte II — Aerodinâmica compressível e equações de Euler</a></li>
+  <li><a href="#do-escoamento-contínuo-ao-sistema-de-conservação" id="toc-do-escoamento-contínuo-ao-sistema-de-conservação" class="nav-link" data-scroll-target="#do-escoamento-contínuo-ao-sistema-de-conservação"><span class="header-section-number">3.11</span> Do escoamento contínuo ao sistema de conservação</a>
+  <ul class="collapse">
+  <li><a href="#o-que-o-modelo-de-fluido-representa" id="toc-o-que-o-modelo-de-fluido-representa" class="nav-link" data-scroll-target="#o-que-o-modelo-de-fluido-representa"><span class="header-section-number">3.11.1</span> O que o modelo de fluido representa</a></li>
+  <li><a href="#hipóteses-do-modelo" id="toc-hipóteses-do-modelo" class="nav-link" data-scroll-target="#hipóteses-do-modelo"><span class="header-section-number">3.11.2</span> Hipóteses do modelo</a></li>
+  <li><a href="#variáveis-primitivas-e-significado-físico" id="toc-variáveis-primitivas-e-significado-físico" class="nav-link" data-scroll-target="#variáveis-primitivas-e-significado-físico"><span class="header-section-number">3.11.3</span> Variáveis primitivas e significado físico</a></li>
+  <li><a href="#velocidade-do-som-e-número-de-mach" id="toc-velocidade-do-som-e-número-de-mach" class="nav-link" data-scroll-target="#velocidade-do-som-e-número-de-mach"><span class="header-section-number">3.11.4</span> Velocidade do som e número de Mach</a></li>
+  </ul></li>
+  <li><a href="#conservação-de-massa" id="toc-conservação-de-massa" class="nav-link" data-scroll-target="#conservação-de-massa"><span class="header-section-number">3.12</span> Conservação de massa</a>
+  <ul class="collapse">
+  <li><a href="#intuição-o-que-entra-o-que-sai-e-o-que-se-acumula" id="toc-intuição-o-que-entra-o-que-sai-e-o-que-se-acumula" class="nav-link" data-scroll-target="#intuição-o-que-entra-o-que-sai-e-o-que-se-acumula"><span class="header-section-number">3.12.1</span> Intuição: o que entra, o que sai e o que se acumula</a></li>
+  </ul></li>
+  <li><a href="#conservação-de-quantidade-de-movimento" id="toc-conservação-de-quantidade-de-movimento" class="nav-link" data-scroll-target="#conservação-de-quantidade-de-movimento"><span class="header-section-number">3.13</span> Conservação de quantidade de movimento</a>
+  <ul class="collapse">
+  <li><a href="#da-segunda-lei-de-newton-ao-fluxo-por-uma-superfície" id="toc-da-segunda-lei-de-newton-ao-fluxo-por-uma-superfície" class="nav-link" data-scroll-target="#da-segunda-lei-de-newton-ao-fluxo-por-uma-superfície"><span class="header-section-number">3.13.1</span> Da segunda lei de Newton ao fluxo por uma superfície</a></li>
+  </ul></li>
+  <li><a href="#conservação-de-energia" id="toc-conservação-de-energia" class="nav-link" data-scroll-target="#conservação-de-energia"><span class="header-section-number">3.14</span> Conservação de energia</a></li>
+  <li><a href="#por-que-os-solvers-usam-variáveis-conservativas" id="toc-por-que-os-solvers-usam-variáveis-conservativas" class="nav-link" data-scroll-target="#por-que-os-solvers-usam-variáveis-conservativas"><span class="header-section-number">3.15</span> Por que os solvers usam variáveis conservativas?</a></li>
+  <li><a href="#condições-de-contorno-aerodinâmicas" id="toc-condições-de-contorno-aerodinâmicas" class="nav-link" data-scroll-target="#condições-de-contorno-aerodinâmicas"><span class="header-section-number">3.16</span> Condições de contorno aerodinâmicas</a>
+  <ul class="collapse">
+  <li><a href="#parede-invíscida-não-penetração" id="toc-parede-invíscida-não-penetração" class="nav-link" data-scroll-target="#parede-invíscida-não-penetração"><span class="header-section-number">3.16.1</span> Parede invíscida: não penetração</a></li>
+  <li><a href="#campo-distante-e-condição-de-voo" id="toc-campo-distante-e-condição-de-voo" class="nav-link" data-scroll-target="#campo-distante-e-condição-de-voo"><span class="header-section-number">3.16.2</span> Campo distante e condição de voo</a></li>
+  <li><a href="#simetria" id="toc-simetria" class="nav-link" data-scroll-target="#simetria"><span class="header-section-number">3.16.3</span> Simetria</a></li>
+  </ul></li>
+  <li><a href="#da-pressão-superficial-a-forças-momentos-e-coeficientes" id="toc-da-pressão-superficial-a-forças-momentos-e-coeficientes" class="nav-link" data-scroll-target="#da-pressão-superficial-a-forças-momentos-e-coeficientes"><span class="header-section-number">3.17</span> Da pressão superficial a forças, momentos e coeficientes</a>
+  <ul class="collapse">
+  <li><a href="#pressão-local" id="toc-pressão-local" class="nav-link" data-scroll-target="#pressão-local"><span class="header-section-number">3.17.1</span> Pressão local</a></li>
+  <li><a href="#força-e-momento-integrados" id="toc-força-e-momento-integrados" class="nav-link" data-scroll-target="#força-e-momento-integrados"><span class="header-section-number">3.17.2</span> Força e momento integrados</a></li>
+  </ul></li>
+  <li><a href="#a-derivada-geométrica-e-a-estrutura-local-do-escoamento" id="toc-a-derivada-geométrica-e-a-estrutura-local-do-escoamento" class="nav-link" data-scroll-target="#a-derivada-geométrica-e-a-estrutura-local-do-escoamento"><span class="header-section-number">3.18</span> A derivada geométrica e a estrutura local do escoamento</a></li>
+  <li><a href="#o-termo-convectivo-e-a-não-linearidade-de-euler" id="toc-o-termo-convectivo-e-a-não-linearidade-de-euler" class="nav-link" data-scroll-target="#o-termo-convectivo-e-a-não-linearidade-de-euler"><span class="header-section-number">3.19</span> O termo convectivo e a não linearidade de Euler</a>
+  <ul class="collapse">
+  <li><a href="#por-que-um-escoamento-permanente-ainda-pode-acelerar" id="toc-por-que-um-escoamento-permanente-ainda-pode-acelerar" class="nav-link" data-scroll-target="#por-que-um-escoamento-permanente-ainda-pode-acelerar"><span class="header-section-number">3.19.1</span> Por que um escoamento permanente ainda pode acelerar?</a></li>
+  </ul></li>
+  <li><a href="#vorticidade-vetor-de-lamb-e-analogias-com-maxwell" id="toc-vorticidade-vetor-de-lamb-e-analogias-com-maxwell" class="nav-link" data-scroll-target="#vorticidade-vetor-de-lamb-e-analogias-com-maxwell"><span class="header-section-number">3.20</span> Vorticidade, vetor de Lamb e analogias com Maxwell</a></li>
+  <li><a href="#o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador" id="toc-o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador" class="nav-link" data-scroll-target="#o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador"><span class="header-section-number">3.21</span> O que pode ser representado por multivetores — e o que continua sendo operador</a></li>
+  <li><a href="#métodos-e-níveis-de-fidelidade-aerodinâmica" id="toc-métodos-e-níveis-de-fidelidade-aerodinâmica" class="nav-link" data-scroll-target="#métodos-e-níveis-de-fidelidade-aerodinâmica"><span class="header-section-number">3.22</span> Métodos e níveis de fidelidade aerodinâmica</a></li>
+  <li><a href="#validação-aerodinâmica-progressiva" id="toc-validação-aerodinâmica-progressiva" class="nav-link" data-scroll-target="#validação-aerodinâmica-progressiva"><span class="header-section-number">3.23</span> Validação aerodinâmica progressiva</a></li>
+  <li><a href="#ponte-entre-os-dois-domínios-físicos-e-as-gnns" id="toc-ponte-entre-os-dois-domínios-físicos-e-as-gnns" class="nav-link" data-scroll-target="#ponte-entre-os-dois-domínios-físicos-e-as-gnns"><span class="header-section-number">3.24</span> Ponte entre os dois domínios físicos e as GNNs</a></li>
+  <li><a href="#resíduos-físicos-como-informação-de-treinamento" id="toc-resíduos-físicos-como-informação-de-treinamento" class="nav-link" data-scroll-target="#resíduos-físicos-como-informação-de-treinamento"><span class="header-section-number">3.25</span> Resíduos físicos como informação de treinamento</a></li>
+  <li><a href="#síntese-do-capítulo" id="toc-síntese-do-capítulo" class="nav-link" data-scroll-target="#síntese-do-capítulo"><span class="header-section-number">3.26</span> Síntese do capítulo</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/03_physics.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/03_physics.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -218,7 +300,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Electromagnetic and Aerodynamic Governing Equations</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span></h1>
 </div>
 
 
@@ -235,73 +317,889 @@ window.Quarto = {
 </header>
 
 
-<p>Este capítulo reunirá os dois domínios físicos que geram os dados e as restrições usadas pelas GNNs.</p>
-<section id="electromagnetics" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="electromagnetics"><span class="header-section-number">3.1</span> Electromagnetics</h2>
-<section id="maxwell-equations" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="maxwell-equations"><span class="header-section-number">3.1.1</span> Maxwell equations</h3>
-<p>Apresentação convencional das equações de Maxwell, condições constitutivas e condições de contorno relevantes ao espalhamento eletromagnético.</p>
+<p>Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth de configurações de <strong>Unmanned Combat Aerial Vehicle (UCAV)</strong>: a <strong>assinatura eletromagnética</strong>, representada principalmente pela <strong>Radar Cross Section (RCS)</strong>, e o <strong>desempenho aerodinâmico</strong>, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição usados ao longo do livro: a formulação física convencional, sua interpretação em <strong>Álgebra Geométrica (AG)</strong> e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em <strong>Graph Neural Networks (GNNs)</strong>.</p>
+<p>O texto foi organizado para leitores de formações diferentes. Um especialista em eletromagnetismo deve poder acompanhar o bloco aerodinâmico sem pressupor familiaridade recente com dinâmica dos fluidos compressível; um especialista em aerodinâmica deve poder retomar Maxwell, fasores e espalhamento sem depender de uma revisão externa; e um engenheiro de outra área deve encontrar contexto suficiente para compreender as hipóteses e o papel das principais equações. Por isso, sempre que há ganho didático, a exposição privilegia a sequência <strong>intuição → definição → exemplo → aplicação</strong>.</p>
+<p>A AG é empregada como linguagem estruturante quando oferece uma representação geometricamente natural. Isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da <strong>Álgebra do Espaço-Tempo (<em>Spacetime Algebra</em>, STA)</strong> é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente <span class="citation" data-cites="dressel2015 doran2003">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.</p>
+<section id="parte-i-eletromagnetismo-espalhamento-e-radar-cross-section" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="parte-i-eletromagnetismo-espalhamento-e-radar-cross-section"><span class="header-section-number">3.1</span> Parte I — Eletromagnetismo, espalhamento e Radar Cross Section</h2>
 </section>
-<section id="differential-form-representation" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="differential-form-representation"><span class="header-section-number">3.1.2</span> Differential-form representation</h3>
-<p>Ponte entre cálculo vetorial, formas diferenciais e formulações independentes de coordenadas.</p>
-</section>
-<section id="geometric-algebra-formulation" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="geometric-algebra-formulation"><span class="header-section-number">3.1.3</span> Geometric Algebra formulation</h3>
-<p>Maxwell será investigado em Álgebra Geométrica/Álgebra do Espaço-Tempo como <strong>unificação compacta das equações</strong>, e não como uma suposta linearização de um sistema que já é linear nos campos em meios lineares.</p>
-</section>
-<section id="electromagnetic-scattering-and-rcs" class="level3" data-number="3.1.4">
-<h3 data-number="3.1.4" class="anchored" data-anchor-id="electromagnetic-scattering-and-rcs"><span class="header-section-number">3.1.4</span> Electromagnetic scattering and RCS</h3>
+<section id="do-campo-eletromagnético-às-equações-de-maxwell" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="do-campo-eletromagnético-às-equações-de-maxwell"><span class="header-section-number">3.2</span> Do campo eletromagnético às equações de Maxwell</h2>
+<section id="campos-fontes-e-meio-material" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="campos-fontes-e-meio-material"><span class="header-section-number">3.2.1</span> Campos, fontes e meio material</h3>
+<p>Uma forma intuitiva de organizar o eletromagnetismo clássico é separar três perguntas. <strong>Quais campos existem em cada ponto do espaço?</strong> <strong>Quais fontes os produzem?</strong> <strong>Como o material responde a esses campos?</strong> As equações de Maxwell conectam as duas primeiras perguntas; as relações constitutivas respondem à terceira.</p>
+<p>No Sistema Internacional de Unidades, as grandezas fundamentais utilizadas aqui são:</p>
 <ul>
-<li>campo incidente e espalhado;</li>
-<li>condições PEC e materiais;</li>
-<li>correntes superficiais;</li>
-<li>campo distante;</li>
-<li>RCS e polarizações;</li>
-<li>fidelidades CEM relevantes.</li>
+<li><span class="math inline">\(\mathbf E\)</span>: campo elétrico, em volts por metro <span class="math inline">\((\mathrm{V/m})\)</span>;</li>
+<li><span class="math inline">\(\mathbf H\)</span>: campo magnético, em ampères por metro <span class="math inline">\((\mathrm{A/m})\)</span>;</li>
+<li><span class="math inline">\(\mathbf D\)</span>: densidade de fluxo elétrico, em coulombs por metro quadrado <span class="math inline">\((\mathrm{C/m^2})\)</span>;</li>
+<li><span class="math inline">\(\mathbf B\)</span>: densidade de fluxo magnético, em teslas <span class="math inline">\((\mathrm T)\)</span>;</li>
+<li><span class="math inline">\(\rho_e\)</span>: densidade volumétrica de carga elétrica, em <span class="math inline">\(\mathrm{C/m^3}\)</span>;</li>
+<li><span class="math inline">\(\mathbf J\)</span>: densidade de corrente elétrica, em <span class="math inline">\(\mathrm{A/m^2}\)</span>.</li>
 </ul>
+<p>É importante distinguir <span class="math inline">\(\mathbf E\)</span> e <span class="math inline">\(\mathbf H\)</span>, que descrevem intensidades de campo, de <span class="math inline">\(\mathbf D\)</span> e <span class="math inline">\(\mathbf B\)</span>, que incorporam a resposta constitutiva do meio. Em um meio linear, homogêneo e isotrópico,</p>
+<p><span class="math display">\[
+\mathbf D=\varepsilon\mathbf E,
+\qquad
+\mathbf B=\mu\mathbf H,
+\]</span></p>
+<p>onde <span class="math inline">\(\varepsilon\)</span> é a permissividade elétrica e <span class="math inline">\(\mu\)</span> a permeabilidade magnética. Para um meio condutor linear também se utiliza</p>
+<p><span class="math display">\[
+\mathbf J=\sigma_c\mathbf E,
+\]</span></p>
+<p>com <span class="math inline">\(\sigma_c\)</span> representando a condutividade elétrica. Essas relações não são meros detalhes auxiliares: mudar o material altera a forma pela qual os campos se relacionam e, portanto, altera a solução de espalhamento.</p>
+<p>No vácuo,</p>
+<p><span class="math display">\[
+\varepsilon=\varepsilon_0,
+\qquad
+\mu=\mu_0,
+\]</span></p>
+<p>e a velocidade de propagação eletromagnética é</p>
+<p><span class="math display">\[
+c=\frac{1}{\sqrt{\mu_0\varepsilon_0}}.
+\]</span></p>
+<p>Para grande parte do domínio externo de um problema radar atmosférico, o ar pode ser aproximado eletromagneticamente pelo vácuo. Essa aproximação não elimina a necessidade de modelar corretamente a superfície do alvo e, quando relevantes, revestimentos, radomes, materiais absorvedores ou cavidades.</p>
+</section>
+<section id="as-quatro-equações-de-maxwell" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="as-quatro-equações-de-maxwell"><span class="header-section-number">3.2.2</span> As quatro equações de Maxwell</h3>
+<p>Antes de escrever as equações, convém separar duas ideias. O <strong>divergente</strong> mede, localmente, se um campo apresenta comportamento de fonte ou sumidouro. O <strong>rotacional</strong> mede sua tendência de circulação. As quatro equações de Maxwell combinam essas duas estruturas com as fontes elétricas e com a variação temporal dos campos.</p>
+<p>Na forma diferencial convencional,</p>
+<p><span class="math display">\[
+\nabla\cdot\mathbf D=\rho_e,
+\]</span></p>
+<p><span class="math display">\[
+\nabla\cdot\mathbf B=0,
+\]</span></p>
+<p><span class="math display">\[
+\nabla\times\mathbf E=-\frac{\partial\mathbf B}{\partial t},
+\]</span></p>
+<p><span class="math display">\[
+\nabla\times\mathbf H=
+\mathbf J+\frac{\partial\mathbf D}{\partial t}.
+\]</span></p>
+<p>A primeira equação é a lei de Gauss para o campo elétrico: a densidade de carga atua como fonte do fluxo elétrico. A segunda exprime a ausência de monopolos magnéticos no modelo clássico. A terceira é a lei de Faraday: um campo magnético variável está associado à circulação de campo elétrico. A quarta é a lei de Ampère-Maxwell: corrente elétrica e variação do fluxo elétrico estão associadas à circulação do campo magnético.</p>
+<p>Em uma região homogênea sem cargas nem correntes impostas, <span class="math inline">\(\rho_e=0\)</span> e <span class="math inline">\(\mathbf J=0\)</span>, mas os campos não precisam desaparecer. Uma onda eletromagnética que se propaga no espaço livre é precisamente um exemplo em que <span class="math inline">\(\mathbf E\)</span> e <span class="math inline">\(\mathbf B\)</span> continuam acoplados por Faraday e Ampère-Maxwell mesmo na ausência de fontes locais.</p>
+<p>Essas quatro relações compõem um único sistema físico. Essa unidade ficará particularmente clara quando o sistema for retomado em STA.</p>
 </section>
 </section>
-<section id="aerodynamics" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="aerodynamics"><span class="header-section-number">3.2</span> Aerodynamics</h2>
-<section id="perfect-gas-and-inviscid-subsonic-flow" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="perfect-gas-and-inviscid-subsonic-flow"><span class="header-section-number">3.2.1</span> Perfect gas and inviscid subsonic flow</h3>
-<p>Definição do modelo físico e domínio de validade.</p>
+<section id="do-domínio-do-tempo-ao-domínio-da-frequência" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="do-domínio-do-tempo-ao-domínio-da-frequência"><span class="header-section-number">3.3</span> Do domínio do tempo ao domínio da frequência</h2>
+<section id="por-que-usar-fasores" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="por-que-usar-fasores"><span class="header-section-number">3.3.1</span> Por que usar fasores?</h3>
+<p>No <strong>domínio do tempo</strong>, os campos são funções de posição e tempo, como <span class="math inline">\(\mathbf E(\mathbf x,t)\)</span>. Essa representação é indispensável quando se deseja acompanhar transientes, pulsos ou respostas não estacionárias. Entretanto, muitos problemas de RCS consideram uma iluminação senoidal permanente em uma frequência conhecida. Depois que os transientes desaparecem, todos os campos de um sistema linear excitado em uma única frequência oscilam na mesma frequência angular <span class="math inline">\(\omega\)</span>, embora possam apresentar amplitudes e fases diferentes em cada ponto.</p>
+<p>A ideia do fasor é retirar da equação a oscilação temporal conhecida e manter apenas sua <strong>amplitude complexa</strong>. Considere primeiro uma grandeza escalar simples,</p>
+<p><span class="math display">\[
+x(t)=A\cos(\omega t+\phi).
+\]</span></p>
+<p>Pela fórmula de Euler, essa oscilação pode ser escrita como</p>
+<p><span class="math display">\[
+x(t)=\Re\left\{\widetilde x e^{j\omega t}\right\},
+\qquad
+\widetilde x=Ae^{j\phi},
+\]</span></p>
+<p>onde <span class="math inline">\(\widetilde x\)</span> armazena simultaneamente amplitude <span class="math inline">\(A\)</span> e fase <span class="math inline">\(\phi\)</span>. Derivar no tempo fornece</p>
+<p><span class="math display">\[
+\frac{dx}{dt}
+=
+\Re\left\{j\omega\widetilde x e^{j\omega t}\right\}.
+\]</span></p>
+<p>Portanto, na representação fasorial,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial}{\partial t}
+\longleftrightarrow
+j\omega
+}
+\]</span></p>
+<p>e, analogamente,</p>
+<p><span class="math display">\[
+\frac{\partial^2}{\partial t^2}
+\longleftrightarrow
+-\omega^2.
+\]</span></p>
+<p>Esse é o ganho essencial da passagem para o <strong>domínio da frequência</strong>: as derivadas <strong>temporais</strong> tornam-se multiplicações algébricas por <span class="math inline">\(j\omega\)</span>. Em problemas lineares de frequência única, isso simplifica fortemente a dependência temporal. A transformação, contudo, não converte todo o problema de Maxwell em um sistema puramente algébrico: os operadores espaciais <span class="math inline">\(\nabla\cdot\)</span>, <span class="math inline">\(\nabla\times\)</span> e <span class="math inline">\(\nabla^2\)</span> permanecem diferenciais até que também sejam discretizados numericamente.</p>
 </section>
-<section id="euler-equations" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="euler-equations"><span class="header-section-number">3.2.2</span> Euler equations</h3>
+<section id="maxwell-no-domínio-da-frequência" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="maxwell-no-domínio-da-frequência"><span class="header-section-number">3.3.2</span> Maxwell no domínio da frequência</h3>
+<p>Assumindo a convenção temporal <span class="math inline">\(e^{j\omega t}\)</span>, escreve-se, por exemplo,</p>
+<p><span class="math display">\[
+\mathbf E(\mathbf x,t)
+=
+\Re\left\{
+\widetilde{\mathbf E}(\mathbf x)e^{j\omega t}
+\right\}.
+\]</span></p>
+<p>A lei de Faraday passa de</p>
+<p><span class="math display">\[
+\nabla\times\mathbf E
+=-\frac{\partial\mathbf B}{\partial t}
+\]</span></p>
+<p>para</p>
+<p><span class="math display">\[
+\boxed{
+\nabla\times\widetilde{\mathbf E}
+=-j\omega\widetilde{\mathbf B}
+}.
+\]</span></p>
+<p>De forma semelhante, a lei de Ampère-Maxwell torna-se</p>
+<p><span class="math display">\[
+\boxed{
+\nabla\times\widetilde{\mathbf H}
+=
+\widetilde{\mathbf J}
++j\omega\widetilde{\mathbf D}
+}.
+\]</span></p>
+<p>Em meio homogêneo, linear e sem fontes, a combinação das equações conduz à equação vetorial de Helmholtz,</p>
+<p><span class="math display">\[
+\nabla^2\widetilde{\mathbf E}
++k^2\widetilde{\mathbf E}=0,
+\]</span></p>
+<p>com</p>
+<p><span class="math display">\[
+k
+=
+\omega\sqrt{\mu\varepsilon}
+=
+\frac{2\pi}{\lambda},
+\]</span></p>
+<p>onde <span class="math inline">\(k\)</span> é o número de onda e <span class="math inline">\(\lambda\)</span> o comprimento de onda.</p>
+<p>Como exemplo, uma frequência maior implica <span class="math inline">\(\lambda\)</span> menor no mesmo meio. Uma borda, cavidade ou detalhe geométrico de dimensão fixa torna-se, portanto, <strong>eletricamente maior</strong> quando a frequência aumenta. Essa razão entre dimensão física e comprimento de onda ajuda a determinar mecanismos dominantes de espalhamento, resolução de malha e adequação de aproximações assintóticas.</p>
+<p>Para RCS em regime harmônico, a aplicação prática é direta: cada frequência é tratada como um problema fasorial. Uma varredura em frequência exige resolver ou aproximar vários desses problemas. Para pulsos de banda larga, materiais não lineares ou fenômenos transientes, a formulação no domínio do tempo pode voltar a ser mais apropriada.</p>
+</section>
+</section>
+<section id="o-problema-de-espalhamento-eletromagnético" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="o-problema-de-espalhamento-eletromagnético"><span class="header-section-number">3.4</span> O problema de espalhamento eletromagnético</h2>
+<section id="campo-incidente-campo-espalhado-e-campo-total" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="campo-incidente-campo-espalhado-e-campo-total"><span class="header-section-number">3.4.1</span> Campo incidente, campo espalhado e campo total</h3>
+<p>A intuição do espalhamento é a mesma de muitas situações ondulatórias: existe uma onda que chegaria à região mesmo se o objeto não estivesse presente; o objeto perturba essa onda; e a perturbação se propaga para longe. No problema radar, a primeira parcela é o <strong>campo incidente</strong> e a perturbação produzida pelo alvo é o <strong>campo espalhado</strong>.</p>
+<p>O campo total é escrito como</p>
+<p><span class="math display">\[
+\mathbf E_{\mathrm{tot}}
+=
+\mathbf E_{\mathrm{inc}}
++
+\mathbf E_{\mathrm{sca}},
+\]</span></p>
+<p><span class="math display">\[
+\mathbf H_{\mathrm{tot}}
+=
+\mathbf H_{\mathrm{inc}}
++
+\mathbf H_{\mathrm{sca}}.
+\]</span></p>
+<p>A RCS não mede diretamente o campo total na vizinhança do alvo. Ela caracteriza a intensidade com que o objeto redireciona energia eletromagnética para uma determinada direção no campo distante <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>.</p>
+</section>
+<section id="onda-plana-incidente" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="onda-plana-incidente"><span class="header-section-number">3.4.2</span> Onda plana incidente</h3>
+<p>Quando o radar está suficientemente distante em comparação com a dimensão do alvo, uma pequena região ao redor do veículo pode ser iluminada aproximadamente por frentes de onda planas. Em meio homogêneo,</p>
+<p><span class="math display">\[
+\widetilde{\mathbf E}_{\mathrm{inc}}(\mathbf x)
+=
+\mathbf E_0e^{-j\mathbf k\cdot\mathbf x},
+\]</span></p>
+<p>onde</p>
+<p><span class="math display">\[
+\mathbf k=k\hat{\mathbf k}
+\]</span></p>
+<p>é o vetor de onda. Sua direção <span class="math inline">\(\hat{\mathbf k}\)</span> indica a propagação e seu módulo <span class="math inline">\(k\)</span> controla a variação de fase no espaço. Se a propagação ocorre, por exemplo, ao longo de <span class="math inline">\(+x\)</span>, então <span class="math inline">\(\mathbf k\cdot\mathbf x=kx\)</span> e superfícies com mesmo <span class="math inline">\(x\)</span> possuem a mesma fase.</p>
+<p>O campo magnético associado, para uma onda plana em meio isotrópico sem perdas, satisfaz</p>
+<p><span class="math display">\[
+\widetilde{\mathbf H}_{\mathrm{inc}}
+=
+\frac{1}{\eta}
+\hat{\mathbf k}\times
+\widetilde{\mathbf E}_{\mathrm{inc}},
+\]</span></p>
+<p>com impedância intrínseca</p>
+<p><span class="math display">\[
+\eta=\sqrt{\frac{\mu}{\varepsilon}}.
+\]</span></p>
+<p>Assim, <span class="math inline">\(\widetilde{\mathbf E}\)</span>, <span class="math inline">\(\widetilde{\mathbf H}\)</span> e <span class="math inline">\(\hat{\mathbf k}\)</span> formam direções mutuamente ortogonais no caso ideal de onda plana. O vetor <span class="math inline">\(\mathbf E_0\)</span> define amplitude e polarização. Para o problema aero-stealth, frequência, direção de incidência e polarização são, portanto, entradas físicas tão importantes quanto a própria geometria.</p>
+</section>
+<section id="condições-de-contorno" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="condições-de-contorno"><span class="header-section-number">3.4.3</span> Condições de contorno</h3>
+<p>As equações no domínio não bastam para determinar uma solução única: é preciso informar o que acontece nas interfaces materiais e exigir que o campo espalhado se propague para fora do domínio.</p>
+<p>Para um <strong>Perfect Electric Conductor (PEC)</strong> ideal, cargas livres se reorganizam de modo que o campo elétrico tangencial total na superfície seja nulo:</p>
+<p><span class="math display">\[
+\boxed{
+\hat{\mathbf n}\times\mathbf E_{\mathrm{tot}}=0
+},
+\]</span></p>
+<p>onde <span class="math inline">\(\hat{\mathbf n}\)</span> é a normal unitária à superfície. A corrente superficial associada pode ser representada por</p>
+<p><span class="math display">\[
+\mathbf J_s
+=
+\hat{\mathbf n}\times\mathbf H_{\mathrm{tot}}.
+\]</span></p>
+<p>Geometricamente, a condição PEC conecta diretamente a orientação local da superfície aos campos. Em uma malha triangular, a normal e o bivetor orientado de cada face tornam-se, por isso, atributos naturais para uma representação física em grafo.</p>
+<p>Em materiais dielétricos, magnéticos ou absorvedores, as condições são mais gerais e envolvem continuidade apropriada das componentes tangenciais e normais, além das relações constitutivas de cada meio. No exterior do alvo, uma condição de radiação exclui soluções artificiais que chegariam do infinito.</p>
+</section>
+</section>
+<section id="do-campo-próximo-ao-campo-distante" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="do-campo-próximo-ao-campo-distante"><span class="header-section-number">3.5</span> Do campo próximo ao campo distante</h2>
+<section id="intuição-física" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="intuição-física"><span class="header-section-number">3.5.1</span> Intuição física</h3>
+<p>Muito perto de um objeto espalhador, o campo registra detalhes locais: correntes, acoplamentos entre superfícies, cavidades e variações rápidas de fase e amplitude. À medida que o observador se afasta, esses detalhes deixam de ser percebidos separadamente e o campo assume a estrutura assintótica de uma onda que se propaga radialmente. A primeira situação é associada ao <strong>campo próximo</strong>; a segunda, ao <strong>campo distante</strong>.</p>
+<p>Para um alvo com dimensão característica máxima <span class="math inline">\(D\)</span>, a ordem de grandeza</p>
+<p><span class="math display">\[
+r\gg\frac{2D^2}{\lambda}
+\]</span></p>
+<p>é frequentemente usada como referência de região de Fraunhofer, embora a fronteira exata dependa da geometria e do critério adotado <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>. O ponto conceitual importante é que a distância necessária para observar comportamento de campo distante também depende do comprimento de onda.</p>
+<p>No limite assintótico,</p>
+<p><span class="math display">\[
+\widetilde{\mathbf E}_{\mathrm{sca}}(r,\hat{\mathbf r})
+\sim
+\frac{e^{-jkr}}{r}
+\mathbf F_E(\hat{\mathbf r}),
+\qquad r\rightarrow\infty,
+\]</span></p>
+<p>onde <span class="math inline">\(\mathbf F_E\)</span> é a amplitude vetorial de espalhamento e <span class="math inline">\(\hat{\mathbf r}\)</span> a direção de observação. O fator <span class="math inline">\(1/r\)</span> descreve o decaimento da amplitude; consequentemente, a densidade de potência decai como <span class="math inline">\(1/r^2\)</span>. A função <span class="math inline">\(\mathbf F_E\)</span> retém a informação angular e de polarização que interessa à assinatura radar.</p>
+</section>
+<section id="radar-cross-section-como-área-equivalente" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="radar-cross-section-como-área-equivalente"><span class="header-section-number">3.5.2</span> Radar Cross Section como área equivalente</h3>
+<p>A <strong>Radar Cross Section</strong> pode ser interpretada intuitivamente como uma <strong>área equivalente de espalhamento</strong>: ela responde à pergunta “quão intenso é o campo devolvido por esse alvo, naquela direção, quando comparado à iluminação recebida?”. Essa área equivalente não precisa coincidir com a área geométrica projetada do objeto. Interferência, orientação, materiais, bordas e cavidades podem produzir uma RCS muito maior ou muito menor que uma área física aparente.</p>
+<p>Formalmente,</p>
+<p><span class="math display">\[
+\boxed{
+\sigma(\hat{\mathbf r})
+=
+\lim_{r\to\infty}
+4\pi r^2
+\frac{
+\|\mathbf E_{\mathrm{sca}}(r,\hat{\mathbf r})\|^2
+}{
+\|\mathbf E_{\mathrm{inc}}\|^2
+}
+}
+\]</span></p>
+<p>em condições compatíveis de normalização <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>. A unidade de <span class="math inline">\(\sigma\)</span> é área, normalmente metros quadrados.</p>
+<p>Como a variação pode abranger muitas ordens de grandeza, é comum empregar decibéis por metro quadrado:</p>
+<p><span class="math display">\[
+\sigma_{\mathrm{dBsm}}
+=10\log_{10}
+\left(
+\frac{\sigma}{1\ \mathrm{m^2}}
+\right).
+\]</span></p>
+<p>Assim, <span class="math inline">\(1\ \mathrm{m^2}\)</span> corresponde a <span class="math inline">\(0\ \mathrm{dBsm}\)</span>, <span class="math inline">\(10^{-2}\ \mathrm{m^2}\)</span> corresponde a <span class="math inline">\(-20\ \mathrm{dBsm}\)</span> e <span class="math inline">\(10^{2}\ \mathrm{m^2}\)</span> corresponde a <span class="math inline">\(+20\ \mathrm{dBsm}\)</span>. O exemplo serve apenas para interpretar a escala logarítmica; não associa esses valores a uma plataforma específica.</p>
+</section>
+<section id="rcs-monoestática-e-biestática" class="level3" data-number="3.5.3">
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="rcs-monoestática-e-biestática"><span class="header-section-number">3.5.3</span> RCS monoestática e biestática</h3>
+<p>Na configuração <strong>monoestática</strong>, transmissor e receptor estão essencialmente co-localizados. O receptor observa, portanto, o retroespalhamento na direção de retorno ao radar. Na configuração <strong>biestática</strong>, transmissor e receptor ocupam posições diferentes e a direção de observação não coincide, em geral, com a direção de retorno.</p>
+<p>Essa distinção importa porque um mesmo alvo pode apresentar um pico intenso em uma direção e baixa assinatura em outra. Para o framework deste livro, a curva angular de RCS deve ser tratada como uma resposta física rica, e não reduzida prematuramente a um único valor médio. Métricas agregadas podem ser calculadas posteriormente, preservando-se antes os lóbulos, picos especulares e regiões de baixa assinatura.</p>
+</section>
+<section id="polarização" class="level3" data-number="3.5.4">
+<h3 data-number="3.5.4" class="anchored" data-anchor-id="polarização"><span class="header-section-number">3.5.4</span> Polarização</h3>
+<p>A polarização especifica a orientação e a evolução temporal do campo elétrico transversal à direção de propagação. Em problemas radar, escolhe-se uma base de polarização — frequentemente descrita como horizontal e vertical em relação a uma convenção geométrica — e mede-se como o alvo transforma a componente transmitida na componente recebida.</p>
+<p>Podem ser consideradas respostas co-polarizadas e cruzadas, como HH, VV, HV e VH. Os rótulos dependem da base de referência escolhida e, por isso, a convenção deve acompanhar os dados. Uma representação abstrata é</p>
+<p><span class="math display">\[
+\sigma
+=
+\sigma(\theta_i,\phi_i,\theta_s,\phi_s,f,\mathrm{pol}),
+\]</span></p>
+<p>onde os índices <span class="math inline">\(i\)</span> e <span class="math inline">\(s\)</span> indicam incidência e observação. Em um cenário monoestático, parte dessa parametrização se reduz geometricamente, mas frequência e polarização continuam sendo variáveis essenciais.</p>
+</section>
+</section>
+<section id="mecanismos-de-espalhamento-e-geometria-da-aeronave" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="mecanismos-de-espalhamento-e-geometria-da-aeronave"><span class="header-section-number">3.6</span> Mecanismos de espalhamento e geometria da aeronave</h2>
+<p>A RCS não é uma soma de “RCS locais” independentes. O campo espalhado é uma soma <strong>coerente</strong>: amplitudes complexas provenientes de diferentes regiões chegam com fases distintas e podem reforçar-se ou cancelar-se.</p>
+<p>Uma superfície aproximadamente plana e eletricamente grande pode produzir forte reflexão especular em certas direções. Uma borda pode difratar energia para regiões que não receberiam contribuição apenas pela reflexão geométrica. Cavidades e entradas podem sustentar múltiplas interações internas. Pequenas alterações de ângulo ou posição de uma superfície podem modificar fases relativas e deslocar picos angulares <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>.</p>
+<p>Essa dependência explica por que uma representação de malha para GNN não deve carregar apenas coordenadas dos vértices. Normais, áreas, orientação relativa entre faces, conectividade, bordas e condições de incidência carregam informação diretamente relacionada aos mecanismos físicos de espalhamento.</p>
+</section>
+<section id="métodos-numéricos-e-níveis-de-fidelidade-eletromagnética" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="métodos-numéricos-e-níveis-de-fidelidade-eletromagnética"><span class="header-section-number">3.7</span> Métodos numéricos e níveis de fidelidade eletromagnética</h2>
+<p>A escolha do método computacional depende do que precisa ser resolvido e da relação entre dimensão geométrica e comprimento de onda. Métodos de onda completa procuram representar diretamente a solução de Maxwell dentro das hipóteses constitutivas adotadas; aproximações assintóticas exploram regimes em que a estrutura da propagação permite simplificações controladas.</p>
+<p>O método de <span class="citation" data-cites="yee1966">Yee (<a href="#ref-yee1966" role="doc-biblioref">1966</a>)</span> constitui uma referência clássica para <strong>Finite-Difference Time-Domain (FDTD)</strong>: espaço e tempo são discretizados e os campos evoluem passo a passo. Uma vantagem conceitual é que uma única excitação transitória pode conter várias frequências; em contrapartida, o domínio volumétrico e a resolução exigida pelo menor comprimento de onda podem elevar a demanda de memória e processamento.</p>
+<p>Em alvos PEC, formulações integrais de superfície podem reduzir as incógnitas às correntes na superfície. As funções de base de <span class="citation" data-cites="rao1982">Rao et al. (<a href="#ref-rao1982" role="doc-biblioref">1982</a>)</span> são fundamentais em implementações do <strong>Method of Moments (MoM)</strong> para malhas triangulares. Após a discretização, o problema é convertido em um sistema linear cujas propriedades computacionais dependem do tamanho da malha e da formulação utilizada.</p>
+<p>Quando o alvo é eletricamente grande, aproximações de alta frequência, como <strong>Physical Optics (PO)</strong> e técnicas baseadas em raios, podem reduzir a demanda de recursos ao representar mecanismos dominantes sem resolver todos os detalhes de uma formulação de onda completa. Essa economia vem acompanhada de hipóteses adicionais, especialmente relevantes em bordas, regiões de sombra, cavidades ou múltiplas interações.</p>
+<p>Por isso, <strong>fidelidade</strong> não deve ser confundida com o nome do solver. Um nível de fidelidade é definido pelo conteúdo físico e numérico efetivamente representado: aproximações, resolução de malha, tratamento de bordas e cavidades, propriedades materiais, frequência, critérios de convergência e demais hipóteses. A classificação será retomada no capítulo de modelagem multifidelidade.</p>
+</section>
+<section id="maxwell-em-álgebra-geométrica-do-espaço-tempo" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="maxwell-em-álgebra-geométrica-do-espaço-tempo"><span class="header-section-number">3.8</span> Maxwell em Álgebra Geométrica do espaço-tempo</h2>
+<section id="da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico" class="level3" data-number="3.8.1">
+<h3 data-number="3.8.1" class="anchored" data-anchor-id="da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico"><span class="header-section-number">3.8.1</span> Da separação <span class="math inline">\(\mathbf E\)</span>/<span class="math inline">\(\mathbf B\)</span> a um único campo geométrico</h3>
+<p>Na formulação tridimensional usual, campos elétrico e magnético são escritos como vetores separados e aparecem em quatro equações. A STA parte de uma observação diferente: no espaço-tempo relativístico, as componentes que um observador chama de “elétricas” e “magnéticas” pertencem a um único campo eletromagnético. A separação entre <span class="math inline">\(\mathbf E\)</span> e <span class="math inline">\(\mathbf B\)</span> depende da escolha do observador, enquanto o campo espaço-temporal completo pode ser representado por um único bivetor <span class="citation" data-cites="dressel2015 doran2003">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>.</p>
+<p>A álgebra adotada é associada ao espaço-tempo de Minkowski. Neste livro utiliza-se a assinatura</p>
+<p><span class="math display">\[
+\gamma_0^2=+1,
+\qquad
+\gamma_k^2=-1,
+\quad k=1,2,3,
+\]</span></p>
+<p>correspondente a <span class="math inline">\(Cl(1,3)\)</span>. Outras assinaturas são encontradas na literatura; resultados intermediários podem mudar de sinal quando convenções são trocadas, razão pela qual a assinatura deve ser declarada antes das manipulações.</p>
+</section>
+<section id="o-operador-derivada-no-espaço-tempo" class="level3" data-number="3.8.2">
+<h3 data-number="3.8.2" class="anchored" data-anchor-id="o-operador-derivada-no-espaço-tempo"><span class="header-section-number">3.8.2</span> O operador derivada no espaço-tempo</h3>
+<p>No capítulo anterior, a derivada geométrica reuniu divergência e parte exterior em uma única operação. Em quatro dimensões define-se, analogamente,</p>
+<p><span class="math display">\[
+\nabla
+=
+\gamma^\mu\partial_\mu,
+\]</span></p>
+<p>com soma sobre <span class="math inline">\(\mu=0,1,2,3\)</span>. Usando <span class="math inline">\(x^0=ct\)</span>, a direção temporal e as três direções espaciais fazem parte do mesmo operador.</p>
+<p>Quando <span class="math inline">\(F\)</span> é um bivetor,</p>
+<p><span class="math display">\[
+\nabla F
+=
+\nabla\cdot F
++
+\nabla\wedge F.
+\]</span></p>
+<p>O produto de um vetor derivada com um bivetor produz partes de graus diferentes: uma parte vetorial e uma parte trivectorial. Essa separação por grau é a chave para recuperar, dentro de uma única equação, os dois pares de equações de Maxwell.</p>
+</section>
+<section id="o-campo-de-faraday-como-bivetor" class="level3" data-number="3.8.3">
+<h3 data-number="3.8.3" class="anchored" data-anchor-id="o-campo-de-faraday-como-bivetor"><span class="header-section-number">3.8.3</span> O campo de Faraday como bivetor</h3>
+<p>O campo eletromagnético é representado pelo bivetor <span class="math inline">\(F\)</span>, frequentemente chamado <strong>bivetor de Faraday</strong>. Em uma decomposição relativa a um observador, as componentes elétricas ocupam planos espaço-temporais, enquanto as componentes magnéticas correspondem a planos puramente espaciais. Usando vetores espaciais relativos e unidades compatíveis, essa decomposição pode ser representada esquematicamente por</p>
+<p><span class="math display">\[
+F
+=
+\mathbf E+cI\mathbf B,
+\]</span></p>
+<p>com sinais e fatores de <span class="math inline">\(c\)</span> dependentes da convenção adotada. Aqui, <span class="math inline">\(I=\gamma_0\gamma_1\gamma_2\gamma_3\)</span> é o pseudoescalar do espaço-tempo. A expressão não deve ser lida como simples concatenação de seis componentes: <span class="math inline">\(F\)</span> é um objeto bivetorial cuja decomposição em partes elétrica e magnética depende do observador <span class="citation" data-cites="dressel2015">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>)</span>.</p>
+<p>As fontes podem ser reunidas em um quatro-vetor de corrente. Para evitar esconder fatores de unidades, denota-se por <span class="math inline">\(\mathcal J\)</span> o quatro-vetor fonte já escalado de acordo com a convenção de <span class="math inline">\(F\)</span>, <span class="math inline">\(c\)</span>, <span class="math inline">\(\varepsilon_0\)</span> e <span class="math inline">\(\mu_0\)</span> adotada. Em unidades e normalizações compatíveis,</p>
+<p><span class="math display">\[
+\boxed{
+\nabla F=\mathcal J
+}.
+\]</span></p>
+<p>No vácuo sem fontes,</p>
+<p><span class="math display">\[
+\boxed{
+\nabla F=0
+}.
+\]</span></p>
+<p>A igualdade deve ser entendida por graus: a parte <span class="math inline">\(\nabla\cdot F\)</span> contém as equações não homogêneas associadas às fontes; a parte <span class="math inline">\(\nabla\wedge F\)</span> contém as equações homogêneas. A escrita única não apaga as quatro leis — ela mostra que elas são projeções de grau de uma mesma relação geométrica. <span class="citation" data-cites="dressel2015">Dressel et al. (<a href="#ref-dressel2015" role="doc-biblioref">2015</a>)</span> discute extensamente essa unificação do campo eletromagnético em STA.</p>
+</section>
+<section id="o-que-a-formulação-compacta-faz-e-o-que-não-faz" class="level3" data-number="3.8.4">
+<h3 data-number="3.8.4" class="anchored" data-anchor-id="o-que-a-formulação-compacta-faz-e-o-que-não-faz"><span class="header-section-number">3.8.4</span> O que a formulação compacta faz — e o que não faz</h3>
+<p>A escrita</p>
+<p><span class="math display">\[
+\nabla F=\mathcal J
+\]</span></p>
+<p>não “lineariza” Maxwell. Em meios lineares, o sistema já é linear nos campos. A contribuição da STA é de <strong>unificação representacional</strong>, manipulação geométrica e acesso natural a invariantes e transformações de Lorentz <span class="citation" data-cites="dressel2015">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>)</span>.</p>
+<p>Também não se conclui, apenas pela compacidade da notação, que um solver em AG será mais rápido. Um cálculo de RCS ainda precisa discretizar geometria e materiais, impor condições de contorno, resolver as incógnitas e extrair o campo distante. Eventual redução de tempo, memória ou número de operações deve ser demonstrada por benchmark com implementações comparáveis.</p>
+</section>
+</section>
+<section id="validação-eletromagnética-progressiva" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="validação-eletromagnética-progressiva"><span class="header-section-number">3.9</span> Validação eletromagnética progressiva</h2>
+<p>A validação deve separar erros de formulação de dificuldades introduzidas pela geometria. Uma sequência apropriada começa com propagação de onda plana em meio homogêneo, passa pela reflexão em plano PEC, pelo espalhamento em esfera condutora e por uma placa ou face triangular, e somente depois avança para geometrias aeronáuticas e para a configuração UCAV de interesse. Em cada etapa devem ser verificadas convenções de fase, polarização, orientação de normais, condições de contorno e extração do campo distante antes de se atribuir discrepâncias à complexidade do alvo.</p>
+</section>
+<section id="parte-ii-aerodinâmica-compressível-e-equações-de-euler" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="parte-ii-aerodinâmica-compressível-e-equações-de-euler"><span class="header-section-number">3.10</span> Parte II — Aerodinâmica compressível e equações de Euler</h2>
+</section>
+<section id="do-escoamento-contínuo-ao-sistema-de-conservação" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="do-escoamento-contínuo-ao-sistema-de-conservação"><span class="header-section-number">3.11</span> Do escoamento contínuo ao sistema de conservação</h2>
+<section id="o-que-o-modelo-de-fluido-representa" class="level3" data-number="3.11.1">
+<h3 data-number="3.11.1" class="anchored" data-anchor-id="o-que-o-modelo-de-fluido-representa"><span class="header-section-number">3.11.1</span> O que o modelo de fluido representa</h3>
+<p>Na aerodinâmica contínua, o ar não é acompanhado molécula por molécula. Assume-se que grandezas como densidade, pressão, temperatura e velocidade podem ser definidas como campos contínuos no espaço e no tempo. Essa hipótese transforma o problema microscópico em um sistema de leis de conservação aplicadas a pequenos volumes de fluido.</p>
+<p>Uma maneira útil de antecipar as equações é pensar em qualquer volume de controle: <strong>acumulação dentro do volume + fluxo líquido através da fronteira = fontes externas</strong>. As equações de Euler aplicam essa ideia à massa, à quantidade de movimento e à energia, sob hipóteses específicas sobre o fluido.</p>
+</section>
+<section id="hipóteses-do-modelo" class="level3" data-number="3.11.2">
+<h3 data-number="3.11.2" class="anchored" data-anchor-id="hipóteses-do-modelo"><span class="header-section-number">3.11.2</span> Hipóteses do modelo</h3>
+<p>O modelo introduzido neste capítulo é o escoamento externo <strong>compressível, invíscido e de gás caloricamente perfeito</strong>. A hipótese invíscida omite tensões viscosas e condução térmica das equações governantes. Isso não significa que a viscosidade real do ar seja zero; significa que, neste nível de modelagem, camada limite, atrito de parede, dissipação viscosa e separação controlada pela viscosidade não são representados explicitamente.</p>
+<p>Essas limitações têm consequência direta para a interpretação dos resultados. Um solver Euler pode representar pressão, ondas de compressão, efeitos de compressibilidade e parte importante da distribuição de carga aerodinâmica, mas não fornece arrasto de atrito e pode não representar adequadamente fenômenos dominados por separação viscosa. Modelos baseados em <strong>Reynolds-Averaged Navier-Stokes (RANS)</strong> ou abordagens mais completas tornam-se necessários quando esses efeitos são relevantes.</p>
+<p>O regime de interesse é predominantemente subsônico,</p>
+<p><span class="math display">\[
+M_\infty&lt;1,
+\]</span></p>
+<p>mas a formulação compressível é preservada. “Subsônico” não significa “incompressível”: a densidade ainda pode variar e a importância dessas variações cresce à medida que a velocidade se aproxima da velocidade do som.</p>
+</section>
+<section id="variáveis-primitivas-e-significado-físico" class="level3" data-number="3.11.3">
+<h3 data-number="3.11.3" class="anchored" data-anchor-id="variáveis-primitivas-e-significado-físico"><span class="header-section-number">3.11.3</span> Variáveis primitivas e significado físico</h3>
+<p>As variáveis primitivas utilizadas são</p>
 <ul>
-<li>conservação de massa;</li>
-<li>conservação de quantidade de movimento;</li>
-<li>conservação de energia;</li>
-<li>equação de estado de gás perfeito;</li>
-<li>condições de contorno.</li>
+<li><span class="math inline">\(\rho\)</span>: densidade do fluido;</li>
+<li><span class="math inline">\(\mathbf u=(u,v,w)\)</span>: vetor velocidade;</li>
+<li><span class="math inline">\(p\)</span>: pressão termodinâmica;</li>
+<li><span class="math inline">\(T\)</span>: temperatura;</li>
+<li><span class="math inline">\(e\)</span>: energia interna específica;</li>
+<li><span class="math inline">\(E\)</span>: energia total específica.</li>
 </ul>
+<p>A energia total específica soma energia interna e energia cinética:</p>
+<p><span class="math display">\[
+E
+=
+e+
+\frac12\|\mathbf u\|^2.
+\]</span></p>
+<p>Para um gás caloricamente perfeito,</p>
+<p><span class="math display">\[
+p=\rho RT,
+\qquad
+e=c_vT,
+\]</span></p>
+<p>onde <span class="math inline">\(R\)</span> é a constante específica do gás e <span class="math inline">\(c_v\)</span> o calor específico a volume constante. Com</p>
+<p><span class="math display">\[
+\gamma=\frac{c_p}{c_v},
+\]</span></p>
+<p>obtém-se</p>
+<p><span class="math display">\[
+\boxed{
+p=(\gamma-1)
+\left(
+\rho E-
+\frac12\rho\|\mathbf u\|^2
+\right)
+}.
+\]</span></p>
+<p>Essa relação fecha o sistema ao conectar a variável conservativa de energia à pressão.</p>
 </section>
-<section id="geometric-algebra-formulation-1" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="geometric-algebra-formulation-1"><span class="header-section-number">3.2.3</span> Geometric Algebra formulation</h3>
-<p>A AG será usada para investigar uma reformulação geometricamente estruturada das equações de Euler. A não linearidade física das equações de Euler deverá ser preservada e tratada explicitamente.</p>
+<section id="velocidade-do-som-e-número-de-mach" class="level3" data-number="3.11.4">
+<h3 data-number="3.11.4" class="anchored" data-anchor-id="velocidade-do-som-e-número-de-mach"><span class="header-section-number">3.11.4</span> Velocidade do som e número de Mach</h3>
+<p>A velocidade do som não é apenas uma constante do ar: ela depende do estado termodinâmico. Para o gás perfeito considerado,</p>
+<p><span class="math display">\[
+a
+=
+\sqrt{\gamma\frac{p}{\rho}}
+=
+\sqrt{\gamma RT}.
+\]</span></p>
+<p>O número de Mach é</p>
+<p><span class="math display">\[
+\boxed{
+M=\frac{\|\mathbf u\|}{a}
+}.
+\]</span></p>
+<p>Ele compara a velocidade do escoamento com a velocidade de propagação de pequenas perturbações de pressão. Como exemplo meramente ilustrativo, se <span class="math inline">\(V=240\ \mathrm{m/s}\)</span> e <span class="math inline">\(a=340\ \mathrm{m/s}\)</span>, então <span class="math inline">\(M\approx0{,}71\)</span>. Como <span class="math inline">\(a\)</span> varia com a temperatura, o mesmo valor de velocidade não corresponde necessariamente ao mesmo Mach em todas as condições atmosféricas.</p>
+<p>Para uma configuração UCAV, <span class="math inline">\(M_\infty\)</span>, ângulo de ataque, altitude ou condições equivalentes de <span class="math inline">\(p_\infty\)</span>, <span class="math inline">\(T_\infty\)</span> e <span class="math inline">\(\rho_\infty\)</span> fazem parte da definição da condição de voo.</p>
 </section>
-<section id="aerodynamic-outputs" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="aerodynamic-outputs"><span class="header-section-number">3.2.4</span> Aerodynamic outputs</h3>
-<ul>
-<li>distribuição de pressão;</li>
-<li><span class="math inline">\(C_L\)</span>;</li>
-<li><span class="math inline">\(C_D\)</span>;</li>
-<li><span class="math inline">\(C_m\)</span>;</li>
-<li><span class="math inline">\(L/D\)</span>;</li>
-<li>fidelidades aerodinâmicas de referência.</li>
-</ul>
+</section>
+<section id="conservação-de-massa" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="conservação-de-massa"><span class="header-section-number">3.12</span> Conservação de massa</h2>
+<section id="intuição-o-que-entra-o-que-sai-e-o-que-se-acumula" class="level3" data-number="3.12.1">
+<h3 data-number="3.12.1" class="anchored" data-anchor-id="intuição-o-que-entra-o-que-sai-e-o-que-se-acumula"><span class="header-section-number">3.12.1</span> Intuição: o que entra, o que sai e o que se acumula</h3>
+<p>Considere um volume de controle fixo. Se mais massa sai pela fronteira do que entra, a massa contida no volume diminui. Em forma local, essa ideia é</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial\rho}{\partial t}
++
+\nabla\cdot(\rho\mathbf u)=0
+}.
+\]</span></p>
+<p>O primeiro termo mede a variação temporal local da densidade; o segundo mede o balanço espacial do fluxo de massa <span class="math inline">\(\rho\mathbf u\)</span>.</p>
+<p>Em um escoamento unidimensional permanente por um tubo cuja área varia lentamente, a mesma conservação conduz à relação familiar</p>
+<p><span class="math display">\[
+\rho u A=\text{constante}.
+\]</span></p>
+<p>O exemplo ajuda a interpretar a equação diferencial: se a área diminui e a densidade não compensa integralmente essa mudança, a velocidade deve se ajustar para conservar a vazão mássica.</p>
+<p>Em regime permanente,</p>
+<p><span class="math display">\[
+\frac{\partial\rho}{\partial t}=0,
+\]</span></p>
+<p>e permanece</p>
+<p><span class="math display">\[
+\nabla\cdot(\rho\mathbf u)=0.
+\]</span></p>
 </section>
 </section>
-<section id="uso-na-regularização-das-gnns" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="uso-na-regularização-das-gnns"><span class="header-section-number">3.3</span> Uso na regularização das GNNs</h2>
-<p>O capítulo culminará na definição de resíduos físicos e condições de contorno que possam ser incorporados às funções de perda dos modelos aprendidos.</p>
-<blockquote class="blockquote">
-<p><strong>Status M0:</strong> estrutura editorial preparada; as derivações serão incluídas após revisão específica da literatura de Maxwell/GA e Euler/GA.</p>
-</blockquote>
+<section id="conservação-de-quantidade-de-movimento" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="conservação-de-quantidade-de-movimento"><span class="header-section-number">3.13</span> Conservação de quantidade de movimento</h2>
+<section id="da-segunda-lei-de-newton-ao-fluxo-por-uma-superfície" class="level3" data-number="3.13.1">
+<h3 data-number="3.13.1" class="anchored" data-anchor-id="da-segunda-lei-de-newton-ao-fluxo-por-uma-superfície"><span class="header-section-number">3.13.1</span> Da segunda lei de Newton ao fluxo por uma superfície</h3>
+<p>A quantidade de movimento por unidade de volume é <span class="math inline">\(\rho\mathbf u\)</span>. Para um fluido, não basta acompanhar sua variação local: a própria quantidade de movimento é transportada através das superfícies do volume de controle. Na ausência de forças de corpo e de tensões viscosas,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial(\rho\mathbf u)}{\partial t}
++
+\nabla\cdot
+\left(
+\rho\mathbf u\otimes\mathbf u
++p\mathsf I
+\right)
+=0
+}.
+\]</span></p>
+<p>Nesta expressão, <span class="math inline">\(\mathsf I\)</span> é o tensor identidade. O operador</p>
+<p><span class="math display">\[
+\rho\mathbf u\otimes\mathbf u
+\]</span></p>
+<p>representa o transporte convectivo da quantidade de movimento, enquanto</p>
+<p><span class="math display">\[
+p\mathsf I
+\]</span></p>
+<p>representa a contribuição isotrópica da pressão.</p>
+<p>A interpretação sobre uma face torna o produto tensorial mais concreto. Se <span class="math inline">\(\hat{\mathbf n}\)</span> é a normal da face,</p>
+<p><span class="math display">\[
+(\rho\mathbf u\otimes\mathbf u)\hat{\mathbf n}
+=
+\rho\mathbf u
+(\mathbf u\cdot\hat{\mathbf n}).
+\]</span></p>
+<p>O escalar <span class="math inline">\(\mathbf u\cdot\hat{\mathbf n}\)</span> mede quanto do escoamento atravessa a face; multiplicá-lo por <span class="math inline">\(\rho\mathbf u\)</span> fornece a quantidade de movimento transportada nessa direção. Essa leitura explica por que fluxos e faces orientadas aparecem naturalmente em métodos de volumes finitos.</p>
+<p>Também retoma uma cautela central do capítulo de AG. O produto tensorial é um operador de segunda ordem:</p>
+<p><span class="math display">\[
+(\mathbf u\otimes\mathbf u)\mathbf v
+=
+\mathbf u(\mathbf u\cdot\mathbf v).
+\]</span></p>
+<p>Já o quadrado geométrico de um vetor euclidiano é</p>
+<p><span class="math display">\[
+\mathbf u^2
+=
+\mathbf u\cdot\mathbf u
+=
+\|\mathbf u\|^2,
+\]</span></p>
+<p>que é escalar. Portanto,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf u\otimes\mathbf u
+\neq
+\mathbf u^2
+}.
+\]</span></p>
+<p>Uma formulação em AG deve preservar essa diferença e representar o fluxo de quantidade de movimento como aplicação linear ou extensor quando necessário.</p>
+</section>
+</section>
+<section id="conservação-de-energia" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="conservação-de-energia"><span class="header-section-number">3.14</span> Conservação de energia</h2>
+<p>A energia total por unidade de volume é <span class="math inline">\(\rho E\)</span>. Além de ser transportada pelo escoamento, a energia também é transferida pelo trabalho realizado pela pressão. Em Euler,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial(\rho E)}{\partial t}
++
+\nabla\cdot
+\left[
+(\rho E+p)\mathbf u
+\right]
+=0
+}.
+\]</span></p>
+<p>A parcela <span class="math inline">\(\rho E\mathbf u\)</span> representa transporte convectivo de energia; <span class="math inline">\(p\mathbf u\)</span> representa trabalho de pressão. Juntamente com massa, quantidade de movimento e equação de estado, essa relação completa o sistema de Euler compressível.</p>
+</section>
+<section id="por-que-os-solvers-usam-variáveis-conservativas" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="por-que-os-solvers-usam-variáveis-conservativas"><span class="header-section-number">3.15</span> Por que os solvers usam variáveis conservativas?</h2>
+<p>As variáveis primitivas são intuitivas para interpretar o escoamento, mas as leis físicas são naturalmente formuladas em termos de quantidades conservadas. Agrupam-se então</p>
+<p><span class="math display">\[
+\mathbf U=
+\begin{bmatrix}
+\rho\\
+\rho u\\
+\rho v\\
+\rho w\\
+\rho E
+\end{bmatrix}.
+\]</span></p>
+<p>Em coordenadas cartesianas,</p>
+<p><span class="math display">\[
+\frac{\partial\mathbf U}{\partial t}
++
+\frac{\partial\mathbf F_x}{\partial x}
++
+\frac{\partial\mathbf F_y}{\partial y}
++
+\frac{\partial\mathbf F_z}{\partial z}
+=0.
+\]</span></p>
+<p>Um método de volumes finitos integra essa expressão em cada célula e calcula os fluxos pelas faces. A consequência prática é importante para este livro: a mesma malha que define conectividade geométrica também organiza os balanços físicos. Normais, áreas e orientação das faces não são apenas atributos geométricos; participam diretamente da discretização das leis de conservação.</p>
+</section>
+<section id="condições-de-contorno-aerodinâmicas" class="level2" data-number="3.16">
+<h2 data-number="3.16" class="anchored" data-anchor-id="condições-de-contorno-aerodinâmicas"><span class="header-section-number">3.16</span> Condições de contorno aerodinâmicas</h2>
+<section id="parede-invíscida-não-penetração" class="level3" data-number="3.16.1">
+<h3 data-number="3.16.1" class="anchored" data-anchor-id="parede-invíscida-não-penetração"><span class="header-section-number">3.16.1</span> Parede invíscida: não penetração</h3>
+<p>Em uma parede sólida invíscida, o fluido não atravessa a superfície. Se <span class="math inline">\(\hat{\mathbf n}\)</span> é a normal unitária,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf u\cdot\hat{\mathbf n}=0
+}.
+\]</span></p>
+<p>A componente tangencial, contudo, não é forçada a zero. Essa é a condição de parede deslizante de Euler e a diferencia da condição de não deslizamento utilizada em Navier-Stokes viscoso.</p>
+</section>
+<section id="campo-distante-e-condição-de-voo" class="level3" data-number="3.16.2">
+<h3 data-number="3.16.2" class="anchored" data-anchor-id="campo-distante-e-condição-de-voo"><span class="header-section-number">3.16.2</span> Campo distante e condição de voo</h3>
+<p>A fronteira externa deve ser compatível com o escoamento livre,</p>
+<p><span class="math display">\[
+(\rho_\infty,
+\mathbf u_\infty,
+p_\infty,
+M_\infty,
+\alpha,\beta),
+\]</span></p>
+<p>onde <span class="math inline">\(\alpha\)</span> é o ângulo de ataque e <span class="math inline">\(\beta\)</span> o ângulo de derrapagem. Para ilustrar a geometria, em um plano de simetria e com <span class="math inline">\(\beta=0\)</span>, uma convenção simples pode escrever</p>
+<p><span class="math display">\[
+\mathbf u_\infty
+=
+V_\infty
+(\cos\alpha\,\mathbf e_x
++
+\sin\alpha\,\mathbf e_z),
+\]</span></p>
+<p>com o sinal de <span class="math inline">\(\mathbf e_z\)</span> dependente da convenção de eixos adotada. Em um solver compressível, condições características distinguem informação que entra e que sai do domínio; portanto, “impor o campo livre” não significa fixar arbitrariamente todas as variáveis em toda a fronteira.</p>
+</section>
+<section id="simetria" class="level3" data-number="3.16.3">
+<h3 data-number="3.16.3" class="anchored" data-anchor-id="simetria"><span class="header-section-number">3.16.3</span> Simetria</h3>
+<p>Quando geometria e condição de voo admitem simetria, uma fronteira de simetria pode reduzir o domínio. A hipótese deve ser removida quando incidência, geometria, controle ou resposta física romperem essa simetria.</p>
+</section>
+</section>
+<section id="da-pressão-superficial-a-forças-momentos-e-coeficientes" class="level2" data-number="3.17">
+<h2 data-number="3.17" class="anchored" data-anchor-id="da-pressão-superficial-a-forças-momentos-e-coeficientes"><span class="header-section-number">3.17</span> Da pressão superficial a forças, momentos e coeficientes</h2>
+<section id="pressão-local" class="level3" data-number="3.17.1">
+<h3 data-number="3.17.1" class="anchored" data-anchor-id="pressão-local"><span class="header-section-number">3.17.1</span> Pressão local</h3>
+<p>Uma saída local particularmente útil é o coeficiente de pressão,</p>
+<p><span class="math display">\[
+\boxed{
+C_p
+=
+\frac{p-p_\infty}{q_\infty}
+},
+\]</span></p>
+<p>onde</p>
+<p><span class="math display">\[
+q_\infty
+=
+\frac12\rho_\infty V_\infty^2
+\]</span></p>
+<p>é a pressão dinâmica de referência. O campo <span class="math inline">\(C_p\)</span> mostra onde a geometria acelera, desacelera e redireciona o escoamento e fornece uma ponte entre predição local e forças integradas.</p>
+</section>
+<section id="força-e-momento-integrados" class="level3" data-number="3.17.2">
+<h3 data-number="3.17.2" class="anchored" data-anchor-id="força-e-momento-integrados"><span class="header-section-number">3.17.2</span> Força e momento integrados</h3>
+<p>Em Euler invíscido, a tração na parede decorre apenas da pressão. Para uma superfície <span class="math inline">\(S\)</span> com normal externa <span class="math inline">\(\hat{\mathbf n}\)</span>,</p>
+<p><span class="math display">\[
+\mathbf F_{\mathrm{aero}}
+=
+-\int_S p\hat{\mathbf n}\,dS.
+\]</span></p>
+<p>Após escolher os eixos aerodinâmicos, a força é decomposta em sustentação <span class="math inline">\(L\)</span>, arrasto <span class="math inline">\(D\)</span> e força lateral. Os coeficientes correspondentes são</p>
+<p><span class="math display">\[
+C_L
+=
+\frac{L}{q_\infty S_{\mathrm{ref}}},
+\]</span></p>
+<p><span class="math display">\[
+C_D
+=
+\frac{D}{q_\infty S_{\mathrm{ref}}},
+\]</span></p>
+<p><span class="math display">\[
+C_m
+=
+\frac{M_y}
+{q_\infty S_{\mathrm{ref}}c_{\mathrm{ref}}},
+\]</span></p>
+<p>onde <span class="math inline">\(S_{\mathrm{ref}}\)</span> é uma área de referência e <span class="math inline">\(c_{\mathrm{ref}}\)</span> um comprimento de referência. A razão</p>
+<p><span class="math display">\[
+\frac{L}{D}
+=
+\frac{C_L}{C_D}
+\]</span></p>
+<p>é uma medida de eficiência aerodinâmica dentro do modelo considerado.</p>
+<p>É essencial registrar convenções de eixos, sinais, ponto de referência dos momentos, <span class="math inline">\(S_{\mathrm{ref}}\)</span> e <span class="math inline">\(c_{\mathrm{ref}}\)</span>. Também é essencial lembrar a física ausente: um <span class="math inline">\(C_D\)</span> obtido por Euler não contém arrasto de atrito viscoso e pode diferir de uma solução RANS ou experimental quando separação e camada limite forem importantes.</p>
+</section>
+</section>
+<section id="a-derivada-geométrica-e-a-estrutura-local-do-escoamento" class="level2" data-number="3.18">
+<h2 data-number="3.18" class="anchored" data-anchor-id="a-derivada-geométrica-e-a-estrutura-local-do-escoamento"><span class="header-section-number">3.18</span> A derivada geométrica e a estrutura local do escoamento</h2>
+<p>No capítulo anterior foi introduzida</p>
+<p><span class="math display">\[
+\nabla\mathbf u
+=
+\nabla\cdot\mathbf u
++
+\nabla\wedge\mathbf u.
+\]</span></p>
+<p>Agora as duas parcelas recebem interpretação fluidodinâmica. A parte escalar</p>
+<p><span class="math display">\[
+\nabla\cdot\mathbf u
+\]</span></p>
+<p>mede expansão ou compressão volumétrica local do campo de velocidade. Em escoamentos compressíveis ela não precisa ser nula. A parte bivetorial</p>
+<p><span class="math display">\[
+\Omega
+=
+\nabla\wedge\mathbf u
+\]</span></p>
+<p>representa a estrutura rotacional local.</p>
+<p>Dois campos simples ajudam a distinguir as parcelas. Para uma expansão isotrópica idealizada <span class="math inline">\(\mathbf u=a(x\mathbf e_1+y\mathbf e_2+z\mathbf e_3)\)</span>, o divergente é não nulo e a parte rotacional é nula. Para uma rotação rígida no plano <span class="math inline">\(xy\)</span>,</p>
+<p><span class="math display">\[
+\mathbf u
+=
+-\Omega_0y\mathbf e_1
++
+\Omega_0x\mathbf e_2,
+\]</span></p>
+<p>o divergente é nulo e <span class="math inline">\(\nabla\wedge\mathbf u\)</span> é um bivetor no plano <span class="math inline">\(e_{12}\)</span>. Em três dimensões, o dual dessa parte bivetorial corresponde à vorticidade vetorial convencional.</p>
+<p><span class="citation" data-cites="sen2023">Sen (<a href="#ref-sen2023" role="doc-biblioref">2023</a>)</span> emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O interesse para este trabalho é geométrico: o plano orientado de rotação pode ser tratado diretamente como bivetor, em vez de apenas por seu pseudovetor dual.</p>
+</section>
+<section id="o-termo-convectivo-e-a-não-linearidade-de-euler" class="level2" data-number="3.19">
+<h2 data-number="3.19" class="anchored" data-anchor-id="o-termo-convectivo-e-a-não-linearidade-de-euler"><span class="header-section-number">3.19</span> O termo convectivo e a não linearidade de Euler</h2>
+<section id="por-que-um-escoamento-permanente-ainda-pode-acelerar" class="level3" data-number="3.19.1">
+<h3 data-number="3.19.1" class="anchored" data-anchor-id="por-que-um-escoamento-permanente-ainda-pode-acelerar"><span class="header-section-number">3.19.1</span> Por que um escoamento permanente ainda pode acelerar?</h3>
+<p>Em dinâmica dos fluidos, “permanente” significa que o campo em um ponto fixo não muda com o tempo. Isso não implica que uma partícula de fluido mantenha a mesma velocidade enquanto se desloca por regiões onde <span class="math inline">\(\mathbf u\)</span> varia no espaço.</p>
+<p>Em uma situação unidimensional idealizada, <span class="math inline">\(u=u(x)\)</span> e <span class="math inline">\(\partial u/\partial t=0\)</span>, mas a aceleração convectiva é</p>
+<p><span class="math display">\[
+u\frac{du}{dx},
+\]</span></p>
+<p>que pode ser não nula. Em três dimensões, o termo correspondente é</p>
+<p><span class="math display">\[
+(\mathbf u\cdot\nabla)\mathbf u.
+\]</span></p>
+<p>Ele é não linear porque o próprio campo de velocidade atua como coeficiente do operador diferencial aplicado a si mesmo.</p>
+<p>Uma identidade útil reorganiza essa aceleração como</p>
+<p><span class="math display">\[
+(\mathbf u\cdot\nabla)\mathbf u
+=
+\mathbf u\cdot(\nabla\wedge\mathbf u)
++
+\frac12\nabla(\mathbf u^2).
+\]</span></p>
+<p>Como</p>
+<p><span class="math display">\[
+\mathbf u^2=\|\mathbf u\|^2
+\]</span></p>
+<p>no espaço euclidiano, a segunda parcela é o gradiente da energia cinética por unidade de massa e a primeira relaciona a velocidade à estrutura bivetorial de rotação. A decomposição revela geometria, mas <strong>não elimina a não linearidade</strong>: <span class="math inline">\(\nabla\wedge\mathbf u\)</span> continua dependendo de <span class="math inline">\(\mathbf u\)</span>, e produtos entre campos permanecem presentes.</p>
+<p><span class="citation" data-cites="sen2023">Sen (<a href="#ref-sen2023" role="doc-biblioref">2023</a>)</span> constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb.</p>
+</section>
+</section>
+<section id="vorticidade-vetor-de-lamb-e-analogias-com-maxwell" class="level2" data-number="3.20">
+<h2 data-number="3.20" class="anchored" data-anchor-id="vorticidade-vetor-de-lamb-e-analogias-com-maxwell"><span class="header-section-number">3.20</span> Vorticidade, vetor de Lamb e analogias com Maxwell</h2>
+<p>A vorticidade vetorial clássica é</p>
+<p><span class="math display">\[
+\boldsymbol\omega
+=
+\nabla\times\mathbf u.
+\]</span></p>
+<p>Ela descreve a tendência local de rotação do escoamento. O vetor de Lamb é frequentemente definido por</p>
+<p><span class="math display">\[
+\mathbf L
+=
+\boldsymbol\omega\times\mathbf u,
+\]</span></p>
+<p>com convenções de sinal que podem variar entre fontes. Em AG tridimensional, a mesma estrutura rotacional pode ser mantida como o bivetor</p>
+<p><span class="math display">\[
+\Omega
+=
+\nabla\wedge\mathbf u.
+\]</span></p>
+<p>Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. <span class="citation" data-cites="parameswaran2024">Parameswaran et al. (<a href="#ref-parameswaran2024" role="doc-biblioref">2024</a>)</span> apresenta uma construção desse tipo e mostra como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar.</p>
+<p>A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogias são úteis para representar <strong>estrutura geométrica dos campos</strong>, mas não equivalem automaticamente à formulação conservativa completa de Euler empregada em um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e uma equação de estado. Logo, uma implementação deve manter esses objetos explicitamente identificados.</p>
+</section>
+<section id="o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador" class="level2" data-number="3.21">
+<h2 data-number="3.21" class="anchored" data-anchor-id="o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador"><span class="header-section-number">3.21</span> O que pode ser representado por multivetores — e o que continua sendo operador</h2>
+<p>A AG oferece representações naturais para vetores velocidade, bivetores de vorticidade, bivetores de faces e transformações por rotores. Já o fluxo</p>
+<p><span class="math display">\[
+\rho\mathbf u\otimes\mathbf u
++p\mathsf I
+\]</span></p>
+<p>não é um bivetor. Trata-se de um operador de segunda ordem. Em AG, sua representação adequada deve utilizar uma aplicação linear, extensor ou estrutura equivalente, e não uma identificação indevida com um multivetor de grau fixo.</p>
+<p>Essa separação é metodologicamente importante. A meta não é forçar toda a física para dentro de um único multivetor, mas usar AG onde ela preserva e explicita estrutura geométrica, mantendo tensores e operadores quando a natureza matemática do objeto assim exigir.</p>
+</section>
+<section id="métodos-e-níveis-de-fidelidade-aerodinâmica" class="level2" data-number="3.22">
+<h2 data-number="3.22" class="anchored" data-anchor-id="métodos-e-níveis-de-fidelidade-aerodinâmica"><span class="header-section-number">3.22</span> Métodos e níveis de fidelidade aerodinâmica</h2>
+<p>Para um leitor vindo do eletromagnetismo, é útil interpretar os principais níveis aerodinâmicos pelo conteúdo físico que adicionam. Métodos potenciais ou de painéis descrevem o escoamento com hipóteses fortes que podem ser adequadas em regimes suaves e longe de efeitos viscosos dominantes. Euler adiciona conservação compressível não linear e permite representar ondas e variações de densidade, mas continua invíscido. RANS acrescenta viscosidade e um fechamento estatístico para os efeitos turbulentos sobre o escoamento médio.</p>
+<p>Essa sequência não constitui uma escala universal de “baixo para alto custo”. Resolução de malha, critérios de convergência, número de condições de voo, modelo turbulento e implementação podem mudar substancialmente o consumo de CPU/GPU, memória e tempo. A fidelidade deve ser definida pelo conteúdo físico e numérico efetivamente representado, juntamente com a demanda de recursos observada.</p>
+</section>
+<section id="validação-aerodinâmica-progressiva" class="level2" data-number="3.23">
+<h2 data-number="3.23" class="anchored" data-anchor-id="validação-aerodinâmica-progressiva"><span class="header-section-number">3.23</span> Validação aerodinâmica progressiva</h2>
+<p>Antes de aplicar o modelo a uma geometria UCAV completa, a validação deve avançar de problemas elementares para problemas integrados: conservação em estados uniformes, casos com solução conhecida ou benchmark consolidado, perfis bidimensionais, asas simples e finalmente a geometria tridimensional de interesse.</p>
+<p>A comparação não deve se restringir a <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span> e <span class="math inline">\(C_m\)</span>. Campos intermediários, como <span class="math inline">\(C_p\)</span>, pressão superficial e balanços de conservação, ajudam a identificar compensações de erro que poderiam produzir um coeficiente integrado aparentemente correto. Quando houver resultados experimentais ou soluções de referência adequadas, eles devem ser usados para distinguir erro de discretização, limitação do modelo físico e erro do futuro surrogate.</p>
+</section>
+<section id="ponte-entre-os-dois-domínios-físicos-e-as-gnns" class="level2" data-number="3.24">
+<h2 data-number="3.24" class="anchored" data-anchor-id="ponte-entre-os-dois-domínios-físicos-e-as-gnns"><span class="header-section-number">3.24</span> Ponte entre os dois domínios físicos e as GNNs</h2>
+<p>Os domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas diferentes. Isso motiva a investigação de representações geométricas compartilháveis sem pressupor que um único modelo multitarefa seja necessariamente superior.</p>
+<p>Uma geometria discretizada pode ser representada por um grafo</p>
+<p><span class="math display">\[
+G=(V,E,\mathcal F),
+\]</span></p>
+<p>no qual nós, arestas ou faces carregam atributos. A partir do capítulo anterior, exemplos naturais são posição <span class="math inline">\(\mathbf x_i\)</span>, normal <span class="math inline">\(\hat{\mathbf n}_i\)</span>, área <span class="math inline">\(A_i\)</span>, bivetor orientado de face <span class="math inline">\(B_i\)</span>, curvatura local, vetores relativos e rotores associados à orientação entre elementos vizinhos.</p>
+<p>Para o problema eletromagnético, uma representação abstrata é</p>
+<p><span class="math display">\[
+\mathcal G_{\mathrm{EM}}:
+(G,f,\theta,\phi,\mathrm{pol})
+\longrightarrow
+\sigma(\theta_s,\phi_s,\mathrm{pol}_s),
+\]</span></p>
+<p>ou, quando campos intermediários forem incluídos,</p>
+<p><span class="math display">\[
+\mathcal G_{\mathrm{EM}}:
+(G,c_{\mathrm{EM}})
+\longrightarrow
+(\mathbf J_s,
+\mathbf E_{\mathrm{sca}},
+\sigma).
+\]</span></p>
+<p>Para aerodinâmica,</p>
+<p><span class="math display">\[
+\mathcal G_{\mathrm{aero}}:
+(G,M_\infty,\alpha,\beta,\rho_\infty,p_\infty,\ldots)
+\longrightarrow
+(C_p,C_L,C_D,C_m,\ldots).
+\]</span></p>
+<p>O mesmo <span class="math inline">\(G\)</span> fornece uma base geométrica comum; os condicionantes físicos e as saídas permanecem específicos de cada domínio. Compartilhamento de codificadores, cabeças especializadas ou modelos separados são hipóteses arquiteturais a serem comparadas empiricamente.</p>
+</section>
+<section id="resíduos-físicos-como-informação-de-treinamento" class="level2" data-number="3.25">
+<h2 data-number="3.25" class="anchored" data-anchor-id="resíduos-físicos-como-informação-de-treinamento"><span class="header-section-number">3.25</span> Resíduos físicos como informação de treinamento</h2>
+<p>A incorporação de física ao treinamento só é válida quando o resíduo pode ser calculado a partir das variáveis produzidas pela rede. Se a GNN prevê campos eletromagnéticos compatíveis com a formulação em STA, um resíduo conceitual é</p>
+<p><span class="math display">\[
+\mathcal R_{\mathrm M}
+=
+\nabla F-\mathcal J,
+\]</span></p>
+<p>acompanhado, quando apropriado, por resíduos de condições de contorno e radiação.</p>
+<p>Se a rede prevê variáveis conservativas aerodinâmicas,</p>
+<p><span class="math display">\[
+\mathcal R_\rho
+=
+\frac{\partial\rho}{\partial t}
++
+\nabla\cdot(\rho\mathbf u),
+\]</span></p>
+<p><span class="math display">\[
+\mathcal R_{\rho\mathbf u}
+=
+\frac{\partial(\rho\mathbf u)}{\partial t}
++
+\nabla\cdot
+(\rho\mathbf u\otimes\mathbf u+p\mathsf I),
+\]</span></p>
+<p><span class="math display">\[
+\mathcal R_{\rho E}
+=
+\frac{\partial(\rho E)}{\partial t}
++
+\nabla\cdot[(\rho E+p)\mathbf u].
+\]</span></p>
+<p>Por outro lado, uma rede que prevê apenas <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span> ou uma RCS agregada não contém informação suficiente para calcular diretamente esses resíduos diferenciais. Nesse caso, devem ser usadas consistências compatíveis com as saídas disponíveis ou devem ser previstos campos intermediários.</p>
+<p>Uma função de perda genérica pode assumir a forma</p>
+<p><span class="math display">\[
+\mathcal L
+=
+\mathcal L_{\mathrm{dados}}
++
+\lambda_{\mathrm{phys}}\mathcal L_{\mathrm{phys}}
++
+\lambda_{\mathrm{bc}}\mathcal L_{\mathrm{bc}}.
+\]</span></p>
+<p>Como os termos podem possuir unidades e escalas muito diferentes, normalização ou adimensionalização deve ser considerada antes de interpretar os pesos <span class="math inline">\(\lambda\)</span>. Um peso numericamente pequeno não significa, por si só, baixa importância física.</p>
+</section>
+<section id="síntese-do-capítulo" class="level2" data-number="3.26">
+<h2 data-number="3.26" class="anchored" data-anchor-id="síntese-do-capítulo"><span class="header-section-number">3.26</span> Síntese do capítulo</h2>
+<p>A assinatura radar e o desempenho aerodinâmico derivam de sistemas físicos diferentes, mas ambos são condicionados pela geometria e podem ser discretizados sobre malhas. No eletromagnetismo, Maxwell conecta fontes, materiais e propagação; a passagem para o domínio da frequência transforma derivadas temporais em multiplicações por <span class="math inline">\(j\omega\)</span>, mantendo a estrutura diferencial espacial; condições de contorno produzem o campo espalhado, e seu comportamento assintótico conduz à RCS. Na STA, os campos elétrico e magnético podem ser reunidos no bivetor de Faraday <span class="math inline">\(F\)</span>, sem atribuir à AG uma linearização que não existe.</p>
+<p>Na aerodinâmica, Euler aplica conservação de massa, quantidade de movimento e energia a um gás perfeito compressível e invíscido. A forma conservativa conecta naturalmente fluxos às faces da malha. A derivada geométrica separa expansão e rotação local, enquanto bivetores fornecem uma representação natural para vorticidade. Entretanto, o fluxo de quantidade de movimento permanece um operador tensorial e a não linearidade convectiva continua fisicamente presente.</p>
+<p>Esses dois blocos definem variáveis, hipóteses, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. A continuidade metodológica é deliberada: <strong>física → representação geométrica → dados multifidelidade → GNN → otimização determinística</strong>, sem confundir compacidade matemática com simplificação física nem precisão preditiva com validade de engenharia.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-doran2003" class="csl-entry" role="listitem">
+Doran, Chris, e Anthony Lasenby. 2003. <em>Geometric Algebra for Physicists</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511807497">https://doi.org/10.1017/CBO9780511807497</a>.
+</div>
+<div id="ref-dressel2015" class="csl-entry" role="listitem">
+Dressel, Justin, Konstantin Y. Bliokh, e Franco Nori. 2015. <span>“Spacetime Algebra as a Powerful Tool for Electromagnetism”</span>. <em>Physics Reports</em> 589: 1–71. <a href="https://doi.org/10.1016/j.physrep.2015.06.001">https://doi.org/10.1016/j.physrep.2015.06.001</a>.
+</div>
+<div id="ref-knott1993" class="csl-entry" role="listitem">
+Knott, Eugene F., John F. Shaeffer, e Michael T. Tuley. 1993. <em>Radar Cross Section</em>. 2º ed. Artech House.
+</div>
+<div id="ref-parameswaran2024" class="csl-entry" role="listitem">
+Parameswaran, R., Susan Mathew Panakkal, e M. J. Vedan. 2024. <span>“Fluid Maxwell’s Equations in the Language of Geometric Algebra”</span>. <em>Pramana – Journal of Physics</em> 98: 62. <a href="https://doi.org/10.1007/s12043-024-02731-4">https://doi.org/10.1007/s12043-024-02731-4</a>.
+</div>
+<div id="ref-rao1982" class="csl-entry" role="listitem">
+Rao, Sadasiva M., Donald R. Wilton, e Allen W. Glisson. 1982. <span>“Electromagnetic Scattering by Surfaces of Arbitrary Shape”</span>. <em>IEEE Transactions on Antennas and Propagation</em> 30 (3): 409–18.
+</div>
+<div id="ref-sen2023" class="csl-entry" role="listitem">
+Sen, D. 2023. <span>“Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”</span>. <em>Pramana – Journal of Physics</em> 97: 132. <a href="https://doi.org/10.1007/s12043-023-02617-x">https://doi.org/10.1007/s12043-023-02617-x</a>.
+</div>
+<div id="ref-yee1966" class="csl-entry" role="listitem">
+Yee, Kane S. 1966. <span>“Numerical Solution of Initial Boundary Value Problems Involving Maxwell’s Equations in Isotropic Media”</span>. <em>IEEE Transactions on Antennas and Propagation</em> 14 (3): 302–7.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
