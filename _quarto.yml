@@ -22,6 +22,7 @@ book:
   downloads: [pdf]
 
 bibliography: references.bib
+citation-style: author-date
 
 format:
   html:
