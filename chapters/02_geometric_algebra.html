@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -329,10 +330,9 @@ window.Quarto = {
 </header>
 
 
-<p>A <strong>Álgebra Geométrica (AG)</strong>, também denominada álgebra de Clifford quando se enfatiza sua construção algébrica, constitui o formalismo matemático estruturante adotado neste trabalho. Seu papel é fornecer uma linguagem comum para representar geometria orientada, transformações, campos físicos e atributos utilizados pelos modelos de aprendizado em grafos, reduzindo a fragmentação entre notações vetoriais, matriciais, tensoriais e de formas diferenciais quando essas descrições admitem uma representação geométrica comum <span class="citation" data-cites="hestenes1984 doran2003 baylis1996">(<a href="#ref-hestenes1984" role="doc-biblioref">Hestenes e Sobczyk 1984</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>; <a href="#ref-baylis1996" role="doc-biblioref">Baylis 1996</a>)</span>.</p>
-<p>Este capítulo foi organizado para que a AG possa ser acompanhada por um leitor que conhece álgebra linear e cálculo vetorial, mas ainda não teve contato sistemático com multivetores. Por essa razão, cada conceito é introduzido em três níveis: primeiro sua interpretação geométrica, depois sua definição algébrica e, por fim, sua utilidade para o problema aero-stealth. A intenção não é substituir de imediato toda notação conhecida, mas mostrar como objetos familiares — vetores, áreas orientadas, rotações, operadores e derivadas — passam a fazer parte de uma estrutura algébrica única.</p>
+<p>A <strong>Álgebra Geométrica (AG)</strong>, também denominada álgebra de Clifford quando se enfatiza sua construção algébrica, constitui o formalismo matemático estruturante adotado neste trabalho. Seu papel é fornecer uma linguagem comum para representar geometria orientada, transformações, campos físicos e atributos utilizados pelos modelos de aprendizado em grafos, reduzindo a fragmentação entre notações vetoriais, matriciais, tensoriais e de formas diferenciais quando essas descrições admitem uma representação geométrica comum <span class="citation" data-cites="hestenes1984 doran2003 baylis1996"><a href="#ref-hestenes1984" role="doc-biblioref">[1]</a>, <a href="#ref-doran2003" role="doc-biblioref">[2]</a>, <a href="#ref-baylis1996" role="doc-biblioref">[3]</a></span>.</p>
 <p>A adoção da AG não implica que toda formulação matricial ou tensorial deva ser substituída por um multivetor. Matrizes permanecem representações coordenadas naturais de aplicações lineares; tensores gerais preservam seu papel quando expressam relações multilineares que não são antissimétricas; e solucionadores numéricos podem requerer vetores, matrizes e escalares convencionais em suas interfaces. A contribuição da AG consiste em organizar, de modo geometricamente explícito, os objetos para os quais métrica, orientação, produtos, graus, dualidade e transformações podem ser tratados dentro de uma única álgebra associativa.</p>
-<p>Essa distinção é particularmente importante para o problema aero-stealth. A geometria superficial de um <strong>Unmanned Combat Aerial Vehicle (UCAV)</strong>, os campos eletromagnéticos, os campos aerodinâmicos e as mensagens trocadas por uma <strong>Graph Neural Network (GNN)</strong> apresentam estruturas geométricas diferentes. O objetivo deste capítulo é construir, passo a passo, a linguagem que permitirá representar essas estruturas sem confundir o objeto geométrico com suas componentes em uma base particular.</p>
+<p>Essa distinção é particularmente importante para o problema aero-stealth. A geometria superficial de um <strong>Unmanned Combat Aerial Vehicle (UCAV)</strong>, os campos eletromagnéticos, os campos aerodinâmicos e as mensagens trocadas por uma <strong>Graph Neural Network (GNN)</strong> apresentam estruturas geométricas diferentes. O objetivo deste capítulo é construir a linguagem que permitirá representar essas estruturas sem confundir o objeto geométrico com suas componentes em uma base particular.</p>
 <section id="partindo-de-objetos-familiares-vetores-comprimento-ângulo-e-orientação" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="partindo-de-objetos-familiares-vetores-comprimento-ângulo-e-orientação"><span class="header-section-number">2.1</span> Partindo de objetos familiares: vetores, comprimento, ângulo e orientação</h2>
 <p>Um vetor pode ser compreendido geometricamente como uma quantidade que possui magnitude e direção. Em um espaço euclidiano tridimensional, deslocamento, velocidade e força são exemplos familiares. Quando uma base cartesiana ortonormal <span class="math inline">\(\{e_1,e_2,e_3\}\)</span> é escolhida, um vetor <span class="math inline">\(a\)</span> pode ser escrito como</p>
@@ -376,7 +376,7 @@ g_{ij}=e_i\cdot e_j.
 <p><span class="math display">\[
 g_{ij}=\delta_{ij},
 \]</span></p>
-<p>isto é, os termos diagonais são iguais a <span class="math inline">\(1\)</span> e os termos fora da diagonal são zero. Em uma base oblíqua, por outro lado, termos fora da diagonal podem ser diferentes de zero porque os vetores da base não são perpendiculares <span class="citation" data-cites="grinfeld2013">(<a href="#ref-grinfeld2013" role="doc-biblioref">Grinfeld 2013</a>)</span>.</p>
+<p>isto é, os termos diagonais são iguais a <span class="math inline">\(1\)</span> e os termos fora da diagonal são zero. Em uma base oblíqua, por outro lado, termos fora da diagonal podem ser diferentes de zero porque os vetores da base não são perpendiculares <span class="citation" data-cites="grinfeld2013"><a href="#ref-grinfeld2013" role="doc-biblioref">[4]</a></span>.</p>
 <p>A métrica determina a <strong>assinatura</strong> da álgebra. A notação <span class="math inline">\(Cl(p,q)\)</span> indica, em uma base ortogonal não degenerada, <span class="math inline">\(p\)</span> direções cujo quadrado é <span class="math inline">\(+1\)</span> e <span class="math inline">\(q\)</span> direções cujo quadrado é <span class="math inline">\(-1\)</span>. Para geometria euclidiana tridimensional utiliza-se <span class="math inline">\(Cl(3,0)\)</span>. Em espaço-tempo, uma assinatura indefinida é utilizada e sua convenção deve ser explicitada antes das manipulações físicas.</p>
 </section>
 <section id="a-relação-fundamental-de-clifford" class="level3" data-number="2.2.2">
@@ -402,7 +402,7 @@ a^2=g(a,a).
 <p><span class="math display">\[
 a\cdot b=\frac{1}{2}(ab+ba).
 \]</span></p>
-<p>Essa relação é o ponto de partida para compreender por que o produto geométrico contém simultaneamente informação métrica e informação de orientação <span class="citation" data-cites="hestenes1984 doran2003">(<a href="#ref-hestenes1984" role="doc-biblioref">Hestenes e Sobczyk 1984</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>.</p>
+<p>Essa relação é o ponto de partida para compreender por que o produto geométrico contém simultaneamente informação métrica e informação de orientação <span class="citation" data-cites="hestenes1984 doran2003"><a href="#ref-hestenes1984" role="doc-biblioref">[1]</a>, <a href="#ref-doran2003" role="doc-biblioref">[2]</a></span>.</p>
 </section>
 </section>
 <section id="produto-geométrico-produto-interno-e-produto-exterior" class="level2" data-number="2.3">
@@ -421,7 +421,7 @@ a\cdot b=\frac{1}{2}(ab+ba),
 <p><span class="math display">\[
 a\wedge b=\frac{1}{2}(ab-ba),
 \]</span></p>
-<p>é antissimétrica e bivetorial <span class="citation" data-cites="sen2023">(<a href="#ref-sen2023" role="doc-biblioref">Sen 2023</a>)</span>.</p>
+<p>é antissimétrica e bivetorial <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span>.</p>
 <p>Essa decomposição pode ser interpretada da seguinte maneira:</p>
 <ul>
 <li><span class="math inline">\(a\cdot b\)</span> informa <strong>quanto os vetores estão alinhados</strong>;</li>
@@ -484,7 +484,7 @@ a\wedge a=0,
 <p><span class="math display">\[
 \|a\wedge b\|=\|a\|\,\|b\|\sin\theta.
 \]</span></p>
-<p>Essa é exatamente a área do paralelogramo definido por <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span>. Assim, o bivetor <span class="math inline">\(a\wedge b\)</span> reúne três informações em um único objeto: o plano, sua orientação e sua magnitude de área <span class="citation" data-cites="pollock2014">(<a href="#ref-pollock2014" role="doc-biblioref">Pollock e Mann 2014</a>)</span>.</p>
+<p>Essa é exatamente a área do paralelogramo definido por <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span>. Assim, o bivetor <span class="math inline">\(a\wedge b\)</span> reúne três informações em um único objeto: o plano, sua orientação e sua magnitude de área <span class="citation" data-cites="pollock2014"><a href="#ref-pollock2014" role="doc-biblioref">[6]</a></span>.</p>
 <p>Em três dimensões, o produto vetorial tradicional <span class="math inline">\(a\times b\)</span> também codifica essa área, mas o faz por meio de um pseudovetor perpendicular ao plano. Na AG, o plano orientado é representado diretamente pelo bivetor; o pseudovetor perpendicular pode ser recuperado posteriormente por dualidade.</p>
 </section>
 <section id="associatividade-e-não-comutatividade" class="level3" data-number="2.3.4">
@@ -588,7 +588,7 @@ A=3+2e_1-e_{12}+4e_{123},
 <p><span class="math display">\[
 \{1,e_1,e_2,e_3,e_{12},e_{23},e_{31},e_{123}\}.
 \]</span></p>
-<p>Há oito elementos de base: um escalar, três vetores, três bivetores e um trivetor. Essa estrutura aparece explicitamente em formulações de AG para mecânica dos fluidos e eletromagnetismo <span class="citation" data-cites="sen2023">(<a href="#ref-sen2023" role="doc-biblioref">Sen 2023</a>)</span>.</p>
+<p>Há oito elementos de base: um escalar, três vetores, três bivetores e um trivetor. Essa estrutura aparece explicitamente em formulações de AG para mecânica dos fluidos e eletromagnetismo <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span>.</p>
 </section>
 </section>
 <section id="bases-métrica-e-independência-de-coordenadas" class="level2" data-number="2.5">
@@ -599,7 +599,7 @@ A=3+2e_1-e_{12}+4e_{123},
 <p><span class="math display">\[
 v=v^ie_i.
 \]</span></p>
-<p>Os números <span class="math inline">\(v^i\)</span> dependem da base. Se a base for modificada, os números mudam de forma a preservar o mesmo vetor geométrico. Essa distinção é particularmente importante em coordenadas curvilíneas e em malhas, nas quais bases locais podem variar de ponto para ponto <span class="citation" data-cites="grinfeld2013">(<a href="#ref-grinfeld2013" role="doc-biblioref">Grinfeld 2013</a>)</span>.</p>
+<p>Os números <span class="math inline">\(v^i\)</span> dependem da base. Se a base for modificada, os números mudam de forma a preservar o mesmo vetor geométrico. Essa distinção é particularmente importante em coordenadas curvilíneas e em malhas, nas quais bases locais podem variar de ponto para ponto <span class="citation" data-cites="grinfeld2013"><a href="#ref-grinfeld2013" role="doc-biblioref">[4]</a></span>.</p>
 </section>
 <section id="o-conceito-de-base-recíproca" class="level3" data-number="2.5.2">
 <h3 data-number="2.5.2" class="anchored" data-anchor-id="o-conceito-de-base-recíproca"><span class="header-section-number">2.5.2</span> O conceito de base recíproca</h3>
@@ -683,7 +683,7 @@ v_i=g_{ij}v^j,
 \qquad
 v^i=g^{ij}v_j.
 \]</span></p>
-<p>Essa é a ponte entre a linguagem de bases recíprocas e a notação tensorial de índices superiores e inferiores <span class="citation" data-cites="grinfeld2013">(<a href="#ref-grinfeld2013" role="doc-biblioref">Grinfeld 2013</a>)</span>.</p>
+<p>Essa é a ponte entre a linguagem de bases recíprocas e a notação tensorial de índices superiores e inferiores <span class="citation" data-cites="grinfeld2013"><a href="#ref-grinfeld2013" role="doc-biblioref">[4]</a></span>.</p>
 </section>
 <section id="sobre-unidades-físicas" class="level4" data-number="2.5.2.3">
 <h4 data-number="2.5.2.3" class="anchored" data-anchor-id="sobre-unidades-físicas"><span class="header-section-number">2.5.2.3</span> Sobre unidades físicas</h4>
@@ -729,7 +729,7 @@ A^\star=AI^{-1}.
 <p><span class="math display">\[
 B^\star=e_{12}I^{-1}=e_3.
 \]</span></p>
-<p>Assim, o plano orientado <span class="math inline">\(e_{12}\)</span> tem como dual a direção normal <span class="math inline">\(e_3\)</span>. O produto vetorial tridimensional pode ser visto precisamente como uma forma dual de representar um bivetor. Essa interpretação é útil porque o plano orientado permanece o objeto primário, enquanto a normal vetorial é obtida quando necessária <span class="citation" data-cites="sen2023">(<a href="#ref-sen2023" role="doc-biblioref">Sen 2023</a>)</span>.</p>
+<p>Assim, o plano orientado <span class="math inline">\(e_{12}\)</span> tem como dual a direção normal <span class="math inline">\(e_3\)</span>. O produto vetorial tridimensional pode ser visto precisamente como uma forma dual de representar um bivetor. Essa interpretação é útil porque o plano orientado permanece o objeto primário, enquanto a normal vetorial é obtida quando necessária <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span>.</p>
 <p>A convenção de dualidade deve ser declarada porque o sinal depende de três escolhas: orientação da base, assinatura da métrica e uso de dual à esquerda ou à direita.</p>
 </section>
 </section>
@@ -881,7 +881,7 @@ R\widetilde R=1.
 e_1\longmapsto e_2.
 \]</span></p>
 <p>A presença de <span class="math inline">\(\theta/2\)</span> na definição do rotor é característica da representação por ação sanduíche: o rotor aparece uma vez à esquerda e uma vez à direita do objeto transformado.</p>
-<p>Rotores armazenam o plano e o ângulo da rotação em um objeto algébrico compacto. Isso é especialmente útil para representar orientações relativas de elementos de malha, embora matrizes de rotação permaneçam disponíveis quando exigidas por bibliotecas numéricas <span class="citation" data-cites="doran2003 baylis1996">(<a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>; <a href="#ref-baylis1996" role="doc-biblioref">Baylis 1996</a>)</span>.</p>
+<p>Rotores armazenam o plano e o ângulo da rotação em um objeto algébrico compacto. Isso é especialmente útil para representar orientações relativas de elementos de malha, embora matrizes de rotação permaneçam disponíveis quando exigidas por bibliotecas numéricas <span class="citation" data-cites="doran2003 baylis1996"><a href="#ref-doran2003" role="doc-biblioref">[2]</a>, <a href="#ref-baylis1996" role="doc-biblioref">[3]</a></span>.</p>
 </section>
 </section>
 <section id="aplicações-lineares-tensores-dyadics-e-matrizes" class="level2" data-number="2.9">
@@ -901,7 +901,7 @@ F(\alpha a+\beta b)=\alpha F(a)+\beta F(b).
 </section>
 <section id="dyadics-como-operadores-lineares" class="level3" data-number="2.9.2">
 <h3 data-number="2.9.2" class="anchored" data-anchor-id="dyadics-como-operadores-lineares"><span class="header-section-number">2.9.2</span> Dyadics como operadores lineares</h3>
-<p>Na análise diádica, um <em>dyadic</em> pode ser escrito como combinação de produtos diádicos de vetores e atua como operador linear sobre outro vetor. <span class="citation" data-cites="vanbladel2007">Van Bladel (<a href="#ref-vanbladel2007" role="doc-biblioref">2007</a>)</span> mostra que a mesma transformação vetorial pode ser apresentada tanto em forma matricial quanto em forma diádica.</p>
+<p>Na análise diádica, um <em>dyadic</em> pode ser escrito como combinação de produtos diádicos de vetores e atua como operador linear sobre outro vetor. Van Bladel <span class="citation" data-cites="vanbladel2007"><a href="#ref-vanbladel2007" role="doc-biblioref">[7]</a></span> mostra que a mesma transformação vetorial pode ser apresentada tanto em forma matricial quanto em forma diádica.</p>
 <p>Para vetores <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span>, o operador diádico <span class="math inline">\(a\otimes b\)</span> atua sobre <span class="math inline">\(x\)</span> como</p>
 <p><span class="math display">\[
 (a\otimes b)x=a(b\cdot x),
@@ -977,7 +977,7 @@ B=e_1\wedge e_2.
 <p><span class="math display">\[
 \underline F(I)=\det(F)I.
 \]</span></p>
-<p>Dessa forma, o determinante adquire uma interpretação geométrica direta: ele mede como o elemento orientado de volume é escalado e se sua orientação é preservada ou invertida <span class="citation" data-cites="hestenes1984 doran2003">(<a href="#ref-hestenes1984" role="doc-biblioref">Hestenes e Sobczyk 1984</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>.</p>
+<p>Dessa forma, o determinante adquire uma interpretação geométrica direta: ele mede como o elemento orientado de volume é escalado e se sua orientação é preservada ou invertida <span class="citation" data-cites="hestenes1984 doran2003"><a href="#ref-hestenes1984" role="doc-biblioref">[1]</a>, <a href="#ref-doran2003" role="doc-biblioref">[2]</a></span>.</p>
 <p>O termo <strong>extensor</strong> será usado, quando necessário, para aplicações lineares ou multilineares estendidas a multivetores. Essa terminologia ajuda a distinguir o operador do multivetor sobre o qual ele atua.</p>
 </section>
 </section>
@@ -1019,7 +1019,7 @@ u=ax\,e_1+by\,e_2,
 <p><span class="math display">\[
 \nabla\wedge u
 \]</span></p>
-<p>é um bivetor e representa a parte antissimétrica do gradiente do campo. Em três dimensões euclidianas, o <em>curl</em> tradicional é obtido por dualidade; a entidade geométrica primária é o bivetor <span class="math inline">\(\nabla\wedge u\)</span> <span class="citation" data-cites="sen2023">(<a href="#ref-sen2023" role="doc-biblioref">Sen 2023</a>)</span>.</p>
+<p>é um bivetor e representa a parte antissimétrica do gradiente do campo. Em três dimensões euclidianas, o <em>curl</em> tradicional é obtido por dualidade; a entidade geométrica primária é o bivetor <span class="math inline">\(\nabla\wedge u\)</span> <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span>.</p>
 <p>Considere o campo plano de rotação rígida</p>
 <p><span class="math display">\[
 u=-\omega y\,e_1+\omega x\,e_2.
@@ -1037,7 +1037,7 @@ u=-\omega y\,e_1+\omega x\,e_2.
 <p><span class="math display">\[
 \Omega=\nabla\wedge u,
 \]</span></p>
-<p>associado à vorticidade geométrica. A literatura demonstra o uso de bivetores para representar planos de rotação e estruturas vorticais em campos amostrados <span class="citation" data-cites="pollock2014">(<a href="#ref-pollock2014" role="doc-biblioref">Pollock e Mann 2014</a>)</span>.</p>
+<p>associado à vorticidade geométrica. A literatura demonstra o uso de bivetores para representar planos de rotação e estruturas vorticais em campos amostrados <span class="citation" data-cites="pollock2014"><a href="#ref-pollock2014" role="doc-biblioref">[6]</a></span>.</p>
 </section>
 </section>
 <section id="representação-geométrica-de-malhas" class="level2" data-number="2.12">
@@ -1130,7 +1130,7 @@ X_i=s_i+v_i+B_i+\tau_iI,
 <p><span class="math display">\[
 \nabla F=J,
 \]</span></p>
-<p>onde <span class="math inline">\(J\)</span> representa a corrente de espaço-tempo <span class="citation" data-cites="dressel2015 doran2003">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>.</p>
+<p>onde <span class="math inline">\(J\)</span> representa a corrente de espaço-tempo <span class="citation" data-cites="dressel2015 doran2003"><a href="#ref-doran2003" role="doc-biblioref">[2]</a>, <a href="#ref-dressel2015" role="doc-biblioref">[8]</a></span>.</p>
 <p>A razão pela qual uma única equação contém várias equações físicas é a estrutura por graus do produto geométrico. Quando <span class="math inline">\(\nabla F\)</span> é separado em parcelas de diferentes graus, recuperam-se as contribuições associadas às equações homogêneas e não homogêneas de Maxwell.</p>
 <p>Essa escrita deve ser entendida como <strong>unificação representacional</strong>, não como “linearização” das equações. Em meios lineares, Maxwell já é linear nos campos. A vantagem da STA consiste em representar, dentro de uma mesma estrutura, campo, dualidade, polarização, transformações e operadores.</p>
 <p>Para o problema de <strong>Radar Cross Section (RCS)</strong>, essa base será usada no capítulo de física para distinguir campo incidente, campo espalhado, condições constitutivas, condições de contorno e extração do campo distante.</p>
@@ -1144,7 +1144,7 @@ X_i=s_i+v_i+B_i+\tau_iI,
 <p><span class="math display">\[
 \Omega=\nabla\wedge u.
 \]</span></p>
-<p>O bivetor identifica o plano local de rotação do campo de velocidade. <span class="citation" data-cites="sen2023">Sen (<a href="#ref-sen2023" role="doc-biblioref">2023</a>)</span> emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, <span class="citation" data-cites="parameswaran2024">Parameswaran et al. (<a href="#ref-parameswaran2024" role="doc-biblioref">2024</a>)</span> desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.</p>
+<p>O bivetor identifica o plano local de rotação do campo de velocidade. Sen <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span> emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, Parameswaran et al. <span class="citation" data-cites="parameswaran2024"><a href="#ref-parameswaran2024" role="doc-biblioref">[9]</a></span> desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.</p>
 </section>
 <section id="o-termo-convectivo-continua-não-linear" class="level3" data-number="2.14.2">
 <h3 data-number="2.14.2" class="anchored" data-anchor-id="o-termo-convectivo-continua-não-linear"><span class="header-section-number">2.14.2</span> O termo convectivo continua não linear</h3>
@@ -1154,7 +1154,7 @@ X_i=s_i+v_i+B_i+\tau_iI,
 =u\cdot(\nabla\wedge u)
 +\frac{1}{2}\nabla(u^2).
 \]</span></p>
-<p>Ela separa o termo convectivo em uma contribuição relacionada à rotação local e outra relacionada ao gradiente da energia cinética específica. A identidade melhora a interpretação geométrica, mas não remove a dependência quadrática em <span class="math inline">\(u\)</span>. Portanto, ela <strong>não transforma as equações de Euler em um sistema globalmente linear</strong> <span class="citation" data-cites="sen2023">(<a href="#ref-sen2023" role="doc-biblioref">Sen 2023</a>)</span>.</p>
+<p>Ela separa o termo convectivo em uma contribuição relacionada à rotação local e outra relacionada ao gradiente da energia cinética específica. A identidade melhora a interpretação geométrica, mas não remove a dependência quadrática em <span class="math inline">\(u\)</span>. Portanto, ela <strong>não transforma as equações de Euler em um sistema globalmente linear</strong> <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span>.</p>
 <p>No caso compressível conservativo, estruturas como</p>
 <p><span class="math display">\[
 \rho u\otimes u
@@ -1168,7 +1168,7 @@ X_i=s_i+v_i+B_i+\tau_iI,
 <h3 data-number="2.15.1" class="anchored" data-anchor-id="por-que-a-geometria-interessa-ao-aprendizado-em-grafos"><span class="header-section-number">2.15.1</span> Por que a geometria interessa ao aprendizado em grafos</h3>
 <p>Uma GNN processa dados por meio de nós, arestas e agregação de mensagens. Em uma malha física, entretanto, os atributos associados a esses elementos não são apenas números abstratos: posição relativa é um vetor, orientação de face pode ser um bivetor, alinhamento pode ser um escalar e transformação relativa pode ser um rotor.</p>
 <p>Codificar essas grandezas apenas como uma sequência de números é possível, mas transfere para a rede a responsabilidade de aprender, a partir dos dados, relações geométricas que já são conhecidas analiticamente. A AG oferece uma forma de manter parte dessa estrutura explícita.</p>
-<p><span class="citation" data-cites="zhong2025">Zhong e Cao (<a href="#ref-zhong2025" role="doc-biblioref">2025</a>)</span> propõem uma <strong>Graph Geometric Algebra Network (GGAN)</strong> na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.</p>
+<p>Zhong e Cao <span class="citation" data-cites="zhong2025"><a href="#ref-zhong2025" role="doc-biblioref">[10]</a></span> propõem uma <strong>Graph Geometric Algebra Network (GGAN)</strong> na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.</p>
 </section>
 <section id="uma-mensagem-geometricamente-estruturada" class="level3" data-number="2.15.2">
 <h3 data-number="2.15.2" class="anchored" data-anchor-id="uma-mensagem-geometricamente-estruturada"><span class="header-section-number">2.15.2</span> Uma mensagem geometricamente estruturada</h3>
@@ -1228,36 +1228,36 @@ X_i,
 <p>A partir dessa base, o capítulo seguinte formula as equações eletromagnéticas e aerodinâmicas, especificando quais objetos serão representados por multivetores, quais permanecerão tensores ou operadores e quais projeções escalares serão necessárias para discretização, aprendizado e otimização.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-baylis1996" class="csl-entry" role="listitem">
-Baylis, William E., org. 1996. <em>Clifford (Geometric) Algebras with Applications to Physics, Mathematics, and Engineering</em>. Birkh<span>ä</span>user. <a href="https://doi.org/10.1007/978-1-4612-4104-1">https://doi.org/10.1007/978-1-4612-4104-1</a>.
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-hestenes1984" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. Hestenes e G. Sobczyk, <em>Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics</em>. Dordrecht, The Netherlands: D. Reidel Publishing Company, 1984. doi: <a href="https://doi.org/10.1007/978-94-009-6292-7">10.1007/978-94-009-6292-7</a>.</div>
 </div>
 <div id="ref-doran2003" class="csl-entry" role="listitem">
-Doran, Chris, e Anthony Lasenby. 2003. <em>Geometric Algebra for Physicists</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511807497">https://doi.org/10.1017/CBO9780511807497</a>.
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">C. Doran e A. Lasenby, <em>Geometric Algebra for Physicists</em>. Cambridge University Press, 2003. doi: <a href="https://doi.org/10.1017/CBO9780511807497">10.1017/CBO9780511807497</a>.</div>
 </div>
-<div id="ref-dressel2015" class="csl-entry" role="listitem">
-Dressel, Justin, Konstantin Y. Bliokh, e Franco Nori. 2015. <span>“Spacetime Algebra as a Powerful Tool for Electromagnetism”</span>. <em>Physics Reports</em> 589: 1–71. <a href="https://doi.org/10.1016/j.physrep.2015.06.001">https://doi.org/10.1016/j.physrep.2015.06.001</a>.
+<div id="ref-baylis1996" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">W. E. Baylis, Org., <em>Clifford (Geometric) Algebras with Applications to Physics, Mathematics, and Engineering</em>. Birkh<span>ä</span>user, 1996. doi: <a href="https://doi.org/10.1007/978-1-4612-4104-1">10.1007/978-1-4612-4104-1</a>.</div>
 </div>
 <div id="ref-grinfeld2013" class="csl-entry" role="listitem">
-Grinfeld, Pavel. 2013. <em>Introduction to Tensor Analysis and the Calculus of Moving Surfaces</em>. Springer. <a href="https://doi.org/10.1007/978-1-4614-7867-6">https://doi.org/10.1007/978-1-4614-7867-6</a>.
-</div>
-<div id="ref-hestenes1984" class="csl-entry" role="listitem">
-Hestenes, David, e Garret Sobczyk. 1984. <em>Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics</em>. D. Reidel Publishing Company.
-</div>
-<div id="ref-parameswaran2024" class="csl-entry" role="listitem">
-Parameswaran, R., Susan Mathew Panakkal, e M. J. Vedan. 2024. <span>“Fluid Maxwell’s Equations in the Language of Geometric Algebra”</span>. <em>Pramana – Journal of Physics</em> 98: 62. <a href="https://doi.org/10.1007/s12043-024-02731-4">https://doi.org/10.1007/s12043-024-02731-4</a>.
-</div>
-<div id="ref-pollock2014" class="csl-entry" role="listitem">
-Pollock, Stuart, e Stephen Mann. 2014. <span>“Vortex Detection in Vector Fields Using Geometric Algebra”</span>. <em>Advances in Applied Clifford Algebras</em> 24: 423–42. <a href="https://doi.org/10.1007/s00006-013-0434-0">https://doi.org/10.1007/s00006-013-0434-0</a>.
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">P. Grinfeld, <em>Introduction to Tensor Analysis and the Calculus of Moving Surfaces</em>. Springer, 2013. doi: <a href="https://doi.org/10.1007/978-1-4614-7867-6">10.1007/978-1-4614-7867-6</a>.</div>
 </div>
 <div id="ref-sen2023" class="csl-entry" role="listitem">
-Sen, D. 2023. <span>“Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”</span>. <em>Pramana – Journal of Physics</em> 97: 132. <a href="https://doi.org/10.1007/s12043-023-02617-x">https://doi.org/10.1007/s12043-023-02617-x</a>.
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">D. Sen, <span>“Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”</span>, <em>Pramana – Journal of Physics</em>, v. 97, p. 132, 2023, doi: <a href="https://doi.org/10.1007/s12043-023-02617-x">10.1007/s12043-023-02617-x</a>.</div>
+</div>
+<div id="ref-pollock2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">S. Pollock e S. Mann, <span>“Vortex Detection in Vector Fields Using Geometric Algebra”</span>, <em>Advances in Applied Clifford Algebras</em>, v. 24, p. 423–442, 2014, doi: <a href="https://doi.org/10.1007/s00006-013-0434-0">10.1007/s00006-013-0434-0</a>.</div>
 </div>
 <div id="ref-vanbladel2007" class="csl-entry" role="listitem">
-Van Bladel, Jean G. 2007. <em>Electromagnetic Fields</em>. 2º ed.
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">J. G. Van Bladel, <em>Electromagnetic Fields</em>, 2º ed. Wiley-IEEE Press, 2007.</div>
+</div>
+<div id="ref-dressel2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">J. Dressel, K. Y. Bliokh, e F. Nori, <span>“Spacetime Algebra as a Powerful Tool for Electromagnetism”</span>, <em>Physics Reports</em>, v. 589, p. 1–71, 2015, doi: <a href="https://doi.org/10.1016/j.physrep.2015.06.001">10.1016/j.physrep.2015.06.001</a>.</div>
+</div>
+<div id="ref-parameswaran2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">R. Parameswaran, S. M. Panakkal, e M. J. Vedan, <span>“Fluid Maxwell’s Equations in the Language of Geometric Algebra”</span>, <em>Pramana – Journal of Physics</em>, v. 98, p. 62, 2024, doi: <a href="https://doi.org/10.1007/s12043-024-02731-4">10.1007/s12043-024-02731-4</a>.</div>
 </div>
 <div id="ref-zhong2025" class="csl-entry" role="listitem">
-Zhong, Jianqi, e Wenming Cao. 2025. <span>“Graph Geometric Algebra Networks for Graph Representation Learning”</span>. <em>Scientific Reports</em> 15: 170. <a href="https://doi.org/10.1038/s41598-024-84483-0">https://doi.org/10.1038/s41598-024-84483-0</a>.
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">J. Zhong e W. Cao, <span>“Graph Geometric Algebra Networks for Graph Representation Learning”</span>, <em>Scientific Reports</em>, v. 15, p. 170, 2025, doi: <a href="https://doi.org/10.1038/s41598-024-84483-0">10.1038/s41598-024-84483-0</a>.</div>
 </div>
 </div>
 </section>

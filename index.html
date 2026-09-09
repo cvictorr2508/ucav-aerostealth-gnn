@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -278,7 +279,7 @@ window.Quarto = {
 \rightarrow
 \text{reavaliação por modelos de referência}.
 \]</span></p>
-<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021">(<a href="#ref-bronstein2021" role="doc-biblioref">Bronstein et al. 2021</a>; <a href="#ref-pfaff2021" role="doc-biblioref">Pfaff et al. 2021</a>)</span>. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional <span class="citation" data-cites="shan2024">(<a href="#ref-shan2024" role="doc-biblioref">Shan et al. 2024</a>)</span> e análise aero-eletromagnética multitarefa em malhas de configurações <em>blended-wing-body</em> <span class="citation" data-cites="li2026aeroem">(<a href="#ref-li2026aeroem" role="doc-biblioref">Li et al. 2026</a>)</span>. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.</p>
+<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021"><a href="#ref-bronstein2021" role="doc-biblioref">[1]</a>, <a href="#ref-pfaff2021" role="doc-biblioref">[2]</a></span>. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional <span class="citation" data-cites="shan2024"><a href="#ref-shan2024" role="doc-biblioref">[3]</a></span> e análise aero-eletromagnética multitarefa em malhas de configurações <em>blended-wing-body</em> <span class="citation" data-cites="li2026aeroem"><a href="#ref-li2026aeroem" role="doc-biblioref">[4]</a></span>. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.</p>
 </section>
 <section id="questões-metodológicas-centrais" class="level2">
 <h2 class="anchored" data-anchor-id="questões-metodológicas-centrais">Questões metodológicas centrais</h2>
@@ -306,18 +307,18 @@ window.Quarto = {
 </ul>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
 <div id="ref-bronstein2021" class="csl-entry" role="listitem">
-Bronstein, Michael M., Joan Bruna, Taco Cohen, e Petar Veličković. 2021. <span>“Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”</span>. <em>arXiv preprint arXiv:2104.13478</em>. <a href="https://arxiv.org/abs/2104.13478">https://arxiv.org/abs/2104.13478</a>.
-</div>
-<div id="ref-li2026aeroem" class="csl-entry" role="listitem">
-Li, Chunyun, Bowen Shu, Ke Zhao, Longzhou Yu, Yongbo Li, e Huan Zhao. 2026. <span>“Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”</span>. <em>Physics of Fluids</em> 38 (5): 057104. <a href="https://doi.org/10.1063/5.0326519">https://doi.org/10.1063/5.0326519</a>.
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, <span>“Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”</span>, <em>arXiv preprint arXiv:2104.13478</em>, 2021, doi: <a href="https://doi.org/10.48550/arXiv.2104.13478">10.48550/arXiv.2104.13478</a>.</div>
 </div>
 <div id="ref-pfaff2021" class="csl-entry" role="listitem">
-Pfaff, Tobias, Meire Fortunato, Alvaro Sanchez-Gonzalez, e Peter W. Battaglia. 2021. <span>“Learning Mesh-Based Simulation with Graph Networks”</span>. <em>International Conference on Learning Representations</em>.
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, <span>“Learning Mesh-Based Simulation with Graph Networks”</span>, em <em>International Conference on Learning Representations</em>, 2021. Disponível em: <a href="https://openreview.net/forum?id=roNqYL0_XP">https://openreview.net/forum?id=roNqYL0_XP</a></div>
 </div>
 <div id="ref-shan2024" class="csl-entry" role="listitem">
-Shan, Tao, Maokun Li, Fan Yang, e Shenheng Xu. 2024. <span>“Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”</span>. <em>IEEE Transactions on Antennas and Propagation</em> 72 (1): 733–44. <a href="https://doi.org/10.1109/TAP.2023.3331262">https://doi.org/10.1109/TAP.2023.3331262</a>.
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">T. Shan, M. Li, F. Yang, e S. Xu, <span>“Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”</span>, <em>IEEE Transactions on Antennas and Propagation</em>, v. 72, n. 1, p. 733–744, 2024, doi: <a href="https://doi.org/10.1109/TAP.2023.3331262">10.1109/TAP.2023.3331262</a>.</div>
+</div>
+<div id="ref-li2026aeroem" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, <span>“Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”</span>, <em>Physics of Fluids</em>, v. 38, n. 5, p. 057104, 2026, doi: <a href="https://doi.org/10.1063/5.0326519">10.1063/5.0326519</a>.</div>
 </div>
 </div>
 </section>

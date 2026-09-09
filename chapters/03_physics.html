@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -318,8 +319,7 @@ window.Quarto = {
 
 
 <p>Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth de configurações de <strong>Unmanned Combat Aerial Vehicle (UCAV)</strong>: a <strong>assinatura eletromagnética</strong>, representada principalmente pela <strong>Radar Cross Section (RCS)</strong>, e o <strong>desempenho aerodinâmico</strong>, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição usados ao longo do livro: a formulação física convencional, sua interpretação em <strong>Álgebra Geométrica (AG)</strong> e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em <strong>Graph Neural Networks (GNNs)</strong>.</p>
-<p>O texto foi organizado para leitores de formações diferentes. Um especialista em eletromagnetismo deve poder acompanhar o bloco aerodinâmico sem pressupor familiaridade recente com dinâmica dos fluidos compressível; um especialista em aerodinâmica deve poder retomar Maxwell, fasores e espalhamento sem depender de uma revisão externa; e um engenheiro de outra área deve encontrar contexto suficiente para compreender as hipóteses e o papel das principais equações. Por isso, sempre que há ganho didático, a exposição privilegia a sequência <strong>intuição → definição → exemplo → aplicação</strong>.</p>
-<p>A AG é empregada como linguagem estruturante quando oferece uma representação geometricamente natural. Isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da <strong>Álgebra do Espaço-Tempo (<em>Spacetime Algebra</em>, STA)</strong> é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente <span class="citation" data-cites="dressel2015 doran2003">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.</p>
+<p>A AG é empregada como linguagem estruturante quando oferece uma representação geometricamente natural. Isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da <strong>Álgebra do Espaço-Tempo (<em>Spacetime Algebra</em>, STA)</strong> é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente <span class="citation" data-cites="dressel2015 doran2003"><a href="#ref-dressel2015" role="doc-biblioref">[1]</a>, <a href="#ref-doran2003" role="doc-biblioref">[2]</a></span>. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.</p>
 <section id="parte-i-eletromagnetismo-espalhamento-e-radar-cross-section" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="parte-i-eletromagnetismo-espalhamento-e-radar-cross-section"><span class="header-section-number">3.1</span> Parte I — Eletromagnetismo, espalhamento e Radar Cross Section</h2>
 </section>
@@ -488,7 +488,7 @@ k
 +
 \mathbf H_{\mathrm{sca}}.
 \]</span></p>
-<p>A RCS não mede diretamente o campo total na vizinhança do alvo. Ela caracteriza a intensidade com que o objeto redireciona energia eletromagnética para uma determinada direção no campo distante <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>.</p>
+<p>A RCS não mede diretamente o campo total na vizinhança do alvo. Ela caracteriza a intensidade com que o objeto redireciona energia eletromagnética para uma determinada direção no campo distante <span class="citation" data-cites="knott1993"><a href="#ref-knott1993" role="doc-biblioref">[3]</a></span>.</p>
 </section>
 <section id="onda-plana-incidente" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="onda-plana-incidente"><span class="header-section-number">3.4.2</span> Onda plana incidente</h3>
@@ -545,7 +545,7 @@ k
 <p><span class="math display">\[
 r\gg\frac{2D^2}{\lambda}
 \]</span></p>
-<p>é frequentemente usada como referência de região de Fraunhofer, embora a fronteira exata dependa da geometria e do critério adotado <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>. O ponto conceitual importante é que a distância necessária para observar comportamento de campo distante também depende do comprimento de onda.</p>
+<p>é frequentemente usada como referência de região de Fraunhofer, embora a fronteira exata dependa da geometria e do critério adotado <span class="citation" data-cites="knott1993"><a href="#ref-knott1993" role="doc-biblioref">[3]</a></span>. O ponto conceitual importante é que a distância necessária para observar comportamento de campo distante também depende do comprimento de onda.</p>
 <p>No limite assintótico,</p>
 <p><span class="math display">\[
 \widetilde{\mathbf E}_{\mathrm{sca}}(r,\hat{\mathbf r})
@@ -573,7 +573,7 @@ r\gg\frac{2D^2}{\lambda}
 }
 }
 \]</span></p>
-<p>em condições compatíveis de normalização <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>. A unidade de <span class="math inline">\(\sigma\)</span> é área, normalmente metros quadrados.</p>
+<p>em condições compatíveis de normalização <span class="citation" data-cites="knott1993"><a href="#ref-knott1993" role="doc-biblioref">[3]</a></span>. A unidade de <span class="math inline">\(\sigma\)</span> é área, normalmente metros quadrados.</p>
 <p>Como a variação pode abranger muitas ordens de grandeza, é comum empregar decibéis por metro quadrado:</p>
 <p><span class="math display">\[
 \sigma_{\mathrm{dBsm}}
@@ -604,14 +604,14 @@ r\gg\frac{2D^2}{\lambda}
 <section id="mecanismos-de-espalhamento-e-geometria-da-aeronave" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="mecanismos-de-espalhamento-e-geometria-da-aeronave"><span class="header-section-number">3.6</span> Mecanismos de espalhamento e geometria da aeronave</h2>
 <p>A RCS não é uma soma de “RCS locais” independentes. O campo espalhado é uma soma <strong>coerente</strong>: amplitudes complexas provenientes de diferentes regiões chegam com fases distintas e podem reforçar-se ou cancelar-se.</p>
-<p>Uma superfície aproximadamente plana e eletricamente grande pode produzir forte reflexão especular em certas direções. Uma borda pode difratar energia para regiões que não receberiam contribuição apenas pela reflexão geométrica. Cavidades e entradas podem sustentar múltiplas interações internas. Pequenas alterações de ângulo ou posição de uma superfície podem modificar fases relativas e deslocar picos angulares <span class="citation" data-cites="knott1993">(<a href="#ref-knott1993" role="doc-biblioref">Knott et al. 1993</a>)</span>.</p>
+<p>Uma superfície aproximadamente plana e eletricamente grande pode produzir forte reflexão especular em certas direções. Uma borda pode difratar energia para regiões que não receberiam contribuição apenas pela reflexão geométrica. Cavidades e entradas podem sustentar múltiplas interações internas. Pequenas alterações de ângulo ou posição de uma superfície podem modificar fases relativas e deslocar picos angulares <span class="citation" data-cites="knott1993"><a href="#ref-knott1993" role="doc-biblioref">[3]</a></span>.</p>
 <p>Essa dependência explica por que uma representação de malha para GNN não deve carregar apenas coordenadas dos vértices. Normais, áreas, orientação relativa entre faces, conectividade, bordas e condições de incidência carregam informação diretamente relacionada aos mecanismos físicos de espalhamento.</p>
 </section>
 <section id="métodos-numéricos-e-níveis-de-fidelidade-eletromagnética" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="métodos-numéricos-e-níveis-de-fidelidade-eletromagnética"><span class="header-section-number">3.7</span> Métodos numéricos e níveis de fidelidade eletromagnética</h2>
 <p>A escolha do método computacional depende do que precisa ser resolvido e da relação entre dimensão geométrica e comprimento de onda. Métodos de onda completa procuram representar diretamente a solução de Maxwell dentro das hipóteses constitutivas adotadas; aproximações assintóticas exploram regimes em que a estrutura da propagação permite simplificações controladas.</p>
-<p>O método de <span class="citation" data-cites="yee1966">Yee (<a href="#ref-yee1966" role="doc-biblioref">1966</a>)</span> constitui uma referência clássica para <strong>Finite-Difference Time-Domain (FDTD)</strong>: espaço e tempo são discretizados e os campos evoluem passo a passo. Uma vantagem conceitual é que uma única excitação transitória pode conter várias frequências; em contrapartida, o domínio volumétrico e a resolução exigida pelo menor comprimento de onda podem elevar a demanda de memória e processamento.</p>
-<p>Em alvos PEC, formulações integrais de superfície podem reduzir as incógnitas às correntes na superfície. As funções de base de <span class="citation" data-cites="rao1982">Rao et al. (<a href="#ref-rao1982" role="doc-biblioref">1982</a>)</span> são fundamentais em implementações do <strong>Method of Moments (MoM)</strong> para malhas triangulares. Após a discretização, o problema é convertido em um sistema linear cujas propriedades computacionais dependem do tamanho da malha e da formulação utilizada.</p>
+<p>Yee <span class="citation" data-cites="yee1966"><a href="#ref-yee1966" role="doc-biblioref">[4]</a></span> constitui uma referência clássica para <strong>Finite-Difference Time-Domain (FDTD)</strong>: espaço e tempo são discretizados e os campos evoluem passo a passo. Uma vantagem conceitual é que uma única excitação transitória pode conter várias frequências; em contrapartida, o domínio volumétrico e a resolução exigida pelo menor comprimento de onda podem elevar a demanda de memória e processamento.</p>
+<p>Em alvos PEC, formulações integrais de superfície podem reduzir as incógnitas às correntes na superfície. As funções de base de Rao, Wilton e Glisson <span class="citation" data-cites="rao1982"><a href="#ref-rao1982" role="doc-biblioref">[5]</a></span> são fundamentais em implementações do <strong>Method of Moments (MoM)</strong> para malhas triangulares. Após a discretização, o problema é convertido em um sistema linear cujas propriedades computacionais dependem do tamanho da malha e da formulação utilizada.</p>
 <p>Quando o alvo é eletricamente grande, aproximações de alta frequência, como <strong>Physical Optics (PO)</strong> e técnicas baseadas em raios, podem reduzir a demanda de recursos ao representar mecanismos dominantes sem resolver todos os detalhes de uma formulação de onda completa. Essa economia vem acompanhada de hipóteses adicionais, especialmente relevantes em bordas, regiões de sombra, cavidades ou múltiplas interações.</p>
 <p>Por isso, <strong>fidelidade</strong> não deve ser confundida com o nome do solver. Um nível de fidelidade é definido pelo conteúdo físico e numérico efetivamente representado: aproximações, resolução de malha, tratamento de bordas e cavidades, propriedades materiais, frequência, critérios de convergência e demais hipóteses. A classificação será retomada no capítulo de modelagem multifidelidade.</p>
 </section>
@@ -619,7 +619,7 @@ r\gg\frac{2D^2}{\lambda}
 <h2 data-number="3.8" class="anchored" data-anchor-id="maxwell-em-álgebra-geométrica-do-espaço-tempo"><span class="header-section-number">3.8</span> Maxwell em Álgebra Geométrica do espaço-tempo</h2>
 <section id="da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico" class="level3" data-number="3.8.1">
 <h3 data-number="3.8.1" class="anchored" data-anchor-id="da-separação-mathbf-emathbf-b-a-um-único-campo-geométrico"><span class="header-section-number">3.8.1</span> Da separação <span class="math inline">\(\mathbf E\)</span>/<span class="math inline">\(\mathbf B\)</span> a um único campo geométrico</h3>
-<p>Na formulação tridimensional usual, campos elétrico e magnético são escritos como vetores separados e aparecem em quatro equações. A STA parte de uma observação diferente: no espaço-tempo relativístico, as componentes que um observador chama de “elétricas” e “magnéticas” pertencem a um único campo eletromagnético. A separação entre <span class="math inline">\(\mathbf E\)</span> e <span class="math inline">\(\mathbf B\)</span> depende da escolha do observador, enquanto o campo espaço-temporal completo pode ser representado por um único bivetor <span class="citation" data-cites="dressel2015 doran2003">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>; <a href="#ref-doran2003" role="doc-biblioref">Doran e Lasenby 2003</a>)</span>.</p>
+<p>Na formulação tridimensional usual, campos elétrico e magnético são escritos como vetores separados e aparecem em quatro equações. A STA parte de uma observação diferente: no espaço-tempo relativístico, as componentes que um observador chama de “elétricas” e “magnéticas” pertencem a um único campo eletromagnético. A separação entre <span class="math inline">\(\mathbf E\)</span> e <span class="math inline">\(\mathbf B\)</span> depende da escolha do observador, enquanto o campo espaço-temporal completo pode ser representado por um único bivetor <span class="citation" data-cites="dressel2015 doran2003"><a href="#ref-dressel2015" role="doc-biblioref">[1]</a>, <a href="#ref-doran2003" role="doc-biblioref">[2]</a></span>.</p>
 <p>A álgebra adotada é associada ao espaço-tempo de Minkowski. Neste livro utiliza-se a assinatura</p>
 <p><span class="math display">\[
 \gamma_0^2=+1,
@@ -656,7 +656,7 @@ F
 =
 \mathbf E+cI\mathbf B,
 \]</span></p>
-<p>com sinais e fatores de <span class="math inline">\(c\)</span> dependentes da convenção adotada. Aqui, <span class="math inline">\(I=\gamma_0\gamma_1\gamma_2\gamma_3\)</span> é o pseudoescalar do espaço-tempo. A expressão não deve ser lida como simples concatenação de seis componentes: <span class="math inline">\(F\)</span> é um objeto bivetorial cuja decomposição em partes elétrica e magnética depende do observador <span class="citation" data-cites="dressel2015">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>)</span>.</p>
+<p>com sinais e fatores de <span class="math inline">\(c\)</span> dependentes da convenção adotada. Aqui, <span class="math inline">\(I=\gamma_0\gamma_1\gamma_2\gamma_3\)</span> é o pseudoescalar do espaço-tempo. A expressão não deve ser lida como simples concatenação de seis componentes: <span class="math inline">\(F\)</span> é um objeto bivetorial cuja decomposição em partes elétrica e magnética depende do observador <span class="citation" data-cites="dressel2015"><a href="#ref-dressel2015" role="doc-biblioref">[1]</a></span>.</p>
 <p>As fontes podem ser reunidas em um quatro-vetor de corrente. Para evitar esconder fatores de unidades, denota-se por <span class="math inline">\(\mathcal J\)</span> o quatro-vetor fonte já escalado de acordo com a convenção de <span class="math inline">\(F\)</span>, <span class="math inline">\(c\)</span>, <span class="math inline">\(\varepsilon_0\)</span> e <span class="math inline">\(\mu_0\)</span> adotada. Em unidades e normalizações compatíveis,</p>
 <p><span class="math display">\[
 \boxed{
@@ -669,7 +669,7 @@ F
 \nabla F=0
 }.
 \]</span></p>
-<p>A igualdade deve ser entendida por graus: a parte <span class="math inline">\(\nabla\cdot F\)</span> contém as equações não homogêneas associadas às fontes; a parte <span class="math inline">\(\nabla\wedge F\)</span> contém as equações homogêneas. A escrita única não apaga as quatro leis — ela mostra que elas são projeções de grau de uma mesma relação geométrica. <span class="citation" data-cites="dressel2015">Dressel et al. (<a href="#ref-dressel2015" role="doc-biblioref">2015</a>)</span> discute extensamente essa unificação do campo eletromagnético em STA.</p>
+<p>A igualdade deve ser entendida por graus: a parte <span class="math inline">\(\nabla\cdot F\)</span> contém as equações não homogêneas associadas às fontes; a parte <span class="math inline">\(\nabla\wedge F\)</span> contém as equações homogêneas. A escrita única não apaga as quatro leis — ela mostra que elas são projeções de grau de uma mesma relação geométrica. Dressel, Bliokh e Nori <span class="citation" data-cites="dressel2015"><a href="#ref-dressel2015" role="doc-biblioref">[1]</a></span> discutem extensamente essa unificação do campo eletromagnético em STA.</p>
 </section>
 <section id="o-que-a-formulação-compacta-faz-e-o-que-não-faz" class="level3" data-number="3.8.4">
 <h3 data-number="3.8.4" class="anchored" data-anchor-id="o-que-a-formulação-compacta-faz-e-o-que-não-faz"><span class="header-section-number">3.8.4</span> O que a formulação compacta faz — e o que não faz</h3>
@@ -677,7 +677,7 @@ F
 <p><span class="math display">\[
 \nabla F=\mathcal J
 \]</span></p>
-<p>não “lineariza” Maxwell. Em meios lineares, o sistema já é linear nos campos. A contribuição da STA é de <strong>unificação representacional</strong>, manipulação geométrica e acesso natural a invariantes e transformações de Lorentz <span class="citation" data-cites="dressel2015">(<a href="#ref-dressel2015" role="doc-biblioref">Dressel et al. 2015</a>)</span>.</p>
+<p>não “lineariza” Maxwell. Em meios lineares, o sistema já é linear nos campos. A contribuição da STA é de <strong>unificação representacional</strong>, manipulação geométrica e acesso natural a invariantes e transformações de Lorentz <span class="citation" data-cites="dressel2015"><a href="#ref-dressel2015" role="doc-biblioref">[1]</a></span>.</p>
 <p>Também não se conclui, apenas pela compacidade da notação, que um solver em AG será mais rápido. Um cálculo de RCS ainda precisa discretizar geometria e materiais, impor condições de contorno, resolver as incógnitas e extrair o campo distante. Eventual redução de tempo, memória ou número de operações deve ser demonstrada por benchmark com implementações comparáveis.</p>
 </section>
 </section>
@@ -1017,7 +1017,7 @@ C_m
 \Omega_0x\mathbf e_2,
 \]</span></p>
 <p>o divergente é nulo e <span class="math inline">\(\nabla\wedge\mathbf u\)</span> é um bivetor no plano <span class="math inline">\(e_{12}\)</span>. Em três dimensões, o dual dessa parte bivetorial corresponde à vorticidade vetorial convencional.</p>
-<p><span class="citation" data-cites="sen2023">Sen (<a href="#ref-sen2023" role="doc-biblioref">2023</a>)</span> emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O interesse para este trabalho é geométrico: o plano orientado de rotação pode ser tratado diretamente como bivetor, em vez de apenas por seu pseudovetor dual.</p>
+<p>Sen <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[6]</a></span> emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O interesse para este trabalho é geométrico: o plano orientado de rotação pode ser tratado diretamente como bivetor, em vez de apenas por seu pseudovetor dual.</p>
 </section>
 <section id="o-termo-convectivo-e-a-não-linearidade-de-euler" class="level2" data-number="3.19">
 <h2 data-number="3.19" class="anchored" data-anchor-id="o-termo-convectivo-e-a-não-linearidade-de-euler"><span class="header-section-number">3.19</span> O termo convectivo e a não linearidade de Euler</h2>
@@ -1046,7 +1046,7 @@ u\frac{du}{dx},
 \mathbf u^2=\|\mathbf u\|^2
 \]</span></p>
 <p>no espaço euclidiano, a segunda parcela é o gradiente da energia cinética por unidade de massa e a primeira relaciona a velocidade à estrutura bivetorial de rotação. A decomposição revela geometria, mas <strong>não elimina a não linearidade</strong>: <span class="math inline">\(\nabla\wedge\mathbf u\)</span> continua dependendo de <span class="math inline">\(\mathbf u\)</span>, e produtos entre campos permanecem presentes.</p>
-<p><span class="citation" data-cites="sen2023">Sen (<a href="#ref-sen2023" role="doc-biblioref">2023</a>)</span> constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb.</p>
+<p>Sen <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[6]</a></span> constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb.</p>
 </section>
 </section>
 <section id="vorticidade-vetor-de-lamb-e-analogias-com-maxwell" class="level2" data-number="3.20">
@@ -1069,7 +1069,7 @@ u\frac{du}{dx},
 =
 \nabla\wedge\mathbf u.
 \]</span></p>
-<p>Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. <span class="citation" data-cites="parameswaran2024">Parameswaran et al. (<a href="#ref-parameswaran2024" role="doc-biblioref">2024</a>)</span> apresenta uma construção desse tipo e mostra como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar.</p>
+<p>Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. Parameswaran et al. <span class="citation" data-cites="parameswaran2024"><a href="#ref-parameswaran2024" role="doc-biblioref">[7]</a></span> apresentam uma construção desse tipo e mostram como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar.</p>
 <p>A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogias são úteis para representar <strong>estrutura geométrica dos campos</strong>, mas não equivalem automaticamente à formulação conservativa completa de Euler empregada em um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e uma equação de estado. Logo, uma implementação deve manter esses objetos explicitamente identificados.</p>
 </section>
 <section id="o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador" class="level2" data-number="3.21">
@@ -1177,27 +1177,27 @@ G=(V,E,\mathcal F),
 <p>Esses dois blocos definem variáveis, hipóteses, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. A continuidade metodológica é deliberada: <strong>física → representação geométrica → dados multifidelidade → GNN → otimização determinística</strong>, sem confundir compacidade matemática com simplificação física nem precisão preditiva com validade de engenharia.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-doran2003" class="csl-entry" role="listitem">
-Doran, Chris, e Anthony Lasenby. 2003. <em>Geometric Algebra for Physicists</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511807497">https://doi.org/10.1017/CBO9780511807497</a>.
-</div>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
 <div id="ref-dressel2015" class="csl-entry" role="listitem">
-Dressel, Justin, Konstantin Y. Bliokh, e Franco Nori. 2015. <span>“Spacetime Algebra as a Powerful Tool for Electromagnetism”</span>. <em>Physics Reports</em> 589: 1–71. <a href="https://doi.org/10.1016/j.physrep.2015.06.001">https://doi.org/10.1016/j.physrep.2015.06.001</a>.
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">J. Dressel, K. Y. Bliokh, e F. Nori, <span>“Spacetime Algebra as a Powerful Tool for Electromagnetism”</span>, <em>Physics Reports</em>, v. 589, p. 1–71, 2015, doi: <a href="https://doi.org/10.1016/j.physrep.2015.06.001">10.1016/j.physrep.2015.06.001</a>.</div>
+</div>
+<div id="ref-doran2003" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">C. Doran e A. Lasenby, <em>Geometric Algebra for Physicists</em>. Cambridge University Press, 2003. doi: <a href="https://doi.org/10.1017/CBO9780511807497">10.1017/CBO9780511807497</a>.</div>
 </div>
 <div id="ref-knott1993" class="csl-entry" role="listitem">
-Knott, Eugene F., John F. Shaeffer, e Michael T. Tuley. 1993. <em>Radar Cross Section</em>. 2º ed. Artech House.
-</div>
-<div id="ref-parameswaran2024" class="csl-entry" role="listitem">
-Parameswaran, R., Susan Mathew Panakkal, e M. J. Vedan. 2024. <span>“Fluid Maxwell’s Equations in the Language of Geometric Algebra”</span>. <em>Pramana – Journal of Physics</em> 98: 62. <a href="https://doi.org/10.1007/s12043-024-02731-4">https://doi.org/10.1007/s12043-024-02731-4</a>.
-</div>
-<div id="ref-rao1982" class="csl-entry" role="listitem">
-Rao, Sadasiva M., Donald R. Wilton, e Allen W. Glisson. 1982. <span>“Electromagnetic Scattering by Surfaces of Arbitrary Shape”</span>. <em>IEEE Transactions on Antennas and Propagation</em> 30 (3): 409–18.
-</div>
-<div id="ref-sen2023" class="csl-entry" role="listitem">
-Sen, D. 2023. <span>“Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”</span>. <em>Pramana – Journal of Physics</em> 97: 132. <a href="https://doi.org/10.1007/s12043-023-02617-x">https://doi.org/10.1007/s12043-023-02617-x</a>.
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">E. F. Knott, J. F. Shaeffer, e M. T. Tuley, <em>Radar Cross Section</em>, 2º ed. Artech House, 1993.</div>
 </div>
 <div id="ref-yee1966" class="csl-entry" role="listitem">
-Yee, Kane S. 1966. <span>“Numerical Solution of Initial Boundary Value Problems Involving Maxwell’s Equations in Isotropic Media”</span>. <em>IEEE Transactions on Antennas and Propagation</em> 14 (3): 302–7.
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">K. S. Yee, <span>“Numerical Solution of Initial Boundary Value Problems Involving Maxwell’s Equations in Isotropic Media”</span>, <em>IEEE Transactions on Antennas and Propagation</em>, v. 14, n. 3, p. 302–307, 1966, doi: <a href="https://doi.org/10.1109/TAP.1966.1138693">10.1109/TAP.1966.1138693</a>.</div>
+</div>
+<div id="ref-rao1982" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">S. M. Rao, D. R. Wilton, e A. W. Glisson, <span>“Electromagnetic Scattering by Surfaces of Arbitrary Shape”</span>, <em>IEEE Transactions on Antennas and Propagation</em>, v. 30, n. 3, p. 409–418, 1982, doi: <a href="https://doi.org/10.1109/TAP.1982.1142818">10.1109/TAP.1982.1142818</a>.</div>
+</div>
+<div id="ref-sen2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">D. Sen, <span>“Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”</span>, <em>Pramana – Journal of Physics</em>, v. 97, p. 132, 2023, doi: <a href="https://doi.org/10.1007/s12043-023-02617-x">10.1007/s12043-023-02617-x</a>.</div>
+</div>
+<div id="ref-parameswaran2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">R. Parameswaran, S. M. Panakkal, e M. J. Vedan, <span>“Fluid Maxwell’s Equations in the Language of Geometric Algebra”</span>, <em>Pramana – Journal of Physics</em>, v. 98, p. 62, 2024, doi: <a href="https://doi.org/10.1007/s12043-024-02731-4">10.1007/s12043-024-02731-4</a>.</div>
 </div>
 </div>
 </section>
