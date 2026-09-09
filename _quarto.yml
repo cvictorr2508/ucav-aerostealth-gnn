@@ -22,6 +22,7 @@ book:
   downloads: [pdf]
 
 bibliography: references.bib
+csl: ieee.csl
 
 format:
   html:
