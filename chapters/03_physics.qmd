@@ -2,8 +2,6 @@
 
 Este capítulo estabelece os modelos físicos que sustentam as duas respostas centrais do problema aero-stealth de configurações de **Unmanned Combat Aerial Vehicle (UCAV)**: a **assinatura eletromagnética**, representada principalmente pela **Radar Cross Section (RCS)**, e o **desempenho aerodinâmico**, representado por distribuições de pressão, forças e momentos. O objetivo não é apenas registrar equações conhecidas, mas construir uma ponte explícita entre três níveis de descrição usados ao longo do livro: a formulação física convencional, sua interpretação em **Álgebra Geométrica (AG)** e a forma pela qual essas grandezas poderão alimentar modelos substitutos baseados em **Graph Neural Networks (GNNs)**.
 
-O texto foi organizado para leitores de formações diferentes. Um especialista em eletromagnetismo deve poder acompanhar o bloco aerodinâmico sem pressupor familiaridade recente com dinâmica dos fluidos compressível; um especialista em aerodinâmica deve poder retomar Maxwell, fasores e espalhamento sem depender de uma revisão externa; e um engenheiro de outra área deve encontrar contexto suficiente para compreender as hipóteses e o papel das principais equações. Por isso, sempre que há ganho didático, a exposição privilegia a sequência **intuição → definição → exemplo → aplicação**.
-
 A AG é empregada como linguagem estruturante quando oferece uma representação geometricamente natural. Isso não implica substituir indiscriminadamente tensores, matrizes ou discretizações numéricas por multivetores. No eletromagnetismo, as equações de Maxwell em meios lineares já constituem um sistema linear nos campos; a contribuição da **Álgebra do Espaço-Tempo (*Spacetime Algebra*, STA)** é reunir a estrutura elétrica e magnética em uma representação multivetorial compacta e geometricamente coerente [@dressel2015; @doran2003]. Na aerodinâmica compressível, por outro lado, as equações de Euler contêm não linearidades físicas intrínsecas, em especial na advecção da quantidade de movimento e na relação entre energia, pressão, densidade e velocidade. A AG pode reorganizar e explicitar estruturas geométricas desses campos, mas não elimina essas não linearidades.
 
 ## Parte I — Eletromagnetismo, espalhamento e Radar Cross Section
@@ -372,9 +370,9 @@ Essa dependência explica por que uma representação de malha para GNN não dev
 
 A escolha do método computacional depende do que precisa ser resolvido e da relação entre dimensão geométrica e comprimento de onda. Métodos de onda completa procuram representar diretamente a solução de Maxwell dentro das hipóteses constitutivas adotadas; aproximações assintóticas exploram regimes em que a estrutura da propagação permite simplificações controladas.
 
-O método de @yee1966 constitui uma referência clássica para **Finite-Difference Time-Domain (FDTD)**: espaço e tempo são discretizados e os campos evoluem passo a passo. Uma vantagem conceitual é que uma única excitação transitória pode conter várias frequências; em contrapartida, o domínio volumétrico e a resolução exigida pelo menor comprimento de onda podem elevar a demanda de memória e processamento.
+Yee [@yee1966] constitui uma referência clássica para **Finite-Difference Time-Domain (FDTD)**: espaço e tempo são discretizados e os campos evoluem passo a passo. Uma vantagem conceitual é que uma única excitação transitória pode conter várias frequências; em contrapartida, o domínio volumétrico e a resolução exigida pelo menor comprimento de onda podem elevar a demanda de memória e processamento.
 
-Em alvos PEC, formulações integrais de superfície podem reduzir as incógnitas às correntes na superfície. As funções de base de @rao1982 são fundamentais em implementações do **Method of Moments (MoM)** para malhas triangulares. Após a discretização, o problema é convertido em um sistema linear cujas propriedades computacionais dependem do tamanho da malha e da formulação utilizada.
+Em alvos PEC, formulações integrais de superfície podem reduzir as incógnitas às correntes na superfície. As funções de base de Rao, Wilton e Glisson [@rao1982] são fundamentais em implementações do **Method of Moments (MoM)** para malhas triangulares. Após a discretização, o problema é convertido em um sistema linear cujas propriedades computacionais dependem do tamanho da malha e da formulação utilizada.
 
 Quando o alvo é eletricamente grande, aproximações de alta frequência, como **Physical Optics (PO)** e técnicas baseadas em raios, podem reduzir a demanda de recursos ao representar mecanismos dominantes sem resolver todos os detalhes de uma formulação de onda completa. Essa economia vem acompanhada de hipóteses adicionais, especialmente relevantes em bordas, regiões de sombra, cavidades ou múltiplas interações.
 
@@ -449,7 +447,7 @@ $$
 }.
 $$
 
-A igualdade deve ser entendida por graus: a parte \(\nabla\cdot F\) contém as equações não homogêneas associadas às fontes; a parte \(\nabla\wedge F\) contém as equações homogêneas. A escrita única não apaga as quatro leis — ela mostra que elas são projeções de grau de uma mesma relação geométrica. @dressel2015 discute extensamente essa unificação do campo eletromagnético em STA.
+A igualdade deve ser entendida por graus: a parte \(\nabla\cdot F\) contém as equações não homogêneas associadas às fontes; a parte \(\nabla\wedge F\) contém as equações homogêneas. A escrita única não apaga as quatro leis — ela mostra que elas são projeções de grau de uma mesma relação geométrica. Dressel, Bliokh e Nori [@dressel2015] discutem extensamente essa unificação do campo eletromagnético em STA.
 
 ### O que a formulação compacta faz — e o que não faz
 
@@ -871,7 +869,7 @@ $$
 
 o divergente é nulo e \(\nabla\wedge\mathbf u\) é um bivetor no plano \(e_{12}\). Em três dimensões, o dual dessa parte bivetorial corresponde à vorticidade vetorial convencional.
 
-@sen2023 emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O interesse para este trabalho é geométrico: o plano orientado de rotação pode ser tratado diretamente como bivetor, em vez de apenas por seu pseudovetor dual.
+Sen [@sen2023] emprega essa interpretação bivetorial da vorticidade ao formular analogias entre dinâmica dos fluidos e eletromagnetismo. O interesse para este trabalho é geométrico: o plano orientado de rotação pode ser tratado diretamente como bivetor, em vez de apenas por seu pseudovetor dual.
 
 ## O termo convectivo e a não linearidade de Euler
 
@@ -911,7 +909,7 @@ $$
 
 no espaço euclidiano, a segunda parcela é o gradiente da energia cinética por unidade de massa e a primeira relaciona a velocidade à estrutura bivetorial de rotação. A decomposição revela geometria, mas **não elimina a não linearidade**: \(\nabla\wedge\mathbf u\) continua dependendo de \(\mathbf u\), e produtos entre campos permanecem presentes.
 
-@sen2023 constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb.
+Sen [@sen2023] constrói uma analogia formal envolvendo vorticidade e vetor de Lamb para escoamentos compressíveis, incompressíveis, viscosos e invíscidos, com termos-fonte ajustados ao caso físico. A formulação parte, porém, da dinâmica não linear do fluido e reorganiza suas quantidades; não demonstra que Navier-Stokes ou Euler se tornem lineares pelo uso de AG. O próprio artigo apresenta a analogia de Maxwell como uma reorganização dos campos de vorticidade e vetor de Lamb.
 
 ## Vorticidade, vetor de Lamb e analogias com Maxwell
 
@@ -939,7 +937,7 @@ $$
 \nabla\wedge\mathbf u.
 $$
 
-Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. @parameswaran2024 apresenta uma construção desse tipo e mostra como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar.
+Em construções espaço-temporais mais amplas, quantidades associadas à vorticidade e ao vetor de Lamb podem ser reunidas em um bivetor de campo. Parameswaran et al. [@parameswaran2024] apresentam uma construção desse tipo e mostram como quatro equações análogas às de Maxwell podem ser reunidas em uma expressão multivetorial; o trabalho também relaciona o dual de Hodge à multiplicação pelo pseudoescalar.
 
 A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogias são úteis para representar **estrutura geométrica dos campos**, mas não equivalem automaticamente à formulação conservativa completa de Euler empregada em um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e uma equação de estado. Logo, uma implementação deve manter esses objetos explicitamente identificados.
 

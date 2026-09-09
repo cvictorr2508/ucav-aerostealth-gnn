@@ -2,11 +2,9 @@
 
 A **Álgebra Geométrica (AG)**, também denominada álgebra de Clifford quando se enfatiza sua construção algébrica, constitui o formalismo matemático estruturante adotado neste trabalho. Seu papel é fornecer uma linguagem comum para representar geometria orientada, transformações, campos físicos e atributos utilizados pelos modelos de aprendizado em grafos, reduzindo a fragmentação entre notações vetoriais, matriciais, tensoriais e de formas diferenciais quando essas descrições admitem uma representação geométrica comum [@hestenes1984; @doran2003; @baylis1996].
 
-Este capítulo foi organizado para que a AG possa ser acompanhada por um leitor que conhece álgebra linear e cálculo vetorial, mas ainda não teve contato sistemático com multivetores. Por essa razão, cada conceito é introduzido em três níveis: primeiro sua interpretação geométrica, depois sua definição algébrica e, por fim, sua utilidade para o problema aero-stealth. A intenção não é substituir de imediato toda notação conhecida, mas mostrar como objetos familiares --- vetores, áreas orientadas, rotações, operadores e derivadas --- passam a fazer parte de uma estrutura algébrica única.
-
 A adoção da AG não implica que toda formulação matricial ou tensorial deva ser substituída por um multivetor. Matrizes permanecem representações coordenadas naturais de aplicações lineares; tensores gerais preservam seu papel quando expressam relações multilineares que não são antissimétricas; e solucionadores numéricos podem requerer vetores, matrizes e escalares convencionais em suas interfaces. A contribuição da AG consiste em organizar, de modo geometricamente explícito, os objetos para os quais métrica, orientação, produtos, graus, dualidade e transformações podem ser tratados dentro de uma única álgebra associativa.
 
-Essa distinção é particularmente importante para o problema aero-stealth. A geometria superficial de um **Unmanned Combat Aerial Vehicle (UCAV)**, os campos eletromagnéticos, os campos aerodinâmicos e as mensagens trocadas por uma **Graph Neural Network (GNN)** apresentam estruturas geométricas diferentes. O objetivo deste capítulo é construir, passo a passo, a linguagem que permitirá representar essas estruturas sem confundir o objeto geométrico com suas componentes em uma base particular.
+Essa distinção é particularmente importante para o problema aero-stealth. A geometria superficial de um **Unmanned Combat Aerial Vehicle (UCAV)**, os campos eletromagnéticos, os campos aerodinâmicos e as mensagens trocadas por uma **Graph Neural Network (GNN)** apresentam estruturas geométricas diferentes. O objetivo deste capítulo é construir a linguagem que permitirá representar essas estruturas sem confundir o objeto geométrico com suas componentes em uma base particular.
 
 ## Partindo de objetos familiares: vetores, comprimento, ângulo e orientação
 
@@ -766,7 +764,7 @@ Essa distinção é importante para evitar uma identificação frequente: **matr
 
 ### Dyadics como operadores lineares
 
-Na análise diádica, um *dyadic* pode ser escrito como combinação de produtos diádicos de vetores e atua como operador linear sobre outro vetor. @vanbladel2007 mostra que a mesma transformação vetorial pode ser apresentada tanto em forma matricial quanto em forma diádica.
+Na análise diádica, um *dyadic* pode ser escrito como combinação de produtos diádicos de vetores e atua como operador linear sobre outro vetor. Van Bladel [@vanbladel2007] mostra que a mesma transformação vetorial pode ser apresentada tanto em forma matricial quanto em forma diádica.
 
 Para vetores \(a\) e \(b\), o operador diádico \(a\otimes b\) atua sobre \(x\) como
 
@@ -1089,7 +1087,7 @@ $$
 \Omega=\nabla\wedge u.
 $$
 
-O bivetor identifica o plano local de rotação do campo de velocidade. @sen2023 emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, @parameswaran2024 desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.
+O bivetor identifica o plano local de rotação do campo de velocidade. Sen [@sen2023] emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, Parameswaran et al. [@parameswaran2024] desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.
 
 ### O termo convectivo continua não linear
 
@@ -1119,7 +1117,7 @@ Uma GNN processa dados por meio de nós, arestas e agregação de mensagens. Em 
 
 Codificar essas grandezas apenas como uma sequência de números é possível, mas transfere para a rede a responsabilidade de aprender, a partir dos dados, relações geométricas que já são conhecidas analiticamente. A AG oferece uma forma de manter parte dessa estrutura explícita.
 
-@zhong2025 propõem uma **Graph Geometric Algebra Network (GGAN)** na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.
+Zhong e Cao [@zhong2025] propõem uma **Graph Geometric Algebra Network (GGAN)** na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.
 
 ### Uma mensagem geometricamente estruturada
 
