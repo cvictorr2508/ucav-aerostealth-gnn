@@ -93,7 +93,7 @@ $$
 
 onde \(\mathbf m_{ij}^{(\ell)}\) é o vetor-mensagem e \(\phi_e^{(\ell)}\) é uma função aprendida da camada, frequentemente implementada por uma pequena rede multilayer perceptron (MLP).
 
-O nó \(i\) pode receber várias mensagens, uma para cada \(j\in\mathcal N(i)\). Elas são combinadas por um operador de agregação \(igoplus\):
+O nó \(i\) pode receber várias mensagens, uma para cada \(j\in\mathcal N(i)\). Elas são combinadas por um operador de agregação \(\bigoplus\):
 
 $$
 \overline{\mathbf m}_i^{(\ell)}
@@ -102,7 +102,7 @@ $$
 \mathbf m_{ij}^{(\ell)}.
 $$
 
-O vetor \(\overline{\mathbf m}_i^{(\ell)}\) é a mensagem agregada recebida pelo nó. Soma, média e máximo são exemplos de \(igoplus\) que não dependem da ordem em que os vizinhos são enumerados.
+O vetor \(\overline{\mathbf m}_i^{(\ell)}\) é a mensagem agregada recebida pelo nó. Soma, média e máximo são exemplos de \(\bigoplus\) que não dependem da ordem em que os vizinhos são enumerados.
 
 O novo estado do nó é então calculado por
 
@@ -195,7 +195,7 @@ $$
 \widehat{\mathbf y},
 $$
 
-em que \(oldsymbol\theta\) representa todos os parâmetros treináveis da rede, \(\mathbf c\) reúne as condições físicas do caso e \(\widehat{\mathbf y}\) é a resposta predita. Essa resposta pode conter campos locais, coeficientes integrados ou curvas angulares. A GNN atua, portanto, como **modelo substituto (surrogate)** da solução convergida; ela não precisa reproduzir a marcha temporal interna do solver.
+em que \(\boldsymbol\theta\) representa todos os parâmetros treináveis da rede, \(\mathbf c\) reúne as condições físicas do caso e \(\widehat{\mathbf y}\) é a resposta predita. Essa resposta pode conter campos locais, coeficientes integrados ou curvas angulares. A GNN atua, portanto, como **modelo substituto (surrogate)** da solução convergida; ela não precisa reproduzir a marcha temporal interna do solver.
 
 ## Localidade, longo alcance e escala da malha
 
@@ -235,7 +235,7 @@ $$
 
 mede o tamanho elétrico do alvo e explicita a razão entre escala geométrica e comprimento de onda.
 
-Na aerodinâmica de Euler, condições como o número de Mach do escoamento livre \(M_\infty\), o ângulo de ataque \(\alpha\), o ângulo de derrapagem \(eta\) e a razão de calores específicos \(\gamma\) têm interpretação direta. Quando a saída é adimensional, parâmetros dimensionais redundantes podem ser evitados; quando campos dimensionais são previstos, as escalas termodinâmicas necessárias devem permanecer disponíveis.
+Na aerodinâmica de Euler, condições como o número de Mach do escoamento livre \(M_\infty\), o ângulo de ataque \(\alpha\), o ângulo de derrapagem \(\beta\) e a razão de calores específicos \(\gamma\) têm interpretação direta. Quando a saída é adimensional, parâmetros dimensionais redundantes podem ser evitados; quando campos dimensionais são previstos, as escalas termodinâmicas necessárias devem permanecer disponíveis.
 
 Ângulos periódicos requerem cuidado. Usar somente um azimute \(\phi\) introduz uma descontinuidade artificial entre \(0\) e \(2\pi\). A codificação
 
@@ -381,7 +381,7 @@ $$
 \mathcal G_{\mathrm{EM},\boldsymbol\theta}
 $$
 
-o operador aprendido, parametrizado pelos pesos \(oldsymbol\theta\) da rede. A entrada é o grafo \(G\) e um vetor de condições eletromagnéticas \(\mathbf c_{\mathrm{EM}}\); a saída \(\widehat{\mathbf y}_{\mathrm{EM}}\) é a resposta prevista:
+o operador aprendido, parametrizado pelos pesos \(\boldsymbol\theta\) da rede. A entrada é o grafo \(G\) e um vetor de condições eletromagnéticas \(\mathbf c_{\mathrm{EM}}\); a saída \(\widehat{\mathbf y}_{\mathrm{EM}}\) é a resposta prevista:
 
 $$
 \mathcal G_{\mathrm{EM},\boldsymbol\theta}:
@@ -505,7 +505,7 @@ $$
 \right).
 $$
 
-Aqui, \(M_\infty\) é o número de Mach do escoamento livre; \(\alpha\) é o ângulo de ataque; \(eta\) é o ângulo de derrapagem; \(\gamma\) é a razão de calores específicos; \(N_f\) é o número de faces da malha superficial; \(\widehat C_{p,f}\) é o coeficiente de pressão previsto na face \(f\); e \(\widehat C_L\), \(\widehat C_D\) e \(\widehat C_m\) são os coeficientes integrados previstos.
+Aqui, \(M_\infty\) é o número de Mach do escoamento livre; \(\alpha\) é o ângulo de ataque; \(\beta\) é o ângulo de derrapagem; \(\gamma\) é a razão de calores específicos; \(N_f\) é o número de faces da malha superficial; \(\widehat C_{p,f}\) é o coeficiente de pressão previsto na face \(f\); e \(\widehat C_L\), \(\widehat C_D\) e \(\widehat C_m\) são os coeficientes integrados previstos.
 
 O coeficiente de pressão é definido por
 
@@ -577,7 +577,7 @@ $$
 [\rho,\rho u,\rho v,\rho w,\rho E]^T
 $$
 
-o vetor de variáveis conservadas, com densidade \(ho\), componentes de velocidade \(u,v,w\) e energia total específica \(E\). Em regime estacionário, o resíduo simbólico pode ser escrito como
+o vetor de variáveis conservadas, com densidade \(\rho\), componentes de velocidade \(u,v,w\) e energia total específica \(E\). Em regime estacionário, o resíduo simbólico pode ser escrito como
 
 $$
 \mathcal R_U=
@@ -592,8 +592,7 @@ $$
 \mathcal R_M=\nabla F-\mathcal J
 $$
 
-requer o bivetor de campo eletromagnético \(F\), o operador derivada geométrica \(
-abla\) e o quatro-vetor de fonte \(\mathcal J\) na mesma convenção de unidades e assinatura definida no Capítulo 3. Uma rede que prevê somente RCS não contém essas variáveis locais.
+requer o bivetor de campo eletromagnético \(F\), o operador derivada geométrica \(\nabla\) e o quatro-vetor de fonte \(\mathcal J\) na mesma convenção de unidades e assinatura definida no Capítulo 3. Uma rede que prevê somente RCS não contém essas variáveis locais.
 
 Assim, consistências integrais ou relações entre campo e resposta global podem ser mais apropriadas do que um resíduo PDE completo quando a saída do surrogate é reduzida.
 
