@@ -1,66 +1,84 @@
 # Graph Neural Networks para modelagem substituta baseada em malhas
 
-Este capítulo apresenta as **Graph Neural Networks (GNNs)** como principal mecanismo computacional para acelerar as avaliações repetidas de eletromagnetismo e aerodinâmica no problema aero-stealth. A ideia central é simples: os solvers de **Computational Electromagnetics (CEM)** e **Computational Fluid Dynamics (CFD)** continuam sendo as referências para gerar dados e reavaliar soluções relevantes, mas uma GNN treinada sobre essas soluções pode aproximar a relação entre geometria, condições de operação e respostas físicas com custo de inferência muito menor. A utilidade científica do modelo substituto não decorre apenas de reproduzir bem os dados de treinamento; ela depende de generalizar para geometrias e condições não vistas, preservar estruturas físicas relevantes e reduzir efetivamente a demanda de recursos do processo de otimização.
+As **Graph Neural Networks (GNNs)** constituem a principal camada computacional de modelagem substituta deste trabalho. Os solvers de **Computational Electromagnetics (CEM)** e **Computational Fluid Dynamics (CFD)** permanecem como modelos de referência para gerar dados, validar respostas e reavaliar soluções de projeto; a função da GNN é aproximar, com menor demanda de recursos por avaliação, a relação entre geometria, condições de operação e respostas físicas durante as muitas consultas exigidas pela otimização aero-stealth.
 
-O capítulo é organizado para leitores de formações diferentes. Um especialista em aerodinâmica ou eletromagnetismo não precisa dominar previamente aprendizado em grafos; da mesma forma, um especialista em aprendizado de máquina deve encontrar contexto suficiente para compreender por que malhas, orientações, condições de contorno e integrais de superfície são parte do problema, e não simples detalhes de pré-processamento. Sempre que há ganho didático, a exposição segue a sequência **intuição → definição → exemplo → aplicação**.
+A motivação para usar grafos nasce da própria discretização. Superfícies e volumes empregados em CEM e CFD são representados por malhas cujas entidades possuem conectividade, posição, orientação, área ou volume e, frequentemente, variáveis físicas associadas. Uma GNN pode operar diretamente sobre essa estrutura relacional sem exigir uma grade cartesiana regular nem uma dimensão fixa de entrada. Essa adequação geométrica, entretanto, não garante superioridade por si só: a representação do grafo, o alcance das interações, as variáveis previstas e a robustez a mudanças de discretização precisam ser avaliados empiricamente [@bronstein2021; @pfaff2021].
 
-A escolha de grafos é particularmente adequada porque as geometrias de interesse são representadas naturalmente por malhas não estruturadas. Ao mesmo tempo, essa correspondência não deve ser confundida com uma garantia de superioridade. Uma malha pode ser transformada em grafo de diferentes maneiras; fenômenos físicos podem envolver interações de longo alcance; e arquiteturas distintas podem responder de forma diferente a mudanças de discretização. Por isso, o uso de GNNs é tratado como uma hipótese computacional fortemente motivada pela estrutura do problema e que deve ser verificada por comparação controlada [@bronstein2021; @pfaff2021].
+A utilidade do modelo substituto será julgada em dois níveis. O primeiro é **físico-preditivo**: erro em campos, coeficientes e curvas de Radar Cross Section (RCS), generalização para geometrias não vistas e consistência com relações físicas relevantes. O segundo é **computacional e de engenharia**: tempo de inferência, uso de CPU/GPU e memória, quantidade de avaliações dos modelos de referência e qualidade das soluções produzidas pela otimização após reavaliação.
 
 ## Da malha numérica ao grafo
 
 ### Por que não tratar a geometria apenas como um vetor?
 
-Considere duas triangulações de uma mesma superfície. Se as coordenadas de todos os vértices forem simplesmente concatenadas em um vetor, a representação passa a depender da numeração dos vértices. Trocar a ordem dos índices altera o vetor, embora a superfície física permaneça a mesma. Além disso, geometrias com números diferentes de vértices passam a ter dimensões diferentes, dificultando o uso direto de redes densas convencionais.
+Considere duas triangulações de uma mesma superfície. Se as coordenadas de todos os vértices forem simplesmente concatenadas em um vetor, a representação passa a depender da numeração dos vértices. Trocar a ordem dos índices altera esse vetor, embora a superfície física permaneça a mesma. Geometrias com números diferentes de vértices também passam a produzir vetores de dimensões diferentes.
 
-Uma imagem regular resolve parcialmente esse problema ao impor uma grade fixa, mas introduz outra hipótese: vizinhos são definidos por deslocamentos regulares em linhas, colunas ou voxels. Malhas de aeronaves, painéis eletromagnéticos e discretizações CFD, por outro lado, são tipicamente não estruturados. Tamanhos de elementos variam, a conectividade acompanha a geometria e regiões de maior gradiente podem receber refinamento local.
+Uma imagem ou grade regular evita parte desse problema ao impor posições fixas, mas introduz outra hipótese: a vizinhança passa a ser determinada por deslocamentos regulares em linhas, colunas ou voxels. Malhas de aeronaves, painéis eletromagnéticos e discretizações CFD são, em geral, não estruturadas; o tamanho dos elementos varia e regiões de maior gradiente podem receber refinamento local.
 
-Um grafo preserva justamente a informação essencial de **quais entidades estão conectadas**, sem exigir uma indexação regular. Essa é a primeira razão para empregá-lo como representação nativa de malhas.
+O grafo preserva explicitamente a relação **quem é vizinho de quem**, sem exigir uma indexação regular. Essa propriedade permite representar malhas com números variáveis de entidades e conectividades distintas.
 
-### Definição de grafo
+### Definição de grafo e atributos
 
-Um grafo simples é escrito como
+Um grafo é representado por
 
 $$
 G=(V,E),
 $$
 
-onde \(V\) é o conjunto de nós e \(E\) o conjunto de arestas. Para aprendizado, cada nó \(i\in V\) pode possuir atributos \(\mathbf x_i\), cada aresta \((i,j)\in E\) pode possuir atributos \(\mathbf e_{ij}\), e o grafo inteiro pode receber atributos globais \(\mathbf g\).
+em que \(V\) é o conjunto de nós e \(E\) é o conjunto de arestas. O índice \(i\in V\) identifica um nó, enquanto o par \((i,j)\in E\) identifica uma relação entre os nós \(i\) e \(j\). Dependendo da implementação, uma aresta geométrica não orientada pode ser representada internamente por duas arestas direcionadas, \(i\rightarrow j\) e \(j\rightarrow i\).
 
-No contexto aero-stealth, esses três níveis têm interpretações naturais:
+Para aprendizado, três níveis de atributos são úteis:
 
-- atributos de nó podem descrever posição, normal local, área dual, curvatura, material ou valores de um campo físico;
-- atributos de aresta podem descrever vetor relativo, distância, ângulo diedro ou relações de orientação;
-- atributos globais podem descrever frequência, direção de incidência, polarização, número de Mach, ângulo de ataque e demais condições de operação.
+- \(\mathbf x_i\in\mathbb R^{d_x}\): vetor de atributos do nó \(i\), com \(d_x\) componentes;
+- \(\mathbf e_{ij}\in\mathbb R^{d_e}\): vetor de atributos da aresta que relaciona \(i\) e \(j\);
+- \(\mathbf g\in\mathbb R^{d_g}\): vetor de atributos globais do caso analisado.
 
-A estrutura de grafo não precisa coincidir obrigatoriamente com os vértices da malha. A escolha deve respeitar onde as variáveis físicas vivem na discretização.
+No problema aero-stealth, \(\mathbf x_i\) pode conter posição, normal, área associada, curvatura, material ou um campo físico local. O vetor \(\mathbf e_{ij}\) pode conter deslocamento relativo, distância, ângulo entre normais ou propriedades de uma interface. O vetor global \(\mathbf g\) pode conter frequência, direção de incidência e polarização no problema eletromagnético, ou número de Mach, ângulo de ataque e outras condições do escoamento no problema aerodinâmico.
+
+A correspondência entre nós do grafo e entidades da malha não é única. Ela deve respeitar onde as incógnitas do modelo numérico estão definidas.
 
 ### Grafo primal, grafo de faces e grafo de células
 
-Em uma malha superficial triangular, a representação mais imediata é o **grafo primal**: cada vértice da malha torna-se um nó e cada aresta geométrica torna-se uma aresta do grafo. Essa escolha é conveniente para campos definidos em vértices e para atributos como coordenadas e normais nodais.
+Em uma malha superficial triangular, o **grafo primal** associa cada vértice da malha a um nó e conecta dois nós quando os vértices correspondentes compartilham uma aresta. Essa escolha é natural para campos definidos nos vértices.
 
-Outra possibilidade é tomar cada face triangular como nó. Duas faces tornam-se vizinhas quando compartilham uma aresta. Esse **grafo de faces** é natural quando pressão, corrente superficial ou outros campos são armazenados por elemento. A área orientada e a normal da face podem então ser atributos do próprio nó.
+Outra representação toma cada face triangular como um nó. Duas faces tornam-se vizinhas quando compartilham uma aresta. Esse **grafo de faces** é conveniente quando a grandeza física está definida por elemento, como uma pressão de face ou uma corrente superficial discretizada.
 
-Em uma malha volumétrica de volumes finitos, cada célula pode ser um nó e duas células podem ser conectadas quando compartilham uma face. Essa representação aproxima diretamente a topologia usada para fluxos numéricos entre volumes de controle.
+Em uma malha volumétrica de volumes finitos, cada célula pode ser representada por um nó, e duas células são conectadas quando compartilham uma face. Nesse caso, a aresta do grafo corresponde diretamente a uma interface através da qual o solver calcula um fluxo numérico.
 
-Não existe, portanto, uma conversão universal de “malha para grafo”. O princípio mais seguro é alinhar a representação com a localização das incógnitas e com o operador discreto que gerou os dados.
+Portanto, não existe uma transformação universal de malha em grafo. A representação deve ser compatível com a localização das variáveis físicas e com o operador discreto que produziu os dados.
 
 ### O que a conectividade preserva — e o que ela não preserva
 
-A conectividade informa vizinhança, mas não determina sozinha a geometria. Dois grafos combinatoriamente idênticos podem representar superfícies geometricamente diferentes. Por isso, coordenadas relativas, comprimentos, áreas, orientações e outros atributos geométricos continuam necessários.
+A conectividade determina relações de vizinhança, mas não determina sozinha a geometria. Dois grafos combinatoriamente idênticos podem representar superfícies geometricamente diferentes. Comprimentos, áreas, orientações e posições relativas continuam necessários para distinguir essas geometrias.
 
-De modo semelhante, uma mesma superfície pode ser remalhada sem alterar o objeto físico. A numeração dos vértices e até a conectividade local podem mudar. Uma GNN adequada deve ser insensível à mera permutação dos índices e, quando possível, robusta a alterações de discretização que preservem a geometria e a física.
+O inverso também é relevante: uma mesma superfície física pode ser remalhada. A numeração dos vértices e a conectividade local podem mudar sem que a aeronave tenha mudado de forma relevante. Uma GNN adequada deve ser insensível à simples permutação dos índices e, quando o uso pretendido exigir, robusta a mudanças de discretização que preservem a geometria e a física.
 
-## Message passing: aprender interações pela vizinhança
+## Message Passing Neural Networks
 
-### Intuição
+### Intuição: informação que percorre a conectividade
 
-Em um método numérico, a atualização de uma variável em um elemento frequentemente depende de valores em elementos vizinhos. Em volumes finitos, por exemplo, um fluxo atravessa faces compartilhadas; em elementos finitos, funções de base conectam graus de liberdade de elementos adjacentes. Essa estrutura local sugere uma operação aprendida: cada nó recebe informações de seus vizinhos, combina essas mensagens e atualiza seu estado interno.
+Em muitos métodos numéricos, a atualização de uma variável depende de entidades vizinhas. Em volumes finitos, fluxos atravessam faces compartilhadas; em elementos finitos, graus de liberdade são acoplados pela conectividade dos elementos. Uma GNN baseada em **message passing** utiliza uma ideia análoga em nível arquitetural: cada nó recebe informações de seus vizinhos, agrega essas informações e atualiza uma representação interna.
 
-Esse procedimento é denominado **message passing**. O termo não implica que a GNN esteja reproduzindo exatamente um stencil de CFD ou uma matriz de CEM. Ele descreve apenas uma arquitetura relacional em que a conectividade do grafo controla por onde a informação se propaga.
+Uma **Message Passing Neural Network (MPNN)** é uma família de GNNs em que esse ciclo mensagem–agregação–atualização é repetido por uma ou mais camadas. A mensagem é aprendida a partir dos estados das entidades relacionadas e de seus atributos; a agregação precisa ser compatível com o fato de que a ordem de enumeração dos vizinhos não possui significado físico; a atualização produz o novo estado latente do nó. Essa formulação é suficientemente geral para englobar grande número de arquiteturas de GNN e aparece também em simuladores aprendidos sobre malhas [@bronstein2021; @pfaff2021].
+
+Neste livro, a expressão **MPNN convencional** designa o baseline em que estados latentes e atributos são representados por vetores reais usuais e as funções aprendidas são redes neurais genéricas, sem impor explicitamente operações multivetoriais de Álgebra Geométrica (AG) ou uma lei de equivariância rotacional. “Convencional” não significa “sem geometria” ou “sem física”: vetores relativos, normais, áreas e condições físicas podem continuar presentes como atributos. O termo apenas distingue esse baseline de variantes com estrutura geométrica adicional.
 
 ### Formalização de uma camada
 
-Se \(\mathbf h_i^{(\ell)}\) é o estado latente do nó \(i\) na camada \(\ell\), uma forma geral de mensagem enviada por \(j\) a \(i\) é
+Considere uma camada de índice \(\ell\). O vetor
+
+$$
+\mathbf h_i^{(\ell)}\in\mathbb R^{d_h}
+$$
+
+representa o **estado latente** do nó \(i\) nessa camada, com \(d_h\) componentes aprendidas. Para o nó \(i\), define-se o conjunto de vizinhos
+
+$$
+\mathcal N(i)=\{j\in V:(j,i)\in E\}.
+$$
+
+Assim, \(j\in\mathcal N(i)\) significa que existe uma aresta pela qual informação pode ser enviada de \(j\) para \(i\). O atributo \(\mathbf e_{ij}\) descreve essa relação, e \(\mathbf g\) contém condições globais compartilhadas por todo o caso.
+
+A mensagem enviada por \(j\) para \(i\) pode ser escrita como
 
 $$
 \mathbf m_{ij}^{(\ell)}=
@@ -73,9 +91,9 @@ $$
 \right),
 $$
 
-onde \(\phi_e^{(\ell)}\) é uma função aprendida, tipicamente uma pequena rede neural.
+onde \(\mathbf m_{ij}^{(\ell)}\) é o vetor-mensagem e \(\phi_e^{(\ell)}\) é uma função aprendida da camada, frequentemente implementada por uma pequena rede multilayer perceptron (MLP).
 
-As mensagens recebidas são então agregadas por uma operação \(\bigoplus\) que não depende da ordem dos vizinhos:
+O nó \(i\) pode receber várias mensagens, uma para cada \(j\in\mathcal N(i)\). Elas são combinadas por um operador de agregação \(igoplus\):
 
 $$
 \overline{\mathbf m}_i^{(\ell)}
@@ -84,7 +102,9 @@ $$
 \mathbf m_{ij}^{(\ell)}.
 $$
 
-Soma, média e máximo são exemplos de agregadores invariantes a permutações. O estado do nó é atualizado por
+O vetor \(\overline{\mathbf m}_i^{(\ell)}\) é a mensagem agregada recebida pelo nó. Soma, média e máximo são exemplos de \(igoplus\) que não dependem da ordem em que os vizinhos são enumerados.
+
+O novo estado do nó é então calculado por
 
 $$
 \mathbf h_i^{(\ell+1)}=
@@ -93,22 +113,40 @@ $$
 \mathbf h_i^{(\ell)},
 \overline{\mathbf m}_i^{(\ell)},
 \mathbf g
-\right).
+\right),
 $$
 
-Após várias camadas, o estado de cada nó contém informação de uma vizinhança progressivamente maior. Esse esquema geral é compatível com a família de modelos de aprendizado geométrico discutida por @bronstein2021 e com simuladores baseados em malhas como o MeshGraphNets de @pfaff2021.
+em que \(\phi_v^{(\ell)}\) é a função aprendida de atualização do nó. A camada completa, portanto, executa três operações: construir mensagens nas arestas, agregar mensagens incidentes e atualizar os nós.
 
-### Um exemplo mínimo
+### Exemplo mínimo e campo receptivo
 
-Considere três faces triangulares \(f_1,f_2,f_3\), com \(f_1\) adjacente a \(f_2\) e \(f_2\) adjacente a \(f_3\). Em uma camada, \(f_1\) recebe informação apenas de \(f_2\). Depois de duas camadas, a informação originada em \(f_3\) pode alcançar \(f_1\) por meio de \(f_2\).
+Considere três faces \(f_1,f_2,f_3\), com \(f_1\) adjacente a \(f_2\) e \(f_2\) adjacente a \(f_3\). Em uma única camada local, \(f_1\) recebe informação de \(f_2\), mas não diretamente de \(f_3\). Depois de duas camadas, informação originada em \(f_3\) pode alcançar \(f_1\) através de \(f_2\).
 
-Esse exemplo mostra o conceito de **campo receptivo**. Com \(K\) camadas locais, um nó recebe diretamente informação de até \(K\) saltos no grafo. Em malhas grandes, aumentar \(K\) indefinidamente não é uma solução neutra: aumenta processamento e memória e pode dificultar o treinamento. A arquitetura precisa, portanto, equilibrar localidade e comunicação global.
+Esse exemplo introduz o **campo receptivo** da GNN. Após \(K\) camadas de message passing local, um nó pode incorporar informação proveniente de entidades separadas por até \(K\) arestas do grafo. Em uma malha grande, aumentar \(K\) indefinidamente eleva o número de operações e o armazenamento de ativações e pode degradar o treinamento. A arquitetura precisa, portanto, equilibrar interação local e comunicação de maior alcance.
 
-## Encoder, processador e decoder
+## Do message passing ao Geometric Deep Learning
 
-Uma organização particularmente útil para problemas em malhas é o padrão **encode–process–decode** [@pfaff2021]. O **encoder** transforma atributos físicos e geométricos em estados latentes. O **processador** aplica várias etapas de message passing. O **decoder** converte os estados latentes para a grandeza física desejada.
+**Geometric Deep Learning (GDL)** é um paradigma mais amplo que organiza arquiteturas de aprendizado de acordo com a estrutura geométrica do domínio e com as transformações sob as quais o problema possui regularidades, como permutações, translações, rotações ou simetrias de grupos. Grafos constituem um desses domínios; GNNs são uma das famílias de modelos estudadas nesse quadro [@bronstein2021].
 
-Esquematicamente,
+A relação é, portanto,
+
+$$
+\text{Geometric Deep Learning}
+\supset
+\text{Graph Neural Networks}
+\supset
+\text{Message Passing Neural Networks},
+$$
+
+quando se considera a MPNN como uma família particular de GNNs baseada em troca local de mensagens.
+
+GDL e **Álgebra Geométrica** não são sinônimos. GDL é um quadro conceitual para construir redes que respeitem estruturas e simetrias do domínio. AG é o formalismo algébrico desenvolvido no Capítulo 2 para representar vetores, bivetores, rotores e outros objetos geométricos. Neste trabalho, AG pode fornecer atributos, canais latentes e operadores para uma GNN; GDL fornece a linguagem arquitetural para discutir propriedades como invariância e equivariância.
+
+## Encoder, processador, decoder e readout
+
+Uma organização frequente em problemas de malha é o padrão **encode–process–decode** [@pfaff2021]. O **encoder** converte atributos de entrada em estados latentes; o **processador** aplica \(K\) etapas de message passing; o **decoder** transforma os estados resultantes na grandeza física desejada.
+
+Se \(\mathbf x_i\) representa os atributos iniciais do nó, \(\mathbf e_{ij}\) os atributos da aresta e \(\mathbf g\) as condições globais, a sequência pode ser representada por
 
 $$
 \{\mathbf x_i,\mathbf e_{ij},\mathbf g\}
@@ -120,260 +158,284 @@ $$
 \widehat{\mathbf y}.
 $$
 
-O decoder depende da tarefa. Se o objetivo é prever \(C_p\) em toda a superfície, há uma saída local por nó ou face. Se o objetivo é prever \(C_L\), \(C_D\) ou uma medida escalar de RCS, é necessária uma operação de **readout** que reúna informação do grafo inteiro.
+O símbolo \(\widehat{\mathbf y}\) indica a resposta **predita** pela rede, em contraste com a resposta de referência \(\mathbf y\) produzida pelo conjunto de dados ou pelo solver.
 
-Um readout puramente estatístico poderia usar
+Quando a saída é local, como um coeficiente de pressão por face, o decoder pode produzir uma previsão para cada nó. Quando a saída é global, como \(C_L\), \(C_D\) ou uma medida integrada de RCS, é necessário um **readout** que reúna os estados de todo o grafo.
 
-$$
-\mathbf h_G=\frac{1}{|V|}\sum_{i\in V}\mathbf h_i.
-$$
-
-Entretanto, em uma superfície com refinamento não uniforme, todos os nós não representam necessariamente a mesma área física. Quando a quantidade tem interpretação integral, um readout ponderado por área pode ser mais coerente:
+Se \(N=|V|\) é o número de nós, um readout médio simples é
 
 $$
 \mathbf h_G=
-\frac{\sum_i A_i\mathbf h_i}
-{\sum_i A_i},
+\frac{1}{N}\sum_{i\in V}\mathbf h_i^{(K)},
 $$
 
-onde \(A_i\) é a área associada ao nó ou elemento. A escolha de pooling é, portanto, parte da modelagem física, não apenas um hiperparâmetro abstrato.
+onde \(\mathbf h_G\) é uma representação global do grafo. Em uma malha superficial com refinamento não uniforme, todos os nós não correspondem necessariamente à mesma área física. Se \(A_i\) é a área associada ao nó ou elemento \(i\), um readout ponderado pode ser escrito como
+
+$$
+\mathbf h_G=
+\frac{
+\sum_{i\in V} A_i\mathbf h_i^{(K)}
+}{
+\sum_{i\in V} A_i
+}.
+$$
+
+A escolha entre pooling uniforme e ponderado faz parte da modelagem: uma quantidade com interpretação integral deve respeitar a medida geométrica apropriada.
 
 ## Aprender um simulador dinâmico não é o mesmo que aprender um surrogate estacionário
 
-Grande parte da literatura de GNNs para física demonstra modelos que avançam um estado no tempo. O Graph Network-based Simulator e o MeshGraphNets são exemplos importantes de aprendizado de dinâmica em sistemas discretizados [@pfaff2021].
+Parte importante da literatura de GNNs para física considera modelos que avançam um estado no tempo. MeshGraphNets, por exemplo, aprende atualizações sobre malhas para simulação dinâmica [@pfaff2021]. O uso principal neste livro é diferente: as consultas da otimização correspondem predominantemente a soluções estacionárias de aerodinâmica ou soluções harmônicas de eletromagnetismo.
 
-O problema deste livro é diferente em sua forma principal. As respostas de interesse para o loop de otimização são predominantemente obtidas de análises estacionárias ou harmônicas: uma geometria e um conjunto de condições de operação são fornecidos, e deseja-se prever uma solução ou resposta convergida. Não é necessário imitar passo a passo a marcha temporal interna do solver.
-
-A tarefa principal pode ser escrita como um operador paramétrico
+A tarefa pode ser escrita como um operador paramétrico
 
 $$
-\mathcal G_\theta:
+\mathcal G_{\boldsymbol\theta}:
 (G,\mathbf c)
 \longmapsto
-\mathbf y,
+\widehat{\mathbf y},
 $$
 
-onde \(\mathbf c\) representa condições físicas e \(\mathbf y\) pode conter campos locais, coeficientes integrados ou curvas angulares. O padrão encode–process–decode continua útil, mas a saída representa a solução final desejada, e não necessariamente o próximo passo temporal.
-
-Essa distinção evita uma confusão importante: uma GNN de malha pode ser empregada como surrogate sem ser um integrador temporal aprendido.
+em que \(oldsymbol\theta\) representa todos os parâmetros treináveis da rede, \(\mathbf c\) reúne as condições físicas do caso e \(\widehat{\mathbf y}\) é a resposta predita. Essa resposta pode conter campos locais, coeficientes integrados ou curvas angulares. A GNN atua, portanto, como **modelo substituto (surrogate)** da solução convergida; ela não precisa reproduzir a marcha temporal interna do solver.
 
 ## Localidade, longo alcance e escala da malha
 
-A vizinhança de malha é uma forte hipótese indutiva, mas não é um teorema de que todas as dependências físicas relevantes sejam locais. Em eletromagnetismo, formulações integrais de superfície envolvem acoplamentos mediados por funções de Green entre regiões geometricamente distantes. A RCS em campo distante também depende da soma coerente de contribuições com fase; duas regiões separadas da aeronave podem interferir construtiva ou destrutivamente.
+A conectividade de malha fornece uma hipótese indutiva local útil, mas nem todas as dependências relevantes são estritamente locais. Em formulações integrais de eletromagnetismo, regiões geometricamente distantes podem estar acopladas por funções de Green. A RCS em campo distante resulta da combinação coerente de amplitudes e fases provenientes de diferentes regiões da superfície.
 
-Na aerodinâmica, as equações diferenciais são locais, mas uma solução estacionária externa resulta da propagação das condições de contorno e do acoplamento do escoamento ao redor de toda a configuração. Uma alteração geométrica em uma região pode modificar o campo de pressão em regiões afastadas.
+Na aerodinâmica, as equações diferenciais são locais, mas a solução estacionária externa reflete o acoplamento do campo ao redor de toda a configuração. Uma alteração geométrica em uma região pode modificar a distribuição de pressão em regiões afastadas.
 
-Consequentemente, uma GNN baseada apenas em poucas camadas locais pode possuir campo receptivo insuficiente. Estratégias possíveis incluem hierarquias de malha, pooling multiescala, arestas de longo alcance, estados globais e mecanismos de atenção. Esses mecanismos aumentam a capacidade de comunicação global, mas também alteram a demanda de memória e processamento. Atenção densa entre \(N\) entidades, por exemplo, pode aproximar-se de complexidade quadrática em \(N\), enquanto message passing em um grafo esparso escala principalmente com o número de arestas. A escolha deve ser avaliada por precisão e recursos efetivamente medidos, sem pressupor vantagem universal de uma arquitetura.
+Se \(N=|V|\) e \(|E|\) é o número de arestas, message passing em um grafo esparso tende a depender principalmente de \(|E|\) por camada. Em contraste, uma atenção densa entre todos os pares de nós envolve \(N^2\) pares e pode elevar significativamente memória e processamento. Hierarquias de malha, pooling multiescala, arestas de longo alcance, estados globais ou mecanismos de atenção são alternativas para ampliar a comunicação. Nenhuma delas deve ser assumida como superior sem comparação de erro e recursos medidos.
 
 ## Construção dos atributos do grafo
 
-### Geometria relativa antes de coordenadas absolutas
+### Geometria relativa
 
-Se \(\mathbf x_i\) e \(\mathbf x_j\) são posições de dois nós, o vetor relativo
+Se \(\mathbf x_i,\mathbf x_j\in\mathbb R^3\) são as posições de dois nós, define-se o vetor relativo
 
 $$
-\mathbf r_{ij}=\mathbf x_j-\mathbf x_i
+\mathbf r_{ij}=\mathbf x_j-\mathbf x_i.
 $$
 
-remove automaticamente a dependência de translação global. Seu comprimento
+Esse vetor não muda sob uma translação rígida aplicada simultaneamente aos dois pontos. Sua norma
 
 $$
 r_{ij}=\|\mathbf r_{ij}\|
 $$
 
-é também invariante a rotações rígidas. Essas duas grandezas são exemplos simples de como a geometria pode ser fornecida à rede de forma mais estruturada que coordenadas cartesianas absolutas isoladas.
-
-Para uma malha superficial, atributos úteis podem incluir posição, normal, área, curvatura estimada, tipo de fronteira, material e medidas locais de qualidade de malha. Em arestas, podem ser usados \(\mathbf r_{ij}\), \(r_{ij}\), ângulos entre normais e propriedades da interface. A inclusão de cada atributo deve ter uma justificativa física ou geométrica e ser avaliada por ablação.
+é também invariante a rotações rígidas. Em uma malha superficial, outros atributos possíveis incluem normal, área, curvatura estimada, tipo de fronteira, material e medidas locais de qualidade de malha. A inclusão de cada variável deve possuir uma justificativa geométrica ou física e ser verificada por ablação.
 
 ### Condições globais e parâmetros físicos
 
-Uma mesma geometria pode produzir respostas completamente diferentes em condições distintas. O grafo precisa, portanto, ser condicionado por variáveis de operação.
+Uma mesma geometria produz respostas distintas sob condições de operação distintas. Essas condições devem ser apresentadas à rede de forma coerente com a física.
 
-No eletromagnetismo, condições relevantes incluem frequência ou número de onda, direção de incidência, polarização, propriedades constitutivas e direção de observação. Em vez de usar apenas frequência dimensional, pode ser vantajoso empregar uma medida de tamanho elétrico como
+No eletromagnetismo, a frequência \(f\), o comprimento de onda \(\lambda\), o número de onda \(k=2\pi/\lambda\), a direção de incidência, a polarização e as propriedades dos materiais podem alterar a solução. Se \(L\) é um comprimento de referência da configuração, o produto adimensional
 
 $$
-kL=\frac{2\pi L}{\lambda},
+kL=\frac{2\pi L}{\lambda}
 $$
 
-com \(L\) uma escala geométrica de referência. Essa parametrização evidencia que espalhamento depende da razão entre tamanho do objeto e comprimento de onda.
+mede o tamanho elétrico do alvo e explicita a razão entre escala geométrica e comprimento de onda.
 
-Na aerodinâmica de Euler, condições como \(M_\infty\), \(\alpha\), \(\beta\) e \(\gamma\) têm interpretação direta. Se as saídas são coeficientes adimensionais, nem toda grandeza dimensional do escoamento livre precisa necessariamente ser fornecida de forma redundante; a seleção deve respeitar a similaridade física do modelo. Se a rede prevê campos dimensionais, densidade, pressão e escalas de referência podem voltar a ser necessárias.
+Na aerodinâmica de Euler, condições como o número de Mach do escoamento livre \(M_\infty\), o ângulo de ataque \(\alpha\), o ângulo de derrapagem \(eta\) e a razão de calores específicos \(\gamma\) têm interpretação direta. Quando a saída é adimensional, parâmetros dimensionais redundantes podem ser evitados; quando campos dimensionais são previstos, as escalas termodinâmicas necessárias devem permanecer disponíveis.
 
-Ângulos periódicos merecem cuidado. Representar um azimute apenas por \(\phi\) cria uma descontinuidade artificial entre \(0\) e \(2\pi\). Uma codificação como
+Ângulos periódicos requerem cuidado. Usar somente um azimute \(\phi\) introduz uma descontinuidade artificial entre \(0\) e \(2\pi\). A codificação
 
 $$
 (\cos\phi,\sin\phi)
 $$
 
-ou, de forma ainda mais geométrica, o uso direto do vetor unitário de direção, evita esse corte numérico.
+ou o uso direto de um vetor unitário de direção representa a periodicidade sem esse corte numérico.
 
 ### Normalização e adimensionalização
 
-Redes neurais são sensíveis a escalas muito diferentes entre atributos. Misturar coordenadas em metros, frequência em gigahertz, pressão em pascals e coeficientes da ordem da unidade sem normalização pode dificultar o treinamento e tornar pesos de perdas fisicamente pouco interpretáveis.
+Misturar coordenadas em metros, frequência em gigahertz, pressão em pascals e coeficientes da ordem da unidade sem escalonamento pode dificultar a otimização numérica da rede. A normalização deve preservar a capacidade de reconstruir e interpretar as grandezas físicas.
 
-A normalização deve preservar significado. Coordenadas podem ser divididas por um comprimento de referência; pressões podem ser convertidas em \(C_p\); forças em coeficientes aerodinâmicos; frequência pode ser expressa por \(kL\). Quando uma variável permanece dimensional, a escala usada para normalizá-la deve ser registrada para permitir reconstrução da grandeza física.
+Coordenadas podem ser divididas por um comprimento de referência; pressões podem ser expressas pelo coeficiente \(C_p\); frequência pode ser substituída ou complementada por \(kL\). Toda transformação aplicada aos dados deve ser registrada para que previsões normalizadas possam ser convertidas novamente às unidades ou convenções de engenharia.
 
-## Álgebra Geométrica como fonte de estrutura para a GNN
+## Álgebra Geométrica como fonte de estrutura
 
-O Capítulo 2 mostrou que a **Álgebra Geométrica (AG)** oferece objetos naturais para orientação, área, rotação e relações entre subespaços. Esses objetos podem ser introduzidos no aprendizado em diferentes níveis de compromisso arquitetural.
+Para uma face triangular \(f\) formada pelos vértices \(i,j,k\), sejam
 
-Para uma face triangular com vetores de aresta \(\mathbf r_{ij}\) e \(\mathbf r_{ik}\), o bivetor de área orientada é
+$$
+\mathbf r_{ij}=\mathbf x_j-\mathbf x_i,
+\qquad
+\mathbf r_{ik}=\mathbf x_k-\mathbf x_i
+$$
+
+os vetores de aresta. O bivetor de área orientada definido no Capítulo 2 é
 
 $$
 B_f=\frac12\mathbf r_{ij}\wedge\mathbf r_{ik}.
 $$
 
-Sua magnitude fornece a área
+Sua magnitude fornece a área da face,
 
 $$
-A_f=\|B_f\|,
+A_f=\|B_f\|.
 $$
 
-e, em \(Cl(3,0)\), uma normal orientada pode ser obtida por dualidade,
+Em \(Cl(3,0)\), sendo \(I\) o pseudoescalar unitário e \(I^{-1}\) seu inverso, uma normal orientada pode ser obtida pela dualidade
 
 $$
 \mathbf n_f=
 \frac{B_f I^{-1}}{\|B_f\|}.
 $$
 
-Esse bivetor contém área e orientação em um único objeto geométrico. Em vez de alimentar a rede apenas com três componentes de uma normal e um escalar de área sem relação explícita, uma representação multivetorial pode manter essa estrutura disponível para operações posteriores.
+O bivetor \(B_f\) reúne área e orientação em um único objeto geométrico. Entre faces vizinhas \(i\) e \(j\), o produto interno \(\mathbf n_i\cdot\mathbf n_j\) mede alinhamento das normais, enquanto \(\mathbf n_i\wedge\mathbf n_j\) representa o plano orientado associado à mudança de direção. Rotores podem, quando necessário, representar a transformação entre referenciais locais.
 
-Outras relações úteis incluem
+Há três níveis de incorporação de AG que precisam ser distinguidos empiricamente:
 
-$$
-\mathbf n_i\cdot\mathbf n_j,
-$$
+1. **features derivadas de AG** fornecidas a uma MPNN convencional;
+2. **canais multivetoriais** mantidos no espaço latente, com operações compatíveis com graus e produto geométrico;
+3. **arquitetura explicitamente equivariante**, cuja lei de transformação sob rotações é imposta por construção.
 
-que mede alinhamento entre normais, e
-
-$$
-\mathbf n_i\wedge\mathbf n_j,
-$$
-
-que codifica o plano orientado da mudança de direção. Rotores também podem representar transformações entre referenciais locais de faces adjacentes.
-
-Há, contudo, três níveis conceitualmente distintos:
-
-1. usar **features derivadas de AG** em uma MPNN convencional;
-2. manter **canais multivetoriais** no espaço latente e empregar operações que respeitem graus e produto geométrico;
-3. construir uma arquitetura cuja transformação sob rotações seja controlada explicitamente por rotores, versores ou outra formulação equivariantemente definida.
-
-O primeiro nível não torna automaticamente a rede equivariante. Da mesma forma, armazenar componentes de um bivetor em um vetor numérico não basta para garantir que todas as camadas respeitem sua lei de transformação. A contribuição da AG deve ser demonstrada por experimentos controlados, e não inferida apenas pela mudança de notação.
+O primeiro nível não torna automaticamente a rede equivariante. Da mesma forma, armazenar componentes de um bivetor em um vetor numérico não garante que as camadas seguintes respeitem sua transformação geométrica. O benefício de cada nível deve ser medido em estudos de ablação.
 
 ## Invariância, equivariância e simetrias físicas
 
 ### Permutação de nós
 
-Se apenas a numeração dos nós muda, a física não muda. Uma GNN baseada em agregações simétricas deve produzir a mesma resposta global e uma resposta local equivalentemente reindexada. Essa propriedade é conhecida como invariância ou equivariância a permutações, dependendo do tipo de saída.
+A numeração dos nós não possui significado físico. Se uma permutação apenas reordena os índices, uma saída global deve permanecer inalterada, enquanto uma saída local deve ser reindexada pela mesma permutação. Agregadores simétricos em MPNNs são um mecanismo para obter essa propriedade.
 
 ### Translação e rotação
 
-Considere uma transformação rígida
+Considere uma rotação própria \(Q\in SO(3)\) e uma translação \(\mathbf t\in\mathbb R^3\). A posição de um nó transforma-se como
 
 $$
-\mathbf x_i' = Q\mathbf x_i+\mathbf t,
+\mathbf x_i'=Q\mathbf x_i+\mathbf t.
 $$
 
-em que \(Q\) é uma matriz ortogonal e \(\mathbf t\) uma translação. Um escalar puramente geométrico como área permanece invariante, enquanto um vetor físico transforma-se como
+Um escalar geométrico, como área, permanece invariante. Um vetor físico \(\mathbf v\) transforma-se como
 
 $$
 \mathbf v'=Q\mathbf v.
 $$
 
-Em AG, a mesma rotação própria pode ser expressa por um rotor \(R\),
+Em AG, a mesma rotação pode ser representada por um rotor unitário \(R\), com reverso \(\widetilde R\):
 
 $$
 \mathbf v'=R\mathbf v\widetilde R.
 $$
 
-Uma rede é **invariante** quando sua saída não muda sob determinada transformação; é **equivariante** quando a saída se transforma de maneira previsível e compatível com a transformação da entrada.
+Uma rede é **invariante** a uma transformação quando a grandeza de saída que deveria permanecer fisicamente igual não muda. Ela é **equivariante** quando a saída se transforma segundo a lei apropriada ao objeto físico. Essas ideias pertencem ao quadro de Geometric Deep Learning [@bronstein2021].
 
-A física aero-stealth exige uma ressalva essencial: não se pode rotacionar apenas a geometria e exigir que toda resposta permaneça igual. Direção de escoamento, onda incidente, base de polarização, eixos de força e direção de observação fazem parte do problema. A simetria física aparece quando a geometria e essas condições são transformadas de forma consistente.
-
-Por exemplo, se aeronave, direção incidente e direção de observação forem rotacionadas juntas em um meio isotrópico, uma RCS escalar definida no mesmo referencial físico deve ser preservada. Se apenas a aeronave for rotacionada em relação à onda, o problema físico mudou e a RCS não deve permanecer constante. Analogamente, \(C_L\) e \(C_D\) são definidos em relação ao escoamento e aos eixos de referência; uma rotação arbitrária da malha sem transformar esses referenciais não constitui uma simetria do problema.
-
-Arquiteturas equivariantes, como as discutidas no contexto mais amplo de geometric deep learning, são portanto relevantes, mas a propriedade matemática imposta precisa corresponder à simetria do sistema completo, não apenas à malha [@bronstein2021].
+No problema aero-stealth, a transformação precisa envolver o sistema físico completo. Rotacionar apenas a aeronave em relação à onda incidente ou ao escoamento modifica o problema. Se geometria, direção incidente, direção de observação e base de polarização forem rotacionadas de maneira consistente em um meio isotrópico, uma RCS escalar definida no mesmo referencial físico deve ser preservada. O mesmo princípio vale para forças aerodinâmicas e eixos de referência.
 
 ## Reparametrização e remalhamento
 
-Duas discretizações podem representar praticamente a mesma superfície com números de elementos diferentes. Para um surrogate que será usado em otimização geométrica, robustez a remalhamento é especialmente importante porque pequenas mudanças de projeto podem alterar a tesselação.
+Duas malhas podem aproximar praticamente a mesma superfície com números de elementos e conectividades diferentes. Isso é relevante em otimização geométrica, porque pequenas mudanças de projeto podem desencadear novo processo de tesselação.
 
-Há duas estratégias gerais. A primeira mantém, sempre que possível, uma topologia de malha consistente durante a parametrização geométrica. Isso facilita correspondência entre nós e diferenciação das saídas em relação aos parâmetros de projeto. A segunda aceita conectividades variáveis e exige que a rede generalize entre discretizações.
+Uma estratégia mantém topologia de malha consistente durante a parametrização, facilitando correspondência entre entidades. Outra aceita remalhamento e exige generalização entre discretizações. A primeira reduz variabilidade topológica; a segunda oferece maior flexibilidade geométrica, mas torna mais difícil separar erro do surrogate de efeitos da discretização.
 
-Essas estratégias não são equivalentes. Uma topologia fixa simplifica o aprendizado, mas pode limitar refinamento adaptativo ou grandes mudanças geométricas. Remalhamento livre aumenta flexibilidade, porém torna mais difícil distinguir erro do surrogate de erro associado à representação da malha.
+Um teste direto consiste em avaliar uma mesma geometria com duas malhas de qualidade comparável. Se a previsão variar de forma incompatível com a diferença observada no solver de referência, a rede aprendeu dependência indesejada da discretização.
 
-Para validação, uma mesma geometria pode ser avaliada com duas triangulações diferentes. Se a resposta prevista mudar significativamente sem alteração física correspondente, o modelo aprendeu dependências indesejadas da discretização.
+## Campos locais e respostas globais
 
-## Dois tipos de saída: campos locais e respostas globais
+### Predição direta de coeficientes
 
-### Predição direta de grandezas integradas
-
-A forma mais simples de surrogate é
+Quando apenas grandezas integradas são necessárias ao otimizador, uma rede pode mapear diretamente o grafo e as condições \(\mathbf c\) para respostas escalares:
 
 $$
-(G,\mathbf c)\longmapsto
-(C_L,C_D,C_m,\sigma_{\mathrm{resumo}},\ldots).
+(G,\mathbf c)
+\longmapsto
+(\widehat C_L,\widehat C_D,\widehat C_m,\widehat\sigma_{\mathrm{res}},\ldots).
 $$
 
-Essa abordagem é atrativa quando apenas poucos escalares são necessários no otimizador. O problema é que grande parte da estrutura física intermediária permanece invisível. Uma previsão correta de \(C_L\) pode coexistir com um campo de pressão fisicamente inadequado, simplesmente porque o campo não foi previsto nem supervisionado.
+Aqui, \(\widehat C_L\), \(\widehat C_D\) e \(\widehat C_m\) são previsões dos coeficientes de sustentação, arrasto e momento; \(\widehat\sigma_{\mathrm{res}}\) representa alguma medida resumida de RCS definida previamente, como média em um setor angular. Essa abordagem é compacta, mas não permite verificar a estrutura espacial que produz os coeficientes.
 
 ### Predição de campo seguida de integração
 
-Uma alternativa é prever um campo local, por exemplo \(C_p\) na superfície, e calcular respostas globais por integração. Em discretização por faces,
+Uma alternativa é prever um campo local e derivar as respostas globais. Para uma malha superficial com faces indexadas por \(f\), seja \(\widehat p_f\) a pressão prevista na face, \(A_f\) sua área e \(\mathbf n_f\) sua normal externa. A força de pressão prevista é
 
 $$
 \widehat{\mathbf F}_p
-=
--\sum_f \widehat p_f\,\mathbf n_f A_f.
+=-\sum_f \widehat p_f\,\mathbf n_f A_f.
 $$
 
-A partir dessa força podem ser derivados \(\widehat C_L\) e \(\widehat C_D\). Essa construção oferece interpretabilidade física e permite verificar se coeficientes globais são consistentes com o campo previsto.
+Projetando \(\widehat{\mathbf F}_p\) nos eixos de sustentação e arrasto obtêm-se \(\widehat L\) e \(\widehat D\). Se \(q_\infty\) é a pressão dinâmica do escoamento livre e \(S_{\mathrm{ref}}\) a área de referência,
+
+$$
+\widehat C_L=
+\frac{\widehat L}{q_\infty S_{\mathrm{ref}}},
+\qquad
+\widehat C_D=
+\frac{\widehat D}{q_\infty S_{\mathrm{ref}}}.
+$$
+
+Essa construção permite verificar se a resposta global é coerente com o campo previsto. Para dados de Euler, o arrasto obtido dessa integração corresponde à contribuição de pressão compatível com o modelo invíscido; arrasto de atrito não está presente nessa fidelidade.
 
 ### Aprendizado multitarefa
 
-Uma terceira possibilidade usa simultaneamente um decoder local e decoders globais. A rede prevê \(C_p\) e também \(C_L,C_D,C_m\), por exemplo. A diferença entre os coeficientes diretamente previstos e os coeficientes integrados do campo pode entrar como termo de consistência.
+Uma terceira possibilidade combina um decoder local e decoders globais. A rede pode prever \(C_p\) em cada face e, simultaneamente, \(C_L\), \(C_D\) e \(C_m\). A diferença entre coeficientes diretamente previstos e aqueles reconstruídos por integração pode ser usada como termo de consistência.
 
-Essa ideia possui precedente direto no problema aero-eletromagnético. @li2026aeroem propõem uma GNN de difusão multitarefa definida em malhas superficiais não estruturadas para prever \(C_p\), \(C_L\), \(C_D\) e RCS monostática média em polarizações horizontal e vertical. Em um conjunto de 3.800 geometrias com teste separado por geometria, os autores reportam \(R^2=0{,}969\) para \(C_p\), erros absolutos médios de \(0{,}0065\) e \(0{,}0013\) para \(C_L\) e \(C_D\), e de \(0{,}381\) e \(0{,}358\,\mathrm{dB}\) para as duas respostas médias de RCS, além de aceleração de aproximadamente \(35\times\) no cenário de inferência conjunta considerado.
+Um antecedente direto para análise aero-eletromagnética emprega uma GNN de difusão multitarefa sobre malhas superficiais não estruturadas, com previsão de \(C_p\), \(C_L\), \(C_D\) e RCS monostática média em polarizações horizontal e vertical [@li2026aeroem]. No conjunto de 3.800 geometrias descrito pelos autores, foram reportados \(R^2=0{,}969\) para \(C_p\), erros absolutos médios de \(0{,}0065\) e \(0{,}0013\) para \(C_L\) e \(C_D\), erros de \(0{,}381\) e \(0{,}358\,\mathrm{dB}\) para as respostas médias de RCS e aceleração de aproximadamente \(35\times\) no cenário conjunto considerado [@li2026aeroem].
 
-Esse resultado demonstra a viabilidade de uma abordagem mesh-native conjunta, mas não determina automaticamente a arquitetura deste trabalho. O objetivo aqui inclui preservar a dependência angular e de polarização da RCS, incorporar multifidelidade explicitamente, avaliar representações baseadas em AG e integrar os surrogates a otimização matemática determinística. Além disso, métricas contra dados gerados por solvers medem fidelidade ao pipeline numérico de referência; não constituem, por si sós, validação experimental independente.
+Esse resultado estabelece a viabilidade de uma abordagem mesh-native conjunta, mas não determina a arquitetura deste trabalho. Aqui, a RCS deve preservar sua dependência angular e de polarização; a multifidelidade será explícita; as representações de AG serão testadas separadamente; e as soluções da otimização serão reavaliadas com modelos de referência.
 
 ## Surrogate eletromagnético
 
-### Entradas físicas
+### O problema de entrada e saída
 
-Uma formulação geral pode ser escrita como
+O surrogate eletromagnético recebe uma geometria discretizada e as condições que definem o experimento radar. Seja
 
 $$
-\mathcal G_{\mathrm{EM}}:
+\mathcal G_{\mathrm{EM},\boldsymbol\theta}
+$$
+
+o operador aprendido, parametrizado pelos pesos \(oldsymbol\theta\) da rede. A entrada é o grafo \(G\) e um vetor de condições eletromagnéticas \(\mathbf c_{\mathrm{EM}}\); a saída \(\widehat{\mathbf y}_{\mathrm{EM}}\) é a resposta prevista:
+
+$$
+\mathcal G_{\mathrm{EM},\boldsymbol\theta}:
 (G,\mathbf c_{\mathrm{EM}})
 \longmapsto
-\mathbf y_{\mathrm{EM}},
+\widehat{\mathbf y}_{\mathrm{EM}}.
 $$
 
-com
+Uma escolha possível para as condições é
 
 $$
 \mathbf c_{\mathrm{EM}}=
-(kL,\widehat{\mathbf k}_{\mathrm{inc}},
-\mathrm{pol}_{\mathrm{inc}},
-\text{material},\ldots).
+\left(
+ kL,
+ \widehat{\mathbf k}_{\mathrm{inc}},
+ \mathrm{pol}_{\mathrm{inc}},
+ \mathbf p_{\mathrm{mat}}
+\right).
 $$
 
-A saída mais próxima do objetivo stealth não é necessariamente uma única RCS média. É desejável preservar a resposta angular e de polarização,
+Nessa expressão, \(k=2\pi/\lambda\) é o número de onda, \(L\) é o comprimento de referência, \(\widehat{\mathbf k}_{\mathrm{inc}}\) é o vetor unitário na direção de propagação da onda incidente, \(\mathrm{pol}_{\mathrm{inc}}\) codifica sua polarização e \(\mathbf p_{\mathrm{mat}}\) reúne os parâmetros constitutivos relevantes dos materiais. Para um alvo perfeitamente condutor sem revestimentos, parte de \(\mathbf p_{\mathrm{mat}}\) pode ser constante e dispensada da entrada.
+
+A saída pode ser uma única grandeza integrada, um campo intermediário ou uma curva de RCS. Para preservar a informação direcional, considera-se
 
 $$
 \widehat\sigma
 =
-\widehat\sigma(
+\widehat\sigma
+\left(
 \widehat{\mathbf r}_{\mathrm{obs}},
-\mathrm{pol}_{\mathrm{obs}}).
+\mathrm{pol}_{\mathrm{obs}}
+\right),
 $$
 
-Existem pelo menos duas formas de representá-la. Uma saída vetorial em uma grade angular fixa produz toda a curva de uma vez. Uma alternativa é um decoder condicionado por consulta:
+em que \(\widehat\sigma\) é a RCS prevista, \(\widehat{\mathbf r}_{\mathrm{obs}}\) é o vetor unitário da direção de observação e \(\mathrm{pol}_{\mathrm{obs}}\) define a componente de polarização recebida. No caso monostático, incidência e observação obedecem à geometria específica de retroespalhamento; no caso bistático, essas direções são independentes dentro do experimento definido.
+
+### Grade angular fixa ou consulta condicionada
+
+Se as direções de observação forem sempre avaliadas em uma grade fixa com \(Q\) pontos, a rede pode produzir um vetor
+
+$$
+\widehat{\boldsymbol\sigma}
+=
+(\widehat\sigma_1,\ldots,\widehat\sigma_Q)
+$$
+
+em uma única inferência. O índice \(q=1,\ldots,Q\) identifica uma direção e uma polarização previamente definidas.
+
+Uma alternativa é usar um decoder condicionado por consulta. Se \(\mathbf c_{\mathrm{inc}}\) reúne as condições de incidência, o valor na consulta \(q\) pode ser escrito como
 
 $$
 \widehat\sigma_q
-=f_\theta
+=
+f_{\boldsymbol\theta}
 \left(
 G,
 \mathbf c_{\mathrm{inc}},
@@ -382,27 +444,32 @@ G,
 \right),
 $$
 
-em que cada direção de observação é uma consulta. A primeira abordagem é simples e eficiente para uma grade conhecida; a segunda pode permitir resolução angular variável e consultas seletivas. A superioridade de uma sobre a outra deve ser verificada para o domínio de projeto considerado.
+onde \(f_{\boldsymbol\theta}\) é a função aprendida, \(\widehat{\mathbf r}_q\) é a direção de observação da consulta e \(\mathrm{pol}_q\) sua polarização de recepção. A saída em grade fixa favorece inferência vetorizada de toda a curva; a consulta condicionada permite resolução angular variável. A escolha deve ser testada no domínio de operação relevante.
 
 ### Prever RCS diretamente ou prever campos intermediários?
 
-Uma rede pode aprender diretamente \(\sigma\), mas também pode prever quantidades intermediárias como corrente superficial complexa ou campo espalhado. Em regime harmônico, a informação de fase é essencial. Se uma corrente ou campo complexo for representado numericamente, uma forma direta é usar canais de parte real e imaginária:
+A RCS pode ser prevista diretamente. Outra possibilidade é prever quantidades intermediárias, como a densidade de corrente superficial complexa \(\widetilde{\mathbf J}_s\) ou o campo elétrico espalhado complexo \(\widetilde{\mathbf E}_{\mathrm{sca}}\). O til indica fasor no regime harmônico definido no Capítulo 3.
+
+Para uma face \(f\), uma corrente complexa pode ser armazenada em canais reais por
 
 $$
-\widetilde J
+\widetilde{\mathbf J}_{s,f}
 \longleftrightarrow
-(\Re\widetilde J,\Im\widetilde J).
+\left(
+\Re\widetilde{\mathbf J}_{s,f},
+\Im\widetilde{\mathbf J}_{s,f}
+\right).
 $$
 
-Representações amplitude–fase são possíveis, mas a fase possui descontinuidades de \(2\pi\) que precisam ser tratadas explicitamente.
+As duas componentes preservam amplitude e fase sem introduzir o salto artificial associado à representação angular da fase em \(( -\pi,\pi ]\). Se amplitude e fase forem usadas diretamente, a periodicidade da fase precisa ser tratada explicitamente.
 
-A distinção é fisicamente importante porque a RCS resulta de intensidade no campo distante após soma coerente de amplitudes. Somar magnitudes locais antes da fase destruiria interferências que são parte do espalhamento. Portanto, se uma arquitetura pretende reconstruir RCS a partir de campos ou correntes, a integração complexa deve preceder a operação de módulo ao quadrado.
+A coerência de fase é essencial porque o campo distante resulta da soma complexa das contribuições espalhadas. O módulo ao quadrado deve ser aplicado **depois** dessa soma coerente; somar magnitudes locais antes de combinar as fases elimina interferências construtivas e destrutivas que fazem parte da física da RCS.
 
-Modelos baseados em grafos já vêm sendo aplicados a problemas eletromagnéticos de espalhamento. @shan2024 exploram aprendizado residual informado pela física para equações integrais de campo combinado em alvos PEC tridimensionais, enquanto @kong2024 estudam a previsão de campos espalhados distantes a partir de representações geométricas. Esses trabalhos mostram que a estrutura geométrica pode ser explorada em CEM, mas não eliminam a necessidade de validar frequência, polarização, generalização geométrica e resposta angular no problema específico de UCAV.
+Há trabalhos recentes que usam modelos de grafos ou representações geométricas para problemas de espalhamento eletromagnético, incluindo aprendizado residual informado pela física para equações integrais e previsão de campos distantes a partir da geometria [@shan2024; @kong2024]. Esses resultados justificam a investigação, mas não substituem a validação específica em frequência, polarização, ângulo e geometria de UCAV.
 
 ### Escala linear e escala logarítmica
 
-A RCS é frequentemente analisada em \(\mathrm{dBsm}\),
+Se \(\sigma\) é a RCS em \(\mathrm{m^2}\), sua representação em decibéis por metro quadrado é
 
 $$
 \sigma_{\mathrm{dBsm}}
@@ -412,57 +479,78 @@ $$
 \right).
 $$
 
-Treinar apenas em escala linear tende a atribuir maior peso absoluto aos maiores picos; treinar apenas em decibéis muda esse balanço e enfatiza erros relativos em níveis menores. Nenhuma escolha é neutra. Uma avaliação robusta deve relatar erros nas escalas relevantes para a engenharia e verificar separadamente picos, vales e comportamento angular, em vez de depender apenas de um erro médio global.
+Uma função de perda em escala linear dá maior peso absoluto a picos grandes. Uma perda em dB altera esse balanço e tende a enfatizar diferenças relativas em níveis menores. A avaliação deve, portanto, reportar métricas nas escalas relevantes e verificar separadamente picos, vales e setores angulares de interesse.
 
 ## Surrogate aerodinâmico
 
-### Entradas e saídas
+### O problema de entrada e saída
 
-Para o modelo compressível definido no Capítulo 3, uma forma geral é
+Para o regime compressível invíscido do Capítulo 3, seja
 
 $$
-\mathcal G_{\mathrm{aero}}:
-(G,M_\infty,\alpha,\beta,\gamma,\ldots)
+\mathcal G_{\mathrm{aero},\boldsymbol\theta}
+$$
+
+o operador aprendido para a disciplina aerodinâmica. Uma formulação de entrada–saída é
+
+$$
+\mathcal G_{\mathrm{aero},\boldsymbol\theta}:
+(G,M_\infty,\alpha,\beta,\gamma)
 \longmapsto
-(C_p,C_L,C_D,C_m,\ldots).
+\left(
+\{\widehat C_{p,f}\}_{f=1}^{N_f},
+\widehat C_L,
+\widehat C_D,
+\widehat C_m
+\right).
 $$
 
-A rede pode ser condicionada apenas pelas variáveis independentes necessárias ao regime e ao tipo de saída. Se o objetivo é comparar coeficientes adimensionais de soluções de Euler, parâmetros redundantes devem ser evitados; se campos dimensionais forem necessários, as escalas termodinâmicas correspondentes precisam ser preservadas.
+Aqui, \(M_\infty\) é o número de Mach do escoamento livre; \(\alpha\) é o ângulo de ataque; \(eta\) é o ângulo de derrapagem; \(\gamma\) é a razão de calores específicos; \(N_f\) é o número de faces da malha superficial; \(\widehat C_{p,f}\) é o coeficiente de pressão previsto na face \(f\); e \(\widehat C_L\), \(\widehat C_D\) e \(\widehat C_m\) são os coeficientes integrados previstos.
 
-A predição de \(C_p\) em superfície oferece uma ponte particularmente útil entre campo local e resposta global. Além do erro ponto a ponto, o campo pode ser integrado para reconstruir forças e momentos. Essa consistência é mais informativa que tratar \(C_p\), \(C_L\) e \(C_D\) como alvos estatisticamente independentes.
+O coeficiente de pressão é definido por
 
-GNNs já foram empregadas para aproximar campos de escoamento em geometrias não estruturadas [@chen2021], e formulações physics-informed em grafos foram exploradas para problemas de fluidos [@peng2024]. Esses antecedentes sustentam a escolha de malhas como domínio de aprendizado, mas não provam generalização automática para aerodinâmica tridimensional externa de UCAV.
+$$
+C_p=
+\frac{p-p_\infty}{q_\infty},
+$$
 
-### Perdas ponderadas por área
+em que \(p\) é a pressão local, \(p_\infty\) é a pressão do escoamento livre e \(q_\infty=\tfrac12\rho_\infty V_\infty^2\) é a pressão dinâmica. Usar \(C_p\) como alvo adimensional facilita a comparação entre condições que obedecem à mesma similaridade física.
 
-Se uma malha possui forte refinamento local, uma média simples dos erros por elemento atribui mais peso às regiões com mais elementos, mesmo que ocupem pequena área física. Para um campo de pressão definido em faces, uma perda quadrática ponderada por área pode ser escrita como
+GNNs já foram usadas para aproximar campos de escoamento em geometrias não estruturadas e também em formulações com termos physics-informed [@chen2021; @peng2024]. Esses antecedentes não demonstram automaticamente generalização para aerodinâmica externa tridimensional de configurações UCAV; essa propriedade deve ser testada no domínio geométrico e operacional deste trabalho.
+
+### Perda de campo ponderada por área
+
+Em uma malha com forte refinamento local, uma média simples dos erros por face dá maior peso às regiões que contêm mais elementos, mesmo quando essas regiões ocupam pequena área física. Seja \(C_{p,f}\) o valor de referência na face \(f\), \(\widehat C_{p,f}\) a previsão correspondente e \(A_f\) a área da face. Uma perda quadrática ponderada por área é
 
 $$
 \mathcal L_{C_p}
 =
 \frac{
-\sum_f A_f
+\sum_{f=1}^{N_f} A_f
 \left(
 \widehat C_{p,f}-C_{p,f}
 \right)^2
 }{
-\sum_f A_f
+\sum_{f=1}^{N_f} A_f
 }.
 $$
 
-Em uma representação nodal, pesos de área dual podem cumprir papel análogo. Essa escolha não é obrigatória em todos os casos, mas torna explícita a medida física usada para comparar campos em malhas não uniformes.
+Essa perda aproxima uma medida superficial do erro em vez de uma média dependente apenas da densidade de elementos. Em uma representação nodal, áreas duais podem desempenhar papel semelhante.
 
 ## Física incorporada ao aprendizado
 
-A expressão **physics-informed GNN** pode cobrir mecanismos muito diferentes. Para evitar ambiguidade, convém distinguir níveis de incorporação da física.
+A expressão **physics-informed GNN** cobre mecanismos distintos e não deve ser usada como rótulo único para qualquer modelo que receba variáveis físicas.
 
-O primeiro nível está na própria representação: conectividade de malha, vetores relativos, normais, áreas, bivetores e parâmetros adimensionais fornecem uma estrutura fisicamente significativa antes de qualquer termo adicional de perda.
+O primeiro nível de incorporação está na representação: conectividade, vetores relativos, normais, áreas, bivetores e parâmetros adimensionais já introduzem estrutura física. O segundo nível impõe consistência entre diferentes saídas do próprio modelo. O terceiro utiliza condições de contorno ou identidades físicas avaliáveis nas previsões. O quarto emprega resíduos diferenciais ou integrais das equações governantes.
 
-O segundo nível é a **consistência entre saídas**. Se a rede prevê \(C_p\) e \(C_L\), pode-se exigir compatibilidade entre o coeficiente diretamente previsto e o obtido pela integração do campo. Se uma rede eletromagnética prevê corrente superficial e campo distante, a transformação entre ambos pode fornecer verificação semelhante.
+Considere quatro termos de perda:
 
-O terceiro nível envolve condições de contorno ou identidades físicas que podem ser avaliadas diretamente sobre as saídas. O quarto nível utiliza resíduos diferenciais ou integrais das equações governantes.
+- \(\mathcal L_{\mathrm{data}}\): erro de supervisão em relação aos dados de referência;
+- \(\mathcal L_{\mathrm{cons}}\): erro de consistência entre saídas relacionadas, como \(C_L\) direto e \(C_L\) integrado de \(C_p\);
+- \(\mathcal L_{\mathrm{bc}}\): violação de condições de contorno avaliáveis;
+- \(\mathcal L_{\mathrm{phys}}\): resíduo de uma relação física diferencial ou integral.
 
-Uma função de perda genérica pode ser escrita como
+Com pesos não negativos \(\lambda_{\mathrm{data}}\), \(\lambda_{\mathrm{cons}}\), \(\lambda_{\mathrm{bc}}\) e \(\lambda_{\mathrm{phys}}\), a função de perda pode ser escrita como
 
 $$
 \mathcal L
@@ -476,78 +564,102 @@ $$
 \lambda_{\mathrm{phys}}\mathcal L_{\mathrm{phys}}.
 $$
 
-Os pesos \(\lambda\) precisam ser definidos em conjunto com normalização e unidades. Somar diretamente resíduos com ordens de grandeza distintas pode fazer um termo dominar numericamente sem que isso corresponda a maior importância física.
+Se um mecanismo não for utilizado, seu peso pode ser nulo. Os termos precisam ser normalizados de modo compatível com suas escalas; caso contrário, um resíduo numericamente grande pode dominar o treinamento sem corresponder a maior relevância física.
 
 ### Quando um resíduo de PDE é realmente calculável?
 
-Se a rede aerodinâmica prevê apenas \(C_L\) e \(C_D\), não existem densidade, quantidade de movimento e energia locais suficientes para calcular o resíduo completo de Euler. Se ela prevê apenas RCS média, não existem os campos necessários para avaliar localmente Maxwell.
+Um resíduo de equação governante só pode ser calculado quando a rede fornece as variáveis necessárias e existe um operador discreto consistente para avaliá-lo.
 
-Para Euler conservativo, um resíduo completo requer, em essência, as variáveis conservadas e os operadores discretos correspondentes. Em regime estacionário,
+Para Euler conservativo, seja
 
 $$
-\mathcal R_U
-=
+\mathbf U=
+[\rho,\rho u,\rho v,\rho w,\rho E]^T
+$$
+
+o vetor de variáveis conservadas, com densidade \(ho\), componentes de velocidade \(u,v,w\) e energia total específica \(E\). Em regime estacionário, o resíduo simbólico pode ser escrito como
+
+$$
+\mathcal R_U=
 \nabla\cdot\mathbf F(\mathbf U),
 $$
 
-com \(\mathbf U\) contendo densidade, quantidade de movimento e energia. Para Maxwell, um resíduo em STA como
+onde \(\mathbf F(\mathbf U)\) representa o conjunto de fluxos conservativos de massa, quantidade de movimento e energia. Se a rede prevê somente \(C_L\) e \(C_D\), \(\mathbf U\) não está disponível e esse resíduo não pode ser avaliado.
+
+Para Maxwell em STA, o resíduo compacto
 
 $$
 \mathcal R_M=\nabla F-\mathcal J
 $$
 
-exige o bivetor de campo e a fonte em representação consistente.
+requer o bivetor de campo eletromagnético \(F\), o operador derivada geométrica \(
+abla\) e o quatro-vetor de fonte \(\mathcal J\) na mesma convenção de unidades e assinatura definida no Capítulo 3. Uma rede que prevê somente RCS não contém essas variáveis locais.
 
-Logo, um termo de PDE não deve ser adicionado apenas por convenção de nomenclatura. Ele é válido quando a saída, a discretização e as derivadas necessárias estão efetivamente disponíveis. Em muitos surrogates de engenharia, uma restrição integral ou uma consistência entre campo e resposta global pode ser mais apropriada e mais barata que um resíduo PDE completo.
+Assim, consistências integrais ou relações entre campo e resposta global podem ser mais apropriadas do que um resíduo PDE completo quando a saída do surrogate é reduzida.
 
 ## Surrogates separados ou arquitetura multitarefa?
 
-As duas disciplinas compartilham a mesma geometria, mas possuem operadores físicos diferentes. Isso sugere pelo menos três organizações:
+Eletromagnetismo e aerodinâmica compartilham a mesma geometria, mas possuem operadores físicos e condições de operação diferentes. Três organizações são particularmente naturais:
 
-- dois modelos independentes, um eletromagnético e um aerodinâmico;
-- um encoder geométrico compartilhado com processadores ou heads especializados;
-- uma arquitetura conjunta em que representações e tarefas interagem ao longo da rede.
+- dois modelos independentes, um para cada disciplina;
+- um encoder geométrico compartilhado, seguido de processadores ou decoders específicos;
+- uma arquitetura multitarefa na qual parte da representação é compartilhada durante o processamento.
 
-A segunda e a terceira opções podem reaproveitar informação geométrica e reduzir duplicação de parâmetros. Por outro lado, também podem produzir **interferência negativa entre tarefas** se gradientes de treinamento privilegiarem uma resposta em detrimento de outra.
+Compartilhar parâmetros pode reduzir duplicação e permitir reaproveitamento de descritores geométricos, mas também pode causar **interferência negativa entre tarefas**, isto é, atualizações de treinamento favoráveis a uma disciplina podem degradar a outra. Resultados positivos de uma arquitetura multitarefa em problema correlato demonstram viabilidade, não superioridade universal [@li2026aeroem]. Modelos separados e compartilhados devem ser comparados sob o mesmo conjunto de dados, divisão experimental e orçamento de treinamento.
 
-O trabalho de @li2026aeroem mostra que uma arquitetura multitarefa pode produzir bons resultados conjuntos em um problema correlato. Isso é evidência de viabilidade, não prova de superioridade universal. Uma avaliação adequada deve comparar modelos separados e compartilhados sob o mesmo conjunto de dados e orçamento de treinamento.
+## Generalização e prevenção de vazamento de dados
 
-## Generalização: o teste deve ser mais difícil que memorizar a malha
+### Divisão por geometria
 
-### Vazamento entre treino e teste
+Suponha que cada geometria seja simulada em dez condições de operação. Se oito condições forem destinadas ao treino e duas ao teste por sorteio independente, a mesma geometria poderá aparecer nos dois subconjuntos. O teste medirá principalmente interpolação em condições de operação.
 
-Suponha que cada geometria seja simulada em dez condições de operação. Se oito condições forem colocadas no treino e duas no teste de forma aleatória, a rede verá durante o treinamento exatamente a mesma geometria que será usada no teste. O resultado mede principalmente interpolação em condições, não generalização geométrica.
+Para avaliar generalização a novas configurações, a divisão deve ser realizada primeiro por geometria: todas as condições associadas a uma geometria permanecem no mesmo subconjunto. Essa estratégia é denominada **geometry-disjoint** e já foi usada em problema aero-eletromagnético baseado em GNN [@li2026aeroem].
 
-Para avaliar generalização a novas configurações, a divisão deve ser feita primeiro por geometria: todas as condições associadas a determinada geometria permanecem no mesmo subconjunto. Esse é o sentido de um teste **geometry-disjoint**, empregado, por exemplo, por @li2026aeroem.
+Convém separar pelo menos quatro perguntas experimentais: desempenho em geometria não vista com condições conhecidas; desempenho em condições não vistas sobre geometria conhecida; desempenho quando geometria e condições são simultaneamente não vistas; e sensibilidade a remalhamento de uma mesma geometria. Cada teste caracteriza uma forma diferente de generalização.
 
-Uma caracterização completa pode separar diferentes desafios:
+### Interpolação, extrapolação e domínio de aplicabilidade
 
-- geometria não vista com condições conhecidas;
-- condições não vistas sobre geometrias conhecidas;
-- geometrias e condições simultaneamente não vistas;
-- mesma geometria sob remalhamento diferente.
+Um surrogate treinado somente no intervalo
 
-Esses testes respondem a perguntas científicas distintas e não devem ser misturados em uma única métrica agregada.
+$$
+0{,}5\le M_\infty\le0{,}8
+$$
 
-### Interpolação e extrapolação
+não está validado em \(M_\infty=1{,}5\) apenas porque a rede aceita numericamente esse valor. A mesma restrição vale para frequência, ângulos, curvatura, enflechamento e demais variáveis geométricas.
 
-Surrogates tendem a ser mais confiáveis dentro da região coberta pelo treinamento. Um modelo treinado apenas em \(0{,}5\le M_\infty\le0{,}8\) não deve ser tratado como validado em \(M_\infty=1{,}5\) sem teste específico. O mesmo vale para frequência, ângulo de incidência, curvatura, enflechamento ou outras variáveis geométricas.
-
-A região de aplicabilidade deve ser registrada como parte do modelo. Em otimização, isso é especialmente importante porque o otimizador tende a explorar bordas do domínio e pode encontrar regiões onde o surrogate está pouco sustentado por dados.
+O domínio coberto pelos dados deve acompanhar o modelo como informação de aplicabilidade. Essa precaução é especialmente importante em otimização, porque o algoritmo pode buscar regiões próximas às fronteiras do domínio em que o surrogate possui pouco suporte empírico.
 
 ## Métricas de erro para campos e respostas integradas
 
-Uma única métrica raramente é suficiente. Para campos locais podem ser usados erro absoluto, erro quadrático médio, norma relativa e mapas espaciais de erro. Para coeficientes integrados, erros absolutos em \(C_L\), \(C_D\) e \(C_m\) têm interpretação de engenharia direta. O coeficiente \(R^2\) pode complementar essas medidas, mas não deve substituí-las.
+Para um conjunto de \(n\) valores de referência \(y_s\) e previsões \(\widehat y_s\), o **Mean Absolute Error (MAE)** é
 
-Para uma curva angular de RCS, além de MAE ou RMSE em \(\mathrm{dB}\), é útil verificar posição e magnitude de picos, erro em setores angulares de interesse e consistência entre polarizações. Uma pequena média global pode ocultar erro localizado exatamente em um setor crítico para assinatura radar.
+$$
+\mathrm{MAE}
+=
+\frac1n\sum_{s=1}^{n}
+|\widehat y_s-y_s|,
+$$
 
-Também deve ser medida a coerência entre níveis de saída. Um modelo pode possuir pequeno erro em \(C_p\), mas ainda produzir erro relevante em \(C_D\) porque pequenas diferenças distribuídas na superfície se acumulam na integração. Por isso, erros locais e globais precisam ser reportados conjuntamente.
+e o **Root Mean Squared Error (RMSE)** é
+
+$$
+\mathrm{RMSE}
+=
+\sqrt{
+\frac1n\sum_{s=1}^{n}
+(\widehat y_s-y_s)^2
+}.
+$$
+
+O coeficiente de determinação \(R^2\) pode complementar essas métricas, mas não substitui erros com interpretação física direta.
+
+Para campos locais, além de MAE e RMSE, são úteis normas relativas e mapas espaciais de erro. Para \(C_L\), \(C_D\) e \(C_m\), erros absolutos possuem interpretação de engenharia. Para curvas angulares de RCS, médias globais devem ser complementadas por erro na posição e magnitude de picos, comportamento em setores angulares de interesse e consistência entre polarizações.
+
+Um pequeno erro médio em \(C_p\) não garante pequeno erro em \(C_D\), porque diferenças pequenas distribuídas sobre a superfície podem se acumular na integração. Erros locais e globais devem ser reportados conjuntamente.
 
 ## Precisão não é o mesmo que utilidade para otimização
 
-Um surrogate pode ser preciso e ainda não acelerar o processo completo. O tempo gasto para gerar dados, treinar a rede, transferir malhas e executar inferência em lote precisa ser comparado ao número de avaliações de solver que seriam necessárias sem o surrogate.
-
-Para uma avaliação isolada, uma medida simples é
+Se \(T_{\mathrm{solver}}\) é o tempo de uma avaliação do modelo de referência e \(T_{\mathrm{GNN}}\) é o tempo de uma inferência equivalente do surrogate, define-se o speedup por avaliação como
 
 $$
 S_{\mathrm{eval}}
@@ -556,7 +668,7 @@ S_{\mathrm{eval}}
 {T_{\mathrm{GNN}}}.
 $$
 
-Esse número, porém, ignora custo de construção do surrogate. Para o processo de otimização, uma medida mais abrangente é
+Essa razão não inclui o custo de construir o surrogate. Para o processo completo, sejam \(T_{\mathrm{MDO,ref}}\) o tempo de uma otimização realizada com os modelos de referência, \(T_{\mathrm{data}}\) o tempo de geração dos dados, \(T_{\mathrm{train}}\) o tempo de treinamento, \(T_{\mathrm{opt}}\) o tempo da otimização usando surrogates e \(T_{\mathrm{reval}}\) o tempo de reavaliação das soluções selecionadas. Uma medida end-to-end é
 
 $$
 S_{\mathrm{MDO}}
@@ -565,53 +677,52 @@ S_{\mathrm{MDO}}
 {T_{\mathrm{data}}+T_{\mathrm{train}}+T_{\mathrm{opt}}+T_{\mathrm{reval}}}.
 $$
 
-Devem ainda ser registrados horas de CPU/GPU, pico de memória, armazenamento, tamanho das malhas, número de casos de referência e throughput de inferência. Uma arquitetura mais precisa, porém muito mais pesada, pode ser inferior para o objetivo de acelerar milhares de avaliações em MDO.
+Além do tempo de parede, devem ser registrados horas de CPU/GPU, pico de memória, armazenamento, tamanho das malhas, número de avaliações de referência e throughput de inferência. Uma arquitetura com menor erro, mas custo de inferência ou treinamento muito maior, pode ser menos adequada ao objetivo de acelerar milhares de avaliações em MDO.
 
-A diferenciabilidade da GNN também não garante automaticamente gradientes úteis em relação aos parâmetros de projeto. Se a transformação parâmetros → geometria → malha envolve operações não diferenciáveis ou mudanças abruptas de conectividade, a derivada da saída da rede em relação às coordenadas do grafo não é, por si só, a derivada completa em relação ao vetor de projeto. Esse ponto será retomado na integração com otimização matemática.
+A diferenciabilidade interna da GNN também não garante gradientes completos em relação aos parâmetros de projeto. Se a cadeia parâmetros de projeto → geometria → malha inclui remalhamento ou operações não diferenciáveis, a derivada da saída em relação às coordenadas dos nós não coincide automaticamente com a derivada em relação ao vetor de projeto.
 
 ## Incerteza e domínio de aplicabilidade
 
-A incerteza mais relevante em um surrogate treinado com dados determinísticos de solver é frequentemente a **incerteza epistemológica**: o modelo pode estar pouco sustentado por exemplos semelhantes em determinada região do espaço de projeto. Ensambles de redes, aproximações bayesianas e outros métodos podem fornecer indicadores dessa incerteza, mas nenhum deve ser tratado automaticamente como probabilidade calibrada sem validação.
+Em um surrogate treinado com dados determinísticos, a **incerteza epistemológica** está associada à limitação do conhecimento do modelo em regiões pouco representadas pelo conjunto de treinamento. Ensembles e aproximações bayesianas podem fornecer indicadores dessa incerteza, mas suas saídas não devem ser tratadas como probabilidades calibradas sem validação específica.
 
-A estimativa pode ser útil para decidir quando uma solução candidata merece reavaliação com solver de referência ou quando novos pontos devem ser adicionados ao conjunto de treinamento. Essa função é particularmente compatível com aprendizado ativo, mas a adoção dessa estratégia depende de demonstrar que o custo das novas simulações justifica o mecanismo adicional. A incerteza é, portanto, um recurso opcional de controle do surrogate, não uma condição necessária para a arquitetura básica.
+Um indicador de incerteza pode auxiliar a selecionar candidatos para reavaliação com o solver de referência ou a escolher novos casos de treinamento. Esse uso conecta-se naturalmente a aprendizado ativo, mas a estratégia somente se justifica se o benefício em número de simulações ou recursos superar a complexidade adicional.
 
 ## Ponte para multifidelidade
 
-Até aqui, o surrogate foi apresentado como aproximação de um conjunto de dados de referência. Na prática, diferentes modelos físicos e discretizações podem produzir respostas relacionadas com demandas de recursos distintas. O objetivo do aprendizado multifidelidade é explorar essa estrutura em vez de tratar todos os exemplos como equivalentes.
+Até este ponto, a GNN foi apresentada como aproximação de um conjunto de dados de referência. O próximo passo é reconhecer que diferentes modelos físicos e discretizações podem produzir respostas relacionadas com demandas de recursos distintas.
 
-Uma forma conceitual simples é
+Se \(y_{\mathrm{LF}}\) é uma resposta obtida por um modelo de menor fidelidade, \(y_{\mathrm{HF}}\) é a resposta correspondente de maior fidelidade e \(\mathbf c\) reúne as condições físicas, uma relação corretiva conceitual é
 
 $$
 y_{\mathrm{HF}}
 =
-y_{\mathrm{LF}}+
-\Delta_\theta
+y_{\mathrm{LF}}
++
+\Delta_{\boldsymbol\theta}
 (G,y_{\mathrm{LF}},\mathbf c),
 $$
 
-em que a rede aprende uma correção entre uma resposta de menor e uma de maior fidelidade. GNNs multifidelidade já foram investigadas em problemas de malha e PDEs [@black2022; @taghizadeh2025].
+onde \(\Delta_{\boldsymbol\theta}\) é uma correção aprendida. Essa forma aditiva é apenas uma possibilidade; ela não deve ser adotada antes de verificar se descreve adequadamente a relação entre os níveis. GNNs multifidelidade já foram investigadas em problemas de malha e PDEs [@black2022; @taghizadeh2025].
 
-No problema aero-stealth, essa relação precisa ser definida separadamente para eletromagnetismo e aerodinâmica, porque “fidelidade” depende das hipóteses físicas, discretização e critérios numéricos de cada disciplina. O próximo capítulo desenvolverá essa estrutura explicitamente.
+No problema aero-stealth, a fidelidade será definida separadamente para eletromagnetismo e aerodinâmica em função das hipóteses físicas, discretização, critérios numéricos e demanda de recursos. O Capítulo 5 desenvolve essa estrutura.
 
 ## Estudos de ablação e comparação justa
 
-A contribuição de cada componente deve ser separada experimentalmente. Uma sequência de comparação cientificamente informativa inclui um baseline que não usa grafo, uma GNN convencional baseada em coordenadas e conectividade, variantes com atributos geométricos mais estruturados, versões com features ou canais de AG, regularização física e, posteriormente, multifidelidade.
+A contribuição de cada componente deve ser separada experimentalmente. Um conjunto informativo de comparações inclui um baseline sem grafo, uma MPNN convencional com conectividade e atributos geométricos usuais, variantes com atributos geométricos adicionais, versões com features ou canais de AG, regularização física, mecanismos explícitos de equivariância e, posteriormente, multifidelidade.
 
-As comparações devem manter, tanto quanto possível, o mesmo conjunto de dados, divisão treino–validação–teste, orçamento de otimização de hiperparâmetros e métricas. Caso contrário, uma melhora atribuída à AG ou à regularização física pode, na realidade, resultar de maior capacidade do modelo, maior tempo de treinamento ou diferença no conjunto de dados.
-
-A mesma cautela vale para equivariância, multitarefa e mecanismos globais. Eles são hipóteses arquiteturais plausíveis, não conclusões antecipadas.
+As comparações devem compartilhar, tanto quanto possível, o mesmo conjunto de dados, a mesma divisão treino–validação–teste, critérios semelhantes de seleção de hiperparâmetros e as mesmas métricas. Caso contrário, uma melhora atribuída à AG ou à regularização física pode resultar apenas de maior capacidade da rede, maior tempo de treinamento ou diferença na distribuição dos dados.
 
 ## Posição em relação à literatura recente
 
-O panorama atual mostra várias linhas convergentes. @pfaff2021 demonstram que grafos podem aprender dinâmica sobre malhas não estruturadas. @chen2021 aplicam GNNs a previsão de escoamento em torno de formas bidimensionais. @peng2024 incorporam informação física em uma rede convolucional de grafos para escoamentos. No eletromagnetismo, @shan2024 e @kong2024 mostram aplicações de aprendizado geométrico a espalhamento e campos distantes. @li2023gino apresentam um operador neural informado por geometria para PDEs tridimensionais em larga escala, representando uma família vizinha de métodos que também deve ser considerada em comparações quando apropriado.
+A literatura recente mostra diferentes formas de aproximar física em malhas. GNNs foram utilizadas para aprender dinâmica sobre malhas não estruturadas e campos aerodinâmicos [@pfaff2021; @chen2021]. Formulações physics-informed em grafos foram exploradas em escoamentos [@peng2024]. No eletromagnetismo, modelos de grafos e representações geométricas foram aplicados a espalhamento e campos distantes [@shan2024; @kong2024]. Operadores neurais informados por geometria representam uma família vizinha para PDEs tridimensionais e constituem alternativa relevante em comparações futuras [@li2023gino].
 
-O antecedente mais diretamente relacionado ao acoplamento aero-eletromagnético é @li2026aeroem, que demonstra uma GNN multitarefa sobre malha superficial para prever respostas aerodinâmicas e médias de RCS em uma mesma arquitetura. A contribuição perseguida neste livro é mais específica em cinco dimensões complementares: **RCS angular e polarizada**, **multifidelidade explícita**, **representações baseadas em Álgebra Geométrica**, **integração com otimização matemática determinística** e **avaliação de recursos de ponta a ponta com revalidação por modelos de referência**.
+O antecedente mais próximo do acoplamento aero-eletromagnético deste livro emprega uma GNN multitarefa sobre malha superficial para prever simultaneamente respostas aerodinâmicas e médias de RCS [@li2026aeroem]. A contribuição perseguida aqui está na integração de cinco dimensões: **RCS angular e polarizada**, **multifidelidade explícita**, **representações e operadores baseados em Álgebra Geométrica**, **otimização matemática determinística** e **avaliação end-to-end de recursos com revalidação por modelos de referência**.
 
-Essa formulação evita uma alegação incorreta de ausência de trabalhos anteriores. A questão científica não é se GNNs podem ser usadas em aerodinâmica ou eletromagnetismo — isso já foi demonstrado —, mas se uma arquitetura mesh-native, multifidelidade e geometricamente estruturada pode fornecer precisão e robustez suficientes para acelerar de maneira mensurável a otimização aero-stealth de configurações UCAV.
+A questão científica, portanto, não é se GNNs podem ser usadas em aerodinâmica ou eletromagnetismo. O problema é estabelecer se uma arquitetura baseada em malhas, geometricamente estruturada e posteriormente multifidelidade alcança precisão, robustez e eficiência suficientes para acelerar de maneira mensurável a otimização aero-stealth de configurações UCAV.
 
-## Arquitetura de referência para os próximos capítulos
+## Arquitetura conceitual do framework
 
-Sem fixar prematuramente uma implementação vencedora, o framework pode ser organizado em blocos conceituais estáveis. A geometria parametrizada gera uma malha e seu grafo. Um encoder transforma atributos geométricos e condições físicas em estados latentes. Um processador propaga informação local e global. Decoders específicos produzem campos e respostas eletromagnéticas e aerodinâmicas. Restrições de consistência conectam campos a quantidades integradas quando possível. O módulo multifidelidade relaciona níveis de modelagem física. Finalmente, o otimizador consulta os surrogates e envia apenas soluções selecionadas para reavaliação com os modelos de referência.
+Sem fixar prematuramente uma implementação vencedora, o framework pode ser organizado em blocos estáveis. A geometria parametrizada gera uma malha e um grafo. O encoder converte atributos geométricos e condições físicas em estados latentes. O processador propaga informação local e, quando necessário, global. Decoders específicos produzem campos ou respostas eletromagnéticas e aerodinâmicas. Relações de consistência conectam campos a quantidades integradas. O módulo multifidelidade relaciona respostas de modelos com níveis distintos de fidelidade. Finalmente, o otimizador consulta os surrogates e envia soluções selecionadas aos modelos de referência.
 
 Em forma compacta,
 
@@ -630,12 +741,12 @@ $$
 \text{MDO determinística}.
 $$
 
-A AG atua transversalmente na representação geométrica e, quando demonstrado útil, nos canais e operadores internos da GNN. A multifidelidade atua na relação entre dados de diferentes modelos. A física atua na escolha de atributos, alvos, integrais, condições de contorno e perdas consistentes. Nenhum desses componentes substitui a validação pelos solvers de referência.
+A AG atua transversalmente na representação geométrica e, se os experimentos justificarem, nos canais e operadores internos da GNN. A multifidelidade atua na relação entre dados provenientes de modelos distintos. A física orienta atributos, alvos, condições de contorno, integrais e perdas. Nenhum desses componentes elimina a necessidade de validação e reavaliação com os solvers de referência.
 
 ## Síntese
 
-A principal vantagem conceitual das GNNs neste problema é representar diretamente malhas irregulares e aprender interações condicionadas por geometria e operação. Essa vantagem vem acompanhada de requisitos científicos claros: respeitar o tipo das grandezas físicas, tratar corretamente simetrias, controlar dependências da discretização, fornecer mecanismos suficientes para interações de longo alcance e separar erro de campo, erro de resposta integrada e ganho real de recursos computacionais.
+A principal vantagem conceitual das GNNs neste problema é operar diretamente sobre malhas irregulares e aprender interações condicionadas pela geometria e pelas condições físicas. Para que essa vantagem se converta em contribuição de engenharia, a formulação precisa manter significado matemático explícito, tratar corretamente simetrias e orientação, controlar dependências da discretização, fornecer alcance suficiente para interações não locais e separar erro de campo, erro de resposta integrada e economia real de recursos.
 
-Para eletromagnetismo, a arquitetura precisa preservar direção, polarização, frequência e coerência de fase quando campos intermediários forem utilizados. Para aerodinâmica, precisa relacionar campos superficiais e coeficientes integrados de maneira consistente com a discretização e com as hipóteses de Euler. Para ambos, generalização deve ser demonstrada em geometrias não vistas, não apenas em novas condições sobre geometrias já conhecidas.
+No eletromagnetismo, direção, polarização, frequência e coerência de fase precisam ser preservadas quando relevantes. Na aerodinâmica, campos superficiais e coeficientes integrados devem ser relacionados de maneira compatível com a discretização e com as hipóteses do modelo de Euler. Em ambas as disciplinas, generalização deve ser demonstrada em geometrias não vistas, e não apenas em novas condições sobre geometrias já presentes no treinamento.
 
-Com essa base, o Capítulo 5 passa da pergunta “como representar e aprender a resposta física em uma malha?” para a pergunta complementar: **como combinar, de maneira explícita e verificável, dados provenientes de níveis distintos de fidelidade para reduzir a quantidade de avaliações de referência necessárias?**
+Com essa base, o Capítulo 5 passa à combinação explícita de dados provenientes de níveis distintos de fidelidade, com o objetivo de reduzir a quantidade de avaliações de referência necessária sem perder controle sobre a qualidade das respostas usadas pela otimização.
