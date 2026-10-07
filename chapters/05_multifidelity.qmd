@@ -181,7 +181,7 @@ A infraestrutura inicial foi implementada no pacote Python `ucav_aerostealth` se
 
 Um multivetor é armazenado pela sequência de componentes
 
-$
+$$
 M
 =
 m_0
@@ -191,11 +191,11 @@ m_1e_1
 m_2e_2
 +
 m_{12}e_{12}.
-$
+$$
 
 A implementação testa explicitamente as relações
 
-$
+$$
 e_1^2=e_2^2=1,
 \qquad
 e_1e_2=e_{12},
@@ -203,7 +203,7 @@ e_1e_2=e_{12},
 e_2e_1=-e_{12},
 \qquad
 e_{12}^2=-1.
-$
+$$
 
 Dessa forma, a normalização geométrica usada no grafo não depende de uma analogia apenas notacional: produtos, dualidade, orientação e sinais são verificados por testes unitários.
 
@@ -211,7 +211,7 @@ Dessa forma, a normalização geométrica usada no grafo não depende de uma ana
 
 Para cada nó do contorno, a representação inicial armazena
 
-$
+$$
 \left[
 x_i,
 y_i,
@@ -222,7 +222,7 @@ n_{y,i},
 d_i,
 b_i
 \right],
-$
+$$
 
 onde \((x_i,y_i)\) são as coordenadas, \(\mathbf t_i\) é a tangente unitária local, \(\mathbf n_i\) é a normal externa, \(d_i\) é o produto interno entre tangentes adjacentes e \(b_i\) é o coeficiente de \(e_{12}\) do produto exterior entre essas tangentes. O par \((d_i,b_i)\) distingue alinhamento e mudança orientada de direção.
 
