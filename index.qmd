@@ -16,10 +16,12 @@ Desenvolver e validar um framework de otimização multidisciplinar aero-stealth
 
 A arquitetura metodológica de referência é:
 
-$$
-\text{CAD/OpenVSP}
+$
+\text{geometria parametrizada 2D/3D}
 \rightarrow
 \text{malha/grafo}
+\rightarrow
+\text{representação em AG}
 \rightarrow
 \text{modelos em diferentes fidelidades}
 \rightarrow
@@ -28,7 +30,9 @@ $$
 \text{otimização matemática aero-stealth}
 \rightarrow
 \text{reavaliação por modelos de referência}.
-$$
+$
+
+A validação metodológica será conduzida em duas etapas. Primeiro, o pipeline completo será desenvolvido e testado em problemas bidimensionais de aerofólios e espalhamento eletromagnético, nos quais geometria, conectividade, atributos em Álgebra Geométrica, treinamento e erros podem ser inspecionados diretamente. Depois, a mesma infraestrutura será estendida para geometrias tridimensionais de configurações UCAV, preservando a separação entre o que foi demonstrado em 2D e o que precisa ser novamente validado em 3D.
 
 A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em *geometric deep learning* e simulação baseada em malhas [@bronstein2021; @pfaff2021]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional [@shan2024] e análise aero-eletromagnética multitarefa em malhas de configurações *blended-wing-body* [@li2026aeroem]. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.
 
@@ -47,11 +51,9 @@ Quantificação de incerteza e aprendizado ativo poderão ser avaliados como est
 
 ## Organização do eBook
 
-Os capítulos são organizados em torno de:
+Os capítulos são organizados em quatro blocos:
 
-- contexto UCAV e definição do problema aero-stealth;
-- fundamentos e aplicação da Álgebra Geométrica;
-- equações físicas de Maxwell/RCS e Euler/aerodinâmica;
-- GNNs para *surrogate modeling*;
-- modelagem multifidelidade e estratégias de geração de dados;
-- otimização matemática multidisciplinar acelerada e validação.
+- fundamentos do problema aero-stealth, da Álgebra Geométrica, da física governante e das GNNs;
+- estudo bidimensional de representação geométrica, fidelidade, dados e construção dos grafos;
+- treinamento, validação e uso dos surrogates no problema bidimensional;
+- extensão tridimensional da mesma metodologia, culminando na otimização aero-stealth de configurações UCAV e na reavaliação com modelos de referência.
