@@ -8,6 +8,64 @@ Serão considerados dois problemas disciplinares complementares. Na aerodinâmic
 
 A grandeza eletromagnética deverá ser identificada a partir dos metadados do conjunto de dados. Se o solver resolver um problema estritamente bidimensional, a saída poderá corresponder a *scattering width* ou outra grandeza por unidade de comprimento. Se a resposta tiver sido calculada para uma extrusão finita ou uma geometria tridimensional, poderá ser uma RCS em \(\mathrm{m^2}\) ou dBsm. O pipeline não converterá implicitamente uma definição na outra.
 
+## Parametrização geométrica e vetor de projeto
+
+A malha ou o contorno é a entrada natural da GNN, mas não é, por si só, uma parametrização adequada para otimização contínua. Para gerar novas geometrias de forma controlada, define-se um vetor de projeto
+
+$$
+\mathbf d
+=
+[d_1,\ldots,d_p]^T,
+$$
+
+em que cada componente \(d_k\) modifica uma característica geométrica com domínio e significado conhecidos. Um gerador geométrico \(\mathcal P\) transforma esse vetor em uma geometria contínua,
+
+$$
+\Gamma
+=
+\mathcal P(\mathbf d),
+$$
+
+e uma etapa de discretização \(\mathcal M\) produz a malha ou o contorno usado pela GNN,
+
+$$
+G
+=
+\mathcal M\!\left(\mathcal P(\mathbf d)\right).
+$$
+
+No estudo de aerofólios, parametrizações como **Class-Shape Transformation (CST)** constituem uma alternativa compacta e amplamente usada para representar famílias de perfis [@kulfan2008]. Splines, PARSEC, *free-form deformation* e outras técnicas permanecem alternativas possíveis. A escolha não será fixada antes da inspeção dos 50 casos, porque é necessário saber se os CSVs preservam os parâmetros geradores ou apenas as coordenadas discretizadas.
+
+Se os dados fornecerem somente coordenadas, a GNN poderá ser treinada normalmente sobre os grafos, mas a otimização contínua de novas formas exigirá posteriormente ajustar ou definir um mapeamento \(\mathcal P\). Essa distinção impede confundir **representação para aprendizado** com **parametrização para geração de projeto**.
+
+## Design of Experiments e construção do banco de dados
+
+A geração planejada de dados deve cobrir conjuntamente o espaço geométrico e as condições físicas sem contaminar a avaliação final do surrogate. Seja \(\mathbf c\) o vetor de condições de operação e seja \(f\) um identificador do nível de fidelidade. Uma amostra computacional pode ser representada por
+
+$$
+\mathcal D
+=
+\left\{
+\left(
+\mathbf d^{(s)},
+\mathbf c^{(s)},
+f^{(s)},
+G^{(s)},
+\mathbf y^{(s)}
+\right)
+\right\}_{s=1}^{N},
+$$
+
+em que \(s\) identifica a amostra, \(G^{(s)}\) é o grafo correspondente e \(\mathbf y^{(s)}\) contém as respostas físicas disponíveis.
+
+Quando novas configurações forem geradas, o **Design of Experiments (DoE)** deverá ser definido sobre os limites admissíveis de \(\mathbf d\) e \(\mathbf c\). Latin Hypercube Sampling (LHS) é uma alternativa clássica para cobrir espaços multidimensionais sem exigir uma grade cartesiana completa [@mckay1979lhs], mas não será adotado automaticamente: a estratégia deverá respeitar restrições geométricas, regiões fisicamente admissíveis e o orçamento de simulação.
+
+No conjunto inicial de aproximadamente 50 configurações, a primeira tarefa será caracterizar como essas amostras foram produzidas. Se forem dados já existentes, não serão reclassificados retroativamente como um DoE planejado. A cobertura do espaço de projeto será medida a partir dos parâmetros disponíveis ou, na ausência deles, por descritores geométricos apropriados.
+
+A partição de teste será congelada antes de qualquer ajuste adaptativo do banco de dados. Novas simulações escolhidas por DoE sequencial ou aprendizado ativo poderão enriquecer treino e validação, mas não serão selecionadas para melhorar diretamente o desempenho observado no teste final.
+
+Em um conjunto multifidelidade, deve-se ainda registrar quais configurações possuem avaliações em cada nível. Amostras de referência podem ser um subconjunto das amostras do modelo de base ou seguir outro desenho explicitamente documentado. O requisito essencial é que respostas usadas em fusão ou correção representem a mesma grandeza física sob condições comparáveis [@peherstorfer2018].
+
 ## Unidade de amostragem e identificação das configurações
 
 A unidade estatística primária será a **configuração geométrica**, identificada por um campo persistente como \(\texttt{configuration\_id}\). Todos os nós, arestas, faces, condições de operação e respostas pertencentes à mesma configuração deverão permanecer associados a esse identificador.
@@ -161,7 +219,7 @@ $$
 
 em que \(y_{\mathrm{base}}\) é a resposta do nível de base, \(y_{\mathrm{ref}}\) é a resposta do nível de referência, \(G\) é o grafo, \(\mathbf c\) contém as condições físicas e \(\Delta_{\boldsymbol\theta}\) é uma correção aprendida. A forma aditiva será tratada como hipótese e comparada com alternativas quando os dados permitirem.
 
-Também poderão ser avaliadas transferência de representação, treinamento *coarse-to-fine* e compartilhamento parcial de parâmetros entre fidelidades [@black2022; @taghizadeh2025].
+Também poderão ser avaliadas transferência de representação, treinamento *coarse-to-fine* e compartilhamento parcial de parâmetros entre fidelidades [@black2022; @taghizadeh2025]. A classificação mais ampla de métodos multifidelidade inclui estratégias de adaptação, fusão e filtragem; essa taxonomia será usada para posicionar as alternativas implementadas sem reduzir multifidelidade a uma única correção aditiva [@peherstorfer2018].
 
 ## Reprodutibilidade da preparação dos dados
 
