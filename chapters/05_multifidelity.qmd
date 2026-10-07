@@ -175,16 +175,107 @@ As proporções de treino, validação e teste serão parâmetros do job. Um val
 
 O manifest de cada execução deverá registrar, no mínimo, identificadores das configurações em cada subconjunto, versão dos arquivos de entrada, transformações geométricas aplicadas e parâmetros usados para construir o grafo.
 
+## Implementação computacional de referência
+
+A infraestrutura inicial foi implementada no pacote Python `ucav_aerostealth` sem depender, nesta etapa, de uma biblioteca externa de Álgebra Geométrica. A decisão permite verificar diretamente as identidades de \(Cl(2,0)\) que serão usadas para construir os atributos do grafo.
+
+Um multivetor é armazenado pela sequência de componentes
+
+$
+M
+=
+m_0
++
+m_1e_1
++
+m_2e_2
++
+m_{12}e_{12}.
+$
+
+A implementação testa explicitamente as relações
+
+$
+e_1^2=e_2^2=1,
+\qquad
+e_1e_2=e_{12},
+\qquad
+e_2e_1=-e_{12},
+\qquad
+e_{12}^2=-1.
+$
+
+Dessa forma, a normalização geométrica usada no grafo não depende de uma analogia apenas notacional: produtos, dualidade, orientação e sinais são verificados por testes unitários.
+
+### Features iniciais do grafo de contorno
+
+Para cada nó do contorno, a representação inicial armazena
+
+$
+\left[
+x_i,,
+y_i,,
+t_{x,i},,
+t_{y,i},,
+n_{x,i},,
+n_{y,i},,
+d_i,,
+b_i
+\right],
+$
+
+onde \((x_i,y_i)\) são as coordenadas, \(\mathbf t_i\) é a tangente unitária local, \(\mathbf n_i\) é a normal externa, \(d_i\) é o produto interno entre tangentes adjacentes e \(b_i\) é o coeficiente de \(e_{12}\) do produto exterior entre essas tangentes. O par \((d_i,b_i)\) distingue alinhamento e mudança orientada de direção.
+
+As arestas direcionadas armazenam deslocamento relativo, comprimento e direção unitária. Cada segmento do contorno é representado nos dois sentidos no grafo, enquanto orientação física e normal permanecem atributos geométricos associados ao contorno original.
+
+### Serialização independente do framework de GNN
+
+Antes da escolha da biblioteca de treinamento, cada configuração é convertida para um arquivo comprimido `.npz` contendo
+
+- identificador da configuração;
+- identificadores dos nós;
+- matriz de features nodais;
+- conectividade `edge_index`;
+- matriz de features das arestas;
+- área orientada e sentido do contorno;
+- respostas globais;
+- condições físicas globais.
+
+Essa etapa evita vincular a preparação dos dados a PyTorch Geometric, DGL ou outra biblioteca específica. O Capítulo 6 poderá construir os tensores de treinamento a partir dessa representação estável.
+
+### Interface de preparação dos dados
+
+O job de preparação é configurado por TOML e pode ser executado por
+
+```bash
+python -m ucav_aerostealth.cli.prepare_2d \
+  --config configs/2d/data_prep.example.toml \
+  --input-csv caminho/para/contornos.csv \
+  --output-dir caminho/para/saida
+```
+
+As proporções do split e a seed podem ser sobrescritas pela linha de comando. Na ausência de sobrescrita, a seed permanece igual a 42.
+
+A execução gera `dataset_manifest.json`, os grafos serializados e `split_manifest.json`. O segundo arquivo registra explicitamente quais `configuration_id` pertencem a treino, validação e teste, permitindo reproduzir exatamente a divisão utilizada em cada experimento.
+
+## Limites da implementação antes da chegada dos dados reais
+
+A primeira versão do código assume **contornos fechados 2D ordenados**. Essa hipótese é adequada para aerofólios representados pela fronteira e para geometrias eletromagnéticas descritas por um contorno equivalente. Ela não deve ser confundida com suporte já validado para qualquer malha bidimensional volumétrica.
+
+Se os CSVs fornecidos contiverem células triangulares, conectividade explícita, múltiplos componentes de contorno ou campos internos, o contrato será estendido depois de inspecionar a estrutura real dos arquivos. Essa extensão preservará os princípios definidos aqui, mas não será inferida antecipadamente.
+
+Da mesma forma, o campo chamado provisoriamente de RCS no conjunto de dados será renomeado no pipeline caso os metadados mostrem que se trata de *scattering width* ou de outra grandeza eletromagnética.
+
 ## Saídas computacionais deste capítulo
 
-A implementação associada a este capítulo deverá produzir, de forma reproduzível,
+A infraestrutura implementada neste estágio fornece
 
-- validação dos CSVs;
-- reconstrução das geometrias 2D;
-- atributos convencionais e atributos derivados de \(Cl(2,0)\);
-- grafos serializáveis;
+- validação do contrato dos CSVs;
+- reconstrução de contornos 2D;
+- atributos convencionais e derivados de \(Cl(2,0)\);
+- grafos serializáveis independentes do framework de GNN;
 - divisão por configuração com semente 42;
-- manifestos de dados;
-- testes unitários para orientação, comprimentos, áreas e operações geométricas.
+- manifestos de dados e split;
+- testes unitários para o produto geométrico, dualidade, orientação, comprimentos, grafos e ausência de vazamento entre partições.
 
-O capítulo seguinte utilizará esses artefatos para treinamento, validação e comparação das GNNs.
+Os valores experimentais somente serão produzidos depois que os CSVs reais forem incorporados. O Capítulo 6 utilizará os artefatos deste pipeline para treinamento, validação e comparação das GNNs.
