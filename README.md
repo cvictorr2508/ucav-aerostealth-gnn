@@ -19,15 +19,15 @@ This project develops a multidisciplinary aero-stealth optimization framework th
 ## Research architecture
 
 ```text
-Geometry / OpenVSP
+Parameterized geometry
         ↓
-Mesh and graph representation
+Controlled 2D study: contour/mesh → Cl(2,0) → graph
         ↓
-Physics models at different fidelity levels
+2D GNN training and multifidelity validation
         ↓
-Multifidelity physics-informed GNNs
+3D extension: UCAV surface mesh → Cl(3,0) → graph
         ↓
-Fast surrogate evaluations
+Multifidelity aero-electromagnetic GNNs
         ↓
 Deterministic multidisciplinary aero-stealth optimization
         ↓

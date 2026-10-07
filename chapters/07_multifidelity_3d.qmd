@@ -6,6 +6,12 @@ Este capítulo estenderá para três dimensões a infraestrutura validada no est
 
 A geometria tridimensional deverá ser gerada a partir de um espaço de projeto explicitamente parametrizado. Cada configuração manterá rastreabilidade entre parâmetros de projeto, CAD ou representação geométrica intermediária, malha superficial, grafo e respostas dos solvers.
 
+## Design of Experiments e banco de dados 3D
+
+A extensão tridimensional exigirá um DoE próprio no espaço de parâmetros geométricos e condições físicas. A estratégia de amostragem deverá considerar restrições de fabricação ou integração, validade geométrica do CAD, qualidade da malha e orçamento dos solvers. Técnicas como LHS podem fornecer cobertura inicial [@mckay1979lhs], mas a amostragem final deverá ser compatível com a parametrização 3D e com o custo observado de cada fidelidade.
+
+Quando houver múltiplos níveis de fidelidade, o plano de dados deverá documentar a relação entre os conjuntos de amostras e reservar avaliações de referência para validação e reavaliação final. Estratégias multifidelidade serão selecionadas de acordo com a correlação observada, a compatibilidade das respostas e a relação entre recurso consumido e informação acrescentada [@peherstorfer2018].
+
 ## Malhas superficiais e grafos
 
 Serão avaliados grafos de vértices e de faces, escolhidos de acordo com a localização das variáveis físicas e com a discretização dos modelos de referência. A robustez a alterações de densidade e conectividade da malha será testada explicitamente.
