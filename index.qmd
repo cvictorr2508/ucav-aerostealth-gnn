@@ -14,7 +14,7 @@ Desenvolver e validar um framework de otimização multidisciplinar aero-stealth
 
 ## Arquitetura da pesquisa
 
-A arquitetura metodológica de referência é:
+A arquitetura metodológica de referência combina **análise e otimização baseadas em modelos substitutos** (*surrogate-based analysis and optimization*, SBAO) com uma formulação de **Otimização Multidisciplinar de Projeto (Multidisciplinary Design Optimization, MDO)**. Os modelos substitutos reduzem o número de consultas aos modelos físicos de referência, enquanto a organização multidisciplinar segue a taxonomia de arquiteturas de MDO e será classificada como MDF, IDF ou outra alternativa somente depois que as variáveis de acoplamento e as condições de consistência entre as disciplinas estiverem explicitamente definidas [@queipo2005sbao; @martins2013]. A relação entre níveis de fidelidade será tratada segundo métodos de modelagem multifidelidade, preservando compatibilidade física entre as respostas e avaliações de referência para validação [@peherstorfer2018]. As Graph Neural Networks operacionalizam os surrogates sobre as representações em malha/grafo.
 
 $
 \text{geometria parametrizada 2D/3D}
