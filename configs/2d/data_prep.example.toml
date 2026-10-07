@@ -1,0 +1,23 @@
+# Example configuration for Chapter 5 data preparation.
+# Replace paths and column names with the actual CSV contract.
+
+[input]
+csv = "data/2d/contours.csv"
+output_dir = "data/processed/2d"
+closed_contour = true
+
+[columns]
+configuration_id = "configuration_id"
+node_id = "node_id"
+# Optional explicit point-order column. Leave empty to sort by node_id.
+order = ""
+x = "x"
+y = "y"
+targets = ["CL", "CD", "RCS"]
+globals = []
+
+[split]
+seed = 42
+train = 0.70
+validation = 0.15
+test = 0.15
