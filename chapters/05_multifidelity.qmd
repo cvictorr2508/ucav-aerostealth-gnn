@@ -62,6 +62,8 @@ Quando novas configurações forem geradas, o **Design of Experiments (DoE)** de
 
 No conjunto inicial de aproximadamente 50 configurações, a primeira tarefa será caracterizar como essas amostras foram produzidas. Se forem dados já existentes, não serão reclassificados retroativamente como um DoE planejado. A cobertura do espaço de projeto será medida a partir dos parâmetros disponíveis ou, na ausência deles, por descritores geométricos apropriados.
 
+A partição de teste será congelada antes de qualquer ajuste adaptativo do banco de dados. Novas simulações escolhidas por DoE sequencial ou aprendizado ativo poderão enriquecer treino e validação, mas não serão selecionadas para melhorar diretamente o desempenho observado no teste final.
+
 Em um conjunto multifidelidade, deve-se ainda registrar quais configurações possuem avaliações em cada nível. Amostras de referência podem ser um subconjunto das amostras do modelo de base ou seguir outro desenho explicitamente documentado. O requisito essencial é que respostas usadas em fusão ou correção representem a mesma grandeza física sob condições comparáveis [@peherstorfer2018].
 
 ## Unidade de amostragem e identificação das configurações
