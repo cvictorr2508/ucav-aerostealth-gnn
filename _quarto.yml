@@ -19,6 +19,8 @@ book:
     - chapters/04_graph_neural_networks.qmd
     - chapters/05_multifidelity.qmd
     - chapters/06_optimization.qmd
+    - chapters/07_multifidelity_3d.qmd
+    - chapters/08_optimization_3d.qmd
   downloads: [pdf]
 
 bibliography: references.bib
