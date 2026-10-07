@@ -26,7 +26,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -178,7 +198,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -218,9 +238,10 @@ window.Quarto = {
   <li><a href="#variáveis-de-projeto" id="toc-variáveis-de-projeto" class="nav-link" data-scroll-target="#variáveis-de-projeto"><span class="header-section-number">8.7</span> Variáveis de projeto</a></li>
   <li><a href="#objetivos-e-restrições" id="toc-objetivos-e-restrições" class="nav-link" data-scroll-target="#objetivos-e-restrições"><span class="header-section-number">8.8</span> Objetivos e restrições</a></li>
   <li><a href="#otimização-assistida-por-surrogate" id="toc-otimização-assistida-por-surrogate" class="nav-link" data-scroll-target="#otimização-assistida-por-surrogate"><span class="header-section-number">8.9</span> Otimização assistida por surrogate</a></li>
-  <li><a href="#reavaliação-e-qualidade-de-pareto" id="toc-reavaliação-e-qualidade-de-pareto" class="nav-link" data-scroll-target="#reavaliação-e-qualidade-de-pareto"><span class="header-section-number">8.10</span> Reavaliação e qualidade de Pareto</a></li>
-  <li><a href="#recursos-e-aceleração-end-to-end" id="toc-recursos-e-aceleração-end-to-end" class="nav-link" data-scroll-target="#recursos-e-aceleração-end-to-end"><span class="header-section-number">8.11</span> Recursos e aceleração end-to-end</a></li>
-  <li><a href="#validação-final" id="toc-validação-final" class="nav-link" data-scroll-target="#validação-final"><span class="header-section-number">8.12</span> Validação final</a></li>
+  <li><a href="#enriquecimento-sequencial-em-regiões-relevantes" id="toc-enriquecimento-sequencial-em-regiões-relevantes" class="nav-link" data-scroll-target="#enriquecimento-sequencial-em-regiões-relevantes"><span class="header-section-number">8.10</span> Enriquecimento sequencial em regiões relevantes</a></li>
+  <li><a href="#reavaliação-e-qualidade-de-pareto" id="toc-reavaliação-e-qualidade-de-pareto" class="nav-link" data-scroll-target="#reavaliação-e-qualidade-de-pareto"><span class="header-section-number">8.11</span> Reavaliação e qualidade de Pareto</a></li>
+  <li><a href="#recursos-e-aceleração-end-to-end" id="toc-recursos-e-aceleração-end-to-end" class="nav-link" data-scroll-target="#recursos-e-aceleração-end-to-end"><span class="header-section-number">8.12</span> Recursos e aceleração end-to-end</a></li>
+  <li><a href="#validação-final" id="toc-validação-final" class="nav-link" data-scroll-target="#validação-final"><span class="header-section-number">8.13</span> Validação final</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/08_optimization_3d.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/08_optimization_3d.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -271,7 +292,7 @@ window.Quarto = {
 :
 (G,\mathbf c_{\mathrm{EM}})
 \longmapsto
-\sigma(\theta,phi,\mathrm{pol}).
+\sigma(\theta,\phi,\mathrm{pol}).
 \]</span></p>
 <p>Arquiteturas condicionadas por consulta poderão ser comparadas com decoders que produzam curvas ou mapas angulares completos.</p>
 </section>
@@ -293,18 +314,41 @@ window.Quarto = {
 </section>
 <section id="objetivos-e-restrições" class="level2" data-number="8.8">
 <h2 data-number="8.8" class="anchored" data-anchor-id="objetivos-e-restrições"><span class="header-section-number">8.8</span> Objetivos e restrições</h2>
-<p>A formulação multiobjetivo combinará métricas eletromagnéticas e aerodinâmicas sob restrições geométricas e operacionais. A RCS poderá ser agregada por setores, máximos, quantis ou outras medidas explicitamente definidas, preservando a curva original para validação.</p>
+<p>Seja <span class="math inline">\(\mathbf d\)</span> o vetor de parâmetros geométricos 3D e seja <span class="math inline">\(\mathcal D_{\mathrm{adm}}\)</span> o conjunto de configurações admissíveis. Uma formulação de referência é</p>
+<p><span class="math display">\[
+\min_{\mathbf d\in\mathcal D_{\mathrm{adm}}}
+\begin{bmatrix}
+J_{\mathrm{RCS}}(\mathbf d)\\
+C_D(\mathbf d)
+\end{bmatrix},
+\]</span></p>
+<p>sujeita a</p>
+<p><span class="math display">\[
+C_L(\mathbf d)\ge C_{L,\min},
+\qquad
+V_{\mathrm{int}}(\mathbf d)\ge V_{\min},
+\qquad
+g_r(\mathbf d)\le0,
+\quad r=1,\ldots,n_g.
+\]</span></p>
+<p>Nessa escrita, <span class="math inline">\(J_{\mathrm{RCS}}\)</span> é uma medida explicitamente definida a partir da curva de RCS, <span class="math inline">\(V_{\mathrm{int}}\)</span> é o volume interno disponível e <span class="math inline">\(g_r\)</span> reúne outras restrições geométricas, operacionais ou de integração que forem efetivamente adotadas. A RCS poderá ser agregada por setores, máximos, quantis ou outras medidas de risco, preservando a curva original para validação.</p>
+<p>A arquitetura MDO será escolhida depois de identificar variáveis de acoplamento e a necessidade, ou não, de consistência interdisciplinar iterativa. A nomenclatura MDF, IDF ou equivalente será empregada no sentido formal da literatura de arquiteturas MDO <span class="citation" data-cites="martins2013"><a href="#ref-martins2013" role="doc-biblioref">[1]</a></span>, e não como sinônimo genérico de uso simultâneo de vários surrogates.</p>
 </section>
 <section id="otimização-assistida-por-surrogate" class="level2" data-number="8.9">
 <h2 data-number="8.9" class="anchored" data-anchor-id="otimização-assistida-por-surrogate"><span class="header-section-number">8.9</span> Otimização assistida por surrogate</h2>
 <p>A GNN realizará a maior parte das consultas do otimizador, enquanto os solvers de referência serão usados na geração de dados, em regiões críticas e na reavaliação de soluções selecionadas.</p>
 </section>
-<section id="reavaliação-e-qualidade-de-pareto" class="level2" data-number="8.10">
-<h2 data-number="8.10" class="anchored" data-anchor-id="reavaliação-e-qualidade-de-pareto"><span class="header-section-number">8.10</span> Reavaliação e qualidade de Pareto</h2>
+<section id="enriquecimento-sequencial-em-regiões-relevantes" class="level2" data-number="8.10">
+<h2 data-number="8.10" class="anchored" data-anchor-id="enriquecimento-sequencial-em-regiões-relevantes"><span class="header-section-number">8.10</span> Enriquecimento sequencial em regiões relevantes</h2>
+<p>Depois do DoE inicial, aprendizado ativo poderá selecionar novas avaliações de referência em regiões de maior incerteza, maior discrepância entre fidelidades ou maior relevância para a fronteira de Pareto. O critério de aquisição deverá ser validado contra um plano de expansão não adaptativo para demonstrar que a complexidade adicional reduz efetivamente o número de simulações ou a demanda total de recursos.</p>
+<p>A região de Pareto não será o único alvo possível: amostras também podem ser necessárias para corrigir violações de restrições, picos estreitos de RCS ou regiões em que o surrogate apresente extrapolação geométrica. O conjunto de teste final permanecerá isolado desse ciclo.</p>
+</section>
+<section id="reavaliação-e-qualidade-de-pareto" class="level2" data-number="8.11">
+<h2 data-number="8.11" class="anchored" data-anchor-id="reavaliação-e-qualidade-de-pareto"><span class="header-section-number">8.11</span> Reavaliação e qualidade de Pareto</h2>
 <p>Soluções nondominadas previstas deverão ser reavaliadas com modelos de referência. Serão analisados erro após reavaliação, dominância, hipervolume e outros indicadores adequados ao conjunto de soluções.</p>
 </section>
-<section id="recursos-e-aceleração-end-to-end" class="level2" data-number="8.11">
-<h2 data-number="8.11" class="anchored" data-anchor-id="recursos-e-aceleração-end-to-end"><span class="header-section-number">8.11</span> Recursos e aceleração end-to-end</h2>
+<section id="recursos-e-aceleração-end-to-end" class="level2" data-number="8.12">
+<h2 data-number="8.12" class="anchored" data-anchor-id="recursos-e-aceleração-end-to-end"><span class="header-section-number">8.12</span> Recursos e aceleração end-to-end</h2>
 <p>A aceleração será medida contabilizando geração dos dados, treinamento, otimização e reavaliação:</p>
 <p><span class="math display">\[
 S_{\mathrm{MDO}}
@@ -314,11 +358,16 @@ S_{\mathrm{MDO}}
 \]</span></p>
 <p>Também serão registrados CPU/GPU horas, memória de pico, armazenamento, número de avaliações dos modelos de referência e throughput de inferência.</p>
 </section>
-<section id="validação-final" class="level2" data-number="8.12">
-<h2 data-number="8.12" class="anchored" data-anchor-id="validação-final"><span class="header-section-number">8.12</span> Validação final</h2>
+<section id="validação-final" class="level2" data-number="8.13">
+<h2 data-number="8.13" class="anchored" data-anchor-id="validação-final"><span class="header-section-number">8.13</span> Validação final</h2>
 <p>As conclusões de engenharia serão baseadas nas respostas reavaliadas pelos modelos de referência e, quando viável, comparadas com evidência experimental. A contribuição do framework será julgada pela combinação de precisão, robustez, recursos e qualidade das decisões aero-stealth.</p>
 
 
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-martins2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">J. R. R. A. Martins e A. B. Lambe, <span>“Multidisciplinary Design Optimization: A Survey of Architectures”</span>, <em>AIAA Journal</em>, v. 51, n. 9, p. 2049–2075, 2013, doi: <a href="https://doi.org/10.2514/1.J051895">10.2514/1.J051895</a>.</div>
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

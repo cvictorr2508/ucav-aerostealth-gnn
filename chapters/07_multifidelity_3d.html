@@ -26,7 +26,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -179,7 +199,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -211,15 +231,16 @@ window.Quarto = {
    
   <ul>
   <li><a href="#geometrias-ucav-e-parametrização-3d" id="toc-geometrias-ucav-e-parametrização-3d" class="nav-link active" data-scroll-target="#geometrias-ucav-e-parametrização-3d"><span class="header-section-number">7.1</span> Geometrias UCAV e parametrização 3D</a></li>
-  <li><a href="#malhas-superficiais-e-grafos" id="toc-malhas-superficiais-e-grafos" class="nav-link" data-scroll-target="#malhas-superficiais-e-grafos"><span class="header-section-number">7.2</span> Malhas superficiais e grafos</a></li>
-  <li><a href="#álgebra-geométrica-em-cl30" id="toc-álgebra-geométrica-em-cl30" class="nav-link" data-scroll-target="#álgebra-geométrica-em-cl30"><span class="header-section-number">7.3</span> Álgebra Geométrica em <span class="math inline">\(Cl(3,0)\)</span></a></li>
-  <li><a href="#aerodinâmica-tridimensional" id="toc-aerodinâmica-tridimensional" class="nav-link" data-scroll-target="#aerodinâmica-tridimensional"><span class="header-section-number">7.4</span> Aerodinâmica tridimensional</a></li>
-  <li><a href="#espalhamento-eletromagnético-tridimensional" id="toc-espalhamento-eletromagnético-tridimensional" class="nav-link" data-scroll-target="#espalhamento-eletromagnético-tridimensional"><span class="header-section-number">7.5</span> Espalhamento eletromagnético tridimensional</a></li>
-  <li><a href="#fidelidades-em-e-aero" id="toc-fidelidades-em-e-aero" class="nav-link" data-scroll-target="#fidelidades-em-e-aero"><span class="header-section-number">7.6</span> Fidelidades EM e aero</a></li>
-  <li><a href="#correspondência-entre-fidelidades" id="toc-correspondência-entre-fidelidades" class="nav-link" data-scroll-target="#correspondência-entre-fidelidades"><span class="header-section-number">7.7</span> Correspondência entre fidelidades</a></li>
-  <li><a href="#dados-manifestos-e-rastreabilidade" id="toc-dados-manifestos-e-rastreabilidade" class="nav-link" data-scroll-target="#dados-manifestos-e-rastreabilidade"><span class="header-section-number">7.8</span> Dados, manifestos e rastreabilidade</a></li>
-  <li><a href="#transferência-do-pipeline-2d" id="toc-transferência-do-pipeline-2d" class="nav-link" data-scroll-target="#transferência-do-pipeline-2d"><span class="header-section-number">7.9</span> Transferência do pipeline 2D</a></li>
-  <li><a href="#critérios-de-prontidão-para-o-capítulo-8" id="toc-critérios-de-prontidão-para-o-capítulo-8" class="nav-link" data-scroll-target="#critérios-de-prontidão-para-o-capítulo-8"><span class="header-section-number">7.10</span> Critérios de prontidão para o Capítulo 8</a></li>
+  <li><a href="#design-of-experiments-e-banco-de-dados-3d" id="toc-design-of-experiments-e-banco-de-dados-3d" class="nav-link" data-scroll-target="#design-of-experiments-e-banco-de-dados-3d"><span class="header-section-number">7.2</span> Design of Experiments e banco de dados 3D</a></li>
+  <li><a href="#malhas-superficiais-e-grafos" id="toc-malhas-superficiais-e-grafos" class="nav-link" data-scroll-target="#malhas-superficiais-e-grafos"><span class="header-section-number">7.3</span> Malhas superficiais e grafos</a></li>
+  <li><a href="#álgebra-geométrica-em-cl30" id="toc-álgebra-geométrica-em-cl30" class="nav-link" data-scroll-target="#álgebra-geométrica-em-cl30"><span class="header-section-number">7.4</span> Álgebra Geométrica em <span class="math inline">\(Cl(3,0)\)</span></a></li>
+  <li><a href="#aerodinâmica-tridimensional" id="toc-aerodinâmica-tridimensional" class="nav-link" data-scroll-target="#aerodinâmica-tridimensional"><span class="header-section-number">7.5</span> Aerodinâmica tridimensional</a></li>
+  <li><a href="#espalhamento-eletromagnético-tridimensional" id="toc-espalhamento-eletromagnético-tridimensional" class="nav-link" data-scroll-target="#espalhamento-eletromagnético-tridimensional"><span class="header-section-number">7.6</span> Espalhamento eletromagnético tridimensional</a></li>
+  <li><a href="#fidelidades-em-e-aero" id="toc-fidelidades-em-e-aero" class="nav-link" data-scroll-target="#fidelidades-em-e-aero"><span class="header-section-number">7.7</span> Fidelidades EM e aero</a></li>
+  <li><a href="#correspondência-entre-fidelidades" id="toc-correspondência-entre-fidelidades" class="nav-link" data-scroll-target="#correspondência-entre-fidelidades"><span class="header-section-number">7.8</span> Correspondência entre fidelidades</a></li>
+  <li><a href="#dados-manifestos-e-rastreabilidade" id="toc-dados-manifestos-e-rastreabilidade" class="nav-link" data-scroll-target="#dados-manifestos-e-rastreabilidade"><span class="header-section-number">7.9</span> Dados, manifestos e rastreabilidade</a></li>
+  <li><a href="#transferência-do-pipeline-2d" id="toc-transferência-do-pipeline-2d" class="nav-link" data-scroll-target="#transferência-do-pipeline-2d"><span class="header-section-number">7.10</span> Transferência do pipeline 2D</a></li>
+  <li><a href="#critérios-de-prontidão-para-o-capítulo-8" id="toc-critérios-de-prontidão-para-o-capítulo-8" class="nav-link" data-scroll-target="#critérios-de-prontidão-para-o-capítulo-8"><span class="header-section-number">7.11</span> Critérios de prontidão para o Capítulo 8</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/07_multifidelity_3d.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/07_multifidelity_3d.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -250,12 +271,17 @@ window.Quarto = {
 <h2 data-number="7.1" class="anchored" data-anchor-id="geometrias-ucav-e-parametrização-3d"><span class="header-section-number">7.1</span> Geometrias UCAV e parametrização 3D</h2>
 <p>A geometria tridimensional deverá ser gerada a partir de um espaço de projeto explicitamente parametrizado. Cada configuração manterá rastreabilidade entre parâmetros de projeto, CAD ou representação geométrica intermediária, malha superficial, grafo e respostas dos solvers.</p>
 </section>
-<section id="malhas-superficiais-e-grafos" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="malhas-superficiais-e-grafos"><span class="header-section-number">7.2</span> Malhas superficiais e grafos</h2>
+<section id="design-of-experiments-e-banco-de-dados-3d" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="design-of-experiments-e-banco-de-dados-3d"><span class="header-section-number">7.2</span> Design of Experiments e banco de dados 3D</h2>
+<p>A extensão tridimensional exigirá um DoE próprio no espaço de parâmetros geométricos e condições físicas. A estratégia de amostragem deverá considerar restrições de fabricação ou integração, validade geométrica do CAD, qualidade da malha e orçamento dos solvers. Técnicas como LHS podem fornecer cobertura inicial <span class="citation" data-cites="mckay1979lhs"><a href="#ref-mckay1979lhs" role="doc-biblioref">[1]</a></span>, mas a amostragem final deverá ser compatível com a parametrização 3D e com o custo observado de cada fidelidade.</p>
+<p>Quando houver múltiplos níveis de fidelidade, o plano de dados deverá documentar a relação entre os conjuntos de amostras e reservar avaliações de referência para validação e reavaliação final. Estratégias multifidelidade serão selecionadas de acordo com a correlação observada, a compatibilidade das respostas e a relação entre recurso consumido e informação acrescentada <span class="citation" data-cites="peherstorfer2018"><a href="#ref-peherstorfer2018" role="doc-biblioref">[2]</a></span>.</p>
+</section>
+<section id="malhas-superficiais-e-grafos" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="malhas-superficiais-e-grafos"><span class="header-section-number">7.3</span> Malhas superficiais e grafos</h2>
 <p>Serão avaliados grafos de vértices e de faces, escolhidos de acordo com a localização das variáveis físicas e com a discretização dos modelos de referência. A robustez a alterações de densidade e conectividade da malha será testada explicitamente.</p>
 </section>
-<section id="álgebra-geométrica-em-cl30" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="álgebra-geométrica-em-cl30"><span class="header-section-number">7.3</span> Álgebra Geométrica em <span class="math inline">\(Cl(3,0)\)</span></h2>
+<section id="álgebra-geométrica-em-cl30" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="álgebra-geométrica-em-cl30"><span class="header-section-number">7.4</span> Álgebra Geométrica em <span class="math inline">\(Cl(3,0)\)</span></h2>
 <p>Para uma face triangular <span class="math inline">\(f=(i,j,k)\)</span>, o bivetor de área orientada será</p>
 <p><span class="math display">\[
 B_f
@@ -265,12 +291,12 @@ B_f
 \]</span></p>
 <p>e sua magnitude fornecerá a área. Normais, dualidade, rotores entre referenciais locais e relações de orientação entre faces serão incorporados de forma compatível com as definições do Capítulo 2.</p>
 </section>
-<section id="aerodinâmica-tridimensional" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="aerodinâmica-tridimensional"><span class="header-section-number">7.4</span> Aerodinâmica tridimensional</h2>
+<section id="aerodinâmica-tridimensional" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="aerodinâmica-tridimensional"><span class="header-section-number">7.5</span> Aerodinâmica tridimensional</h2>
 <p>As respostas poderão incluir <span class="math inline">\(C_p\)</span>, <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span>, <span class="math inline">\(C_m\)</span> e demais coeficientes relevantes. Os níveis de fidelidade serão definidos por conteúdo físico, discretização, modelos de turbulência quando aplicáveis, condições de contorno, convergência e demanda de recursos.</p>
 </section>
-<section id="espalhamento-eletromagnético-tridimensional" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="espalhamento-eletromagnético-tridimensional"><span class="header-section-number">7.5</span> Espalhamento eletromagnético tridimensional</h2>
+<section id="espalhamento-eletromagnético-tridimensional" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="espalhamento-eletromagnético-tridimensional"><span class="header-section-number">7.6</span> Espalhamento eletromagnético tridimensional</h2>
 <p>A resposta eletromagnética será tratada como RCS tridimensional quando sua definição física e normalização corresponderem a essa grandeza. A dependência angular, de frequência e de polarização deverá ser preservada:</p>
 <p><span class="math display">\[
 \sigma
@@ -279,27 +305,35 @@ B_f
 \]</span></p>
 <p>Quando campos ou correntes locais estiverem disponíveis, serão preservadas amplitude e fase para permitir reconstruções fisicamente coerentes de campo distante.</p>
 </section>
-<section id="fidelidades-em-e-aero" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="fidelidades-em-e-aero"><span class="header-section-number">7.6</span> Fidelidades EM e aero</h2>
+<section id="fidelidades-em-e-aero" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="fidelidades-em-e-aero"><span class="header-section-number">7.7</span> Fidelidades EM e aero</h2>
 <p>As hierarquias não serão definidas apenas por nomes de solvers. Cada nível deverá ser documentado por suas hipóteses, discretização, resolução, tratamento de bordas ou viscosidade, critérios numéricos e recursos observados.</p>
 </section>
-<section id="correspondência-entre-fidelidades" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="correspondência-entre-fidelidades"><span class="header-section-number">7.7</span> Correspondência entre fidelidades</h2>
+<section id="correspondência-entre-fidelidades" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="correspondência-entre-fidelidades"><span class="header-section-number">7.8</span> Correspondência entre fidelidades</h2>
 <p>A construção multifidelidade exigirá compatibilidade entre grandezas. Respostas LF e HF deverão representar a mesma quantidade física sob condições equivalentes antes de serem usadas em correção residual, transferência de representação ou aprendizado conjunto.</p>
 </section>
-<section id="dados-manifestos-e-rastreabilidade" class="level2" data-number="7.8">
-<h2 data-number="7.8" class="anchored" data-anchor-id="dados-manifestos-e-rastreabilidade"><span class="header-section-number">7.8</span> Dados, manifestos e rastreabilidade</h2>
+<section id="dados-manifestos-e-rastreabilidade" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="dados-manifestos-e-rastreabilidade"><span class="header-section-number">7.9</span> Dados, manifestos e rastreabilidade</h2>
 <p>Cada configuração 3D deverá manter identificadores persistentes para geometria, malha, fidelidade e condições físicas. Os splits continuarão sendo realizados por geometria, evitando vazamento entre remalhamentos ou condições derivadas da mesma configuração.</p>
 </section>
-<section id="transferência-do-pipeline-2d" class="level2" data-number="7.9">
-<h2 data-number="7.9" class="anchored" data-anchor-id="transferência-do-pipeline-2d"><span class="header-section-number">7.9</span> Transferência do pipeline 2D</h2>
+<section id="transferência-do-pipeline-2d" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="transferência-do-pipeline-2d"><span class="header-section-number">7.10</span> Transferência do pipeline 2D</h2>
 <p>Loaders, configuração de jobs, seed oficial, métricas e estrutura de artefatos serão reutilizados. A representação geométrica, os hiperparâmetros e as arquiteturas serão novamente avaliados, pois desempenho no caso 2D não constitui validação automática em 3D.</p>
 </section>
-<section id="critérios-de-prontidão-para-o-capítulo-8" class="level2" data-number="7.10">
-<h2 data-number="7.10" class="anchored" data-anchor-id="critérios-de-prontidão-para-o-capítulo-8"><span class="header-section-number">7.10</span> Critérios de prontidão para o Capítulo 8</h2>
+<section id="critérios-de-prontidão-para-o-capítulo-8" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="critérios-de-prontidão-para-o-capítulo-8"><span class="header-section-number">7.11</span> Critérios de prontidão para o Capítulo 8</h2>
 <p>Antes da otimização tridimensional, os surrogates disciplinares deverão demonstrar generalização em geometrias não vistas, estabilidade frente a remalhamento e erro compatível com as decisões de projeto que serão tomadas no domínio aero-stealth.</p>
 
 
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-mckay1979lhs" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. D. McKay, R. J. Beckman, e W. J. Conover, <span>“A Comparison of Three Methods for Selecting Values of Input Variables in the Analysis of Output from a Computer Code”</span>, <em>Technometrics</em>, v. 21, n. 2, p. 239–245, 1979, doi: <a href="https://doi.org/10.1080/00401706.1979.10489755">10.1080/00401706.1979.10489755</a>.</div>
+</div>
+<div id="ref-peherstorfer2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">B. Peherstorfer, K. Willcox, e M. Gunzburger, <span>“Survey of Multifidelity Methods in Uncertainty Propagation, Inference, and Optimization”</span>, <em>SIAM Review</em>, v. 60, n. 3, p. 550–591, 2018, doi: <a href="https://doi.org/10.1137/16M1082469">10.1137/16M1082469</a>.</div>
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

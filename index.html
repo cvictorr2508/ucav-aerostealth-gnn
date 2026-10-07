@@ -169,7 +169,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -251,7 +251,8 @@ div.csl-indent {
 <p>A arquitetura metodológica de referência é:</p>
 <p>$ . $</p>
 <p>A validação metodológica será conduzida em duas etapas. Primeiro, o pipeline completo será desenvolvido e testado em problemas bidimensionais de aerofólios e espalhamento eletromagnético, nos quais geometria, conectividade, atributos em Álgebra Geométrica, treinamento e erros podem ser inspecionados diretamente. Depois, a mesma infraestrutura será estendida para geometrias tridimensionais de configurações UCAV, preservando a separação entre o que foi demonstrado em 2D e o que precisa ser novamente validado em 3D.</p>
-<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021"><a href="#ref-bronstein2021" role="doc-biblioref">[1]</a>, <a href="#ref-pfaff2021" role="doc-biblioref">[2]</a></span>. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional <span class="citation" data-cites="shan2024"><a href="#ref-shan2024" role="doc-biblioref">[3]</a></span> e análise aero-eletromagnética multitarefa em malhas de configurações <em>blended-wing-body</em> <span class="citation" data-cites="li2026aeroem"><a href="#ref-li2026aeroem" role="doc-biblioref">[4]</a></span>. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.</p>
+<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021"><a href="#ref-bronstein2021" role="doc-biblioref">[1]</a>, <a href="#ref-pfaff2021" role="doc-biblioref">[2]</a></span>. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional <span class="citation" data-cites="shan2024"><a href="#ref-shan2024" role="doc-biblioref">[3]</a></span> e análise aero-eletromagnética multitarefa em malhas de configurações <em>blended-wing-body</em> <span class="citation" data-cites="li2026aeroem"><a href="#ref-li2026aeroem" role="doc-biblioref">[4]</a></span>.</p>
+<p>Do ponto de vista da otimização, o framework pertence à família de <strong>análise e otimização baseadas em modelos substitutos</strong> (<em>surrogate-based analysis and optimization</em>, SBAO), na qual aproximações treinadas reduzem o número de consultas aos modelos físicos de referência sem removê-los do processo de validação <span class="citation" data-cites="queipo2005sbao"><a href="#ref-queipo2005sbao" role="doc-biblioref">[5]</a></span>. A organização multidisciplinar será descrita com a terminologia de arquiteturas de MDO de Martins e Lambe <span class="citation" data-cites="martins2013"><a href="#ref-martins2013" role="doc-biblioref">[6]</a></span>, mas a classificação final como MDF, IDF ou outra arquitetura não será imposta antes de identificar o acoplamento efetivo entre as disciplinas. A gestão dos níveis de fidelidade seguirá o princípio de combinar modelos que aproximam grandezas físicas compatíveis, mantendo avaliações de referência no ciclo para controlar precisão e validade <span class="citation" data-cites="peherstorfer2018"><a href="#ref-peherstorfer2018" role="doc-biblioref">[7]</a></span>.</p>
 </section>
 <section id="questões-metodológicas-centrais" class="level2">
 <h2 class="anchored" data-anchor-id="questões-metodológicas-centrais">Questões metodológicas centrais</h2>
@@ -289,6 +290,15 @@ div.csl-indent {
 </div>
 <div id="ref-li2026aeroem" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[4] </div><div class="csl-right-inline">C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, <span>“Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”</span>, <em>Physics of Fluids</em>, v. 38, n. 5, p. 057104, 2026, doi: <a href="https://doi.org/10.1063/5.0326519">10.1063/5.0326519</a>.</div>
+</div>
+<div id="ref-queipo2005sbao" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">N. V. Queipo, R. T. Haftka, W. Shyy, T. Goel, R. Vaidyanathan, e P. K. Tucker, <span>“Surrogate-Based Analysis and Optimization”</span>, <em>Progress in Aerospace Sciences</em>, v. 41, n. 1, p. 1–28, 2005, doi: <a href="https://doi.org/10.1016/j.paerosci.2005.02.001">10.1016/j.paerosci.2005.02.001</a>.</div>
+</div>
+<div id="ref-martins2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">J. R. R. A. Martins e A. B. Lambe, <span>“Multidisciplinary Design Optimization: A Survey of Architectures”</span>, <em>AIAA Journal</em>, v. 51, n. 9, p. 2049–2075, 2013, doi: <a href="https://doi.org/10.2514/1.J051895">10.2514/1.J051895</a>.</div>
+</div>
+<div id="ref-peherstorfer2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">B. Peherstorfer, K. Willcox, e M. Gunzburger, <span>“Survey of Multifidelity Methods in Uncertainty Propagation, Inference, and Optimization”</span>, <em>SIAM Review</em>, v. 60, n. 3, p. 550–591, 2018, doi: <a href="https://doi.org/10.1137/16M1082469">10.1137/16M1082469</a>.</div>
 </div>
 </div>
 </section>

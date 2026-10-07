@@ -26,7 +26,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -179,7 +199,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -221,9 +241,10 @@ window.Quarto = {
   <li><a href="#métricas-preditivas" id="toc-métricas-preditivas" class="nav-link" data-scroll-target="#métricas-preditivas"><span class="header-section-number">6.9</span> Métricas preditivas</a></li>
   <li><a href="#métricas-de-recursos" id="toc-métricas-de-recursos" class="nav-link" data-scroll-target="#métricas-de-recursos"><span class="header-section-number">6.10</span> Métricas de recursos</a></li>
   <li><a href="#artefatos-de-cada-execução" id="toc-artefatos-de-cada-execução" class="nav-link" data-scroll-target="#artefatos-de-cada-execução"><span class="header-section-number">6.11</span> Artefatos de cada execução</a></li>
-  <li><a href="#otimização-pré-condição-geométrica" id="toc-otimização-pré-condição-geométrica" class="nav-link" data-scroll-target="#otimização-pré-condição-geométrica"><span class="header-section-number">6.12</span> Otimização: pré-condição geométrica</a></li>
-  <li><a href="#formulação-aero-stealth-2d" id="toc-formulação-aero-stealth-2d" class="nav-link" data-scroll-target="#formulação-aero-stealth-2d"><span class="header-section-number">6.13</span> Formulação aero-stealth 2D</a></li>
-  <li><a href="#ponte-para-o-estudo-3d" id="toc-ponte-para-o-estudo-3d" class="nav-link" data-scroll-target="#ponte-para-o-estudo-3d"><span class="header-section-number">6.14</span> Ponte para o estudo 3D</a></li>
+  <li><a href="#enriquecimento-sequencial-e-aprendizado-ativo" id="toc-enriquecimento-sequencial-e-aprendizado-ativo" class="nav-link" data-scroll-target="#enriquecimento-sequencial-e-aprendizado-ativo"><span class="header-section-number">6.12</span> Enriquecimento sequencial e aprendizado ativo</a></li>
+  <li><a href="#otimização-pré-condição-geométrica" id="toc-otimização-pré-condição-geométrica" class="nav-link" data-scroll-target="#otimização-pré-condição-geométrica"><span class="header-section-number">6.13</span> Otimização: pré-condição geométrica</a></li>
+  <li><a href="#formulação-aero-stealth-2d" id="toc-formulação-aero-stealth-2d" class="nav-link" data-scroll-target="#formulação-aero-stealth-2d"><span class="header-section-number">6.14</span> Formulação aero-stealth 2D</a></li>
+  <li><a href="#ponte-para-o-estudo-3d" id="toc-ponte-para-o-estudo-3d" class="nav-link" data-scroll-target="#ponte-para-o-estudo-3d"><span class="header-section-number">6.15</span> Ponte para o estudo 3D</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/06_optimization.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/06_optimization.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -391,8 +412,26 @@ window.Quarto = {
 <li>tempos e uso de recursos.</li>
 </ul>
 </section>
-<section id="otimização-pré-condição-geométrica" class="level2" data-number="6.12">
-<h2 data-number="6.12" class="anchored" data-anchor-id="otimização-pré-condição-geométrica"><span class="header-section-number">6.12</span> Otimização: pré-condição geométrica</h2>
+<section id="enriquecimento-sequencial-e-aprendizado-ativo" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="enriquecimento-sequencial-e-aprendizado-ativo"><span class="header-section-number">6.12</span> Enriquecimento sequencial e aprendizado ativo</h2>
+<p>O <strong>aprendizado ativo</strong> será tratado como um mecanismo explícito de enriquecimento do conjunto de dados, mas sua ativação dependerá de evidência de que novas simulações de referência são suficientemente onerosas e de que o critério de aquisição seleciona casos mais informativos do que uma expansão fixa do DoE.</p>
+<p>Depois de treinar um surrogate inicial, um ciclo de enriquecimento poderá ser escrito como</p>
+<p><span class="math display">\[
+\mathcal D_k
+\rightarrow
+\mathcal G_{\boldsymbol\theta_k}
+\rightarrow
+\mathcal A_k(\mathbf d,\mathbf c)
+\rightarrow
+\text{nova avaliação de referência}
+\rightarrow
+\mathcal D_{k+1},
+\]</span></p>
+<p>em que <span class="math inline">\(\mathcal D_k\)</span> é o conjunto disponível na iteração <span class="math inline">\(k\)</span>, <span class="math inline">\(\mathcal G_{\boldsymbol\theta_k}\)</span> é o surrogate treinado e <span class="math inline">\(\mathcal A_k\)</span> é um critério de aquisição. Esse critério poderá combinar incerteza epistemológica validada, discrepância entre fidelidades, distância em relação aos dados existentes e relevância para regiões promissoras da fronteira de Pareto.</p>
+<p>O subconjunto de teste permanecerá congelado e fora do ciclo de aquisição. Caso dados de validação sejam usados repetidamente para decisões de enriquecimento ou hiperparâmetros, uma avaliação final independente continuará necessária. Assim, aprendizado ativo não será usado para melhorar artificialmente a métrica de teste.</p>
+</section>
+<section id="otimização-pré-condição-geométrica" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="otimização-pré-condição-geométrica"><span class="header-section-number">6.13</span> Otimização: pré-condição geométrica</h2>
 <p>Uma GNN treinada a partir de 50 geometrias pode avaliar novas amostras representadas como grafos, mas uma otimização geométrica contínua exige uma parametrização explícita do espaço de projeto.</p>
 <p>Se cada configuração possuir um vetor de parâmetros</p>
 <p><span class="math display">\[
@@ -414,16 +453,41 @@ G
 \]</span></p>
 <p>Sem <span class="math inline">\(\mathbf d\)</span> ou outro gerador de geometria, a etapa será corretamente descrita como seleção ou avaliação assistida por surrogate, e não como otimização contínua de novas formas.</p>
 </section>
-<section id="formulação-aero-stealth-2d" class="level2" data-number="6.13">
-<h2 data-number="6.13" class="anchored" data-anchor-id="formulação-aero-stealth-2d"><span class="header-section-number">6.13</span> Formulação aero-stealth 2D</h2>
-<p>Quando a parametrização estiver disponível, uma formulação multiobjetivo poderá combinar uma medida eletromagnética e uma medida aerodinâmica. Para variáveis contínuas, o problema será tratado como NLP; MINLP somente será utilizado se houver decisões discretas reais.</p>
+<section id="formulação-aero-stealth-2d" class="level2" data-number="6.14">
+<h2 data-number="6.14" class="anchored" data-anchor-id="formulação-aero-stealth-2d"><span class="header-section-number">6.14</span> Formulação aero-stealth 2D</h2>
+<p>Quando a parametrização estiver disponível, seja <span class="math inline">\(\mathbf d\in\mathbb R^p\)</span> o vetor de projeto e seja <span class="math inline">\(\mathcal D_{\mathrm{adm}}\)</span> o domínio de geometrias admissíveis. Uma formulação multiobjetivo de referência é</p>
+<p><span class="math display">\[
+\min_{\mathbf d\in\mathcal D_{\mathrm{adm}}}
+\begin{bmatrix}
+J_{\mathrm{EM}}(\mathbf d)\\
+C_D(\mathbf d)
+\end{bmatrix},
+\]</span></p>
+<p>sujeita, por exemplo, a</p>
+<p><span class="math display">\[
+C_L(\mathbf d)\ge C_{L,\min},
+\qquad
+g_r(\mathbf d)\le 0,
+\quad r=1,\ldots,n_g.
+\]</span></p>
+<p>Aqui, <span class="math inline">\(J_{\mathrm{EM}}\)</span> é uma métrica eletromagnética definida a partir da resposta realmente fornecida pelo solver, <span class="math inline">\(C_{L,\min}\)</span> é a sustentação mínima requerida e <span class="math inline">\(g_r\)</span> representa restrições geométricas ou operacionais. Restrições de espessura, área seccional ou suavidade somente serão incluídas quando fizerem parte do espaço de projeto real.</p>
+<p>O problema pertence à família de <strong>otimização baseada em surrogate</strong>, em que o modelo aprendido acelera consultas, mas soluções selecionadas retornam aos modelos físicos de referência <span class="citation" data-cites="queipo2005sbao"><a href="#ref-queipo2005sbao" role="doc-biblioref">[1]</a></span>. Para variáveis contínuas, o foco permanece em métodos determinísticos de NLP, incluindo escalarização e <span class="math inline">\(\varepsilon\)</span>-constraint para explorar compromissos multiobjetivo. Métodos evolutivos como NSGA-II ou NSGA-III poderão aparecer como comparadores, mas não serão adotados como algoritmo padrão sem justificativa experimental. MINLP será utilizado somente se houver decisões discretas reais.</p>
+<p>A classificação da arquitetura MDO também será feita a partir do acoplamento efetivo. No estudo 2D, aerodinâmica e eletromagnetismo compartilham a geometria e as variáveis de decisão, mas não se assume a existência de uma iteração de estados entre as duas disciplinas. Portanto, não há fundamento para declarar antecipadamente uma arquitetura MDF apenas porque ambas são consultadas pelo otimizador. Se surgirem variáveis de acoplamento disciplinares, MDF, IDF ou outra arquitetura será escolhida e formulada segundo a taxonomia de MDO <span class="citation" data-cites="martins2013"><a href="#ref-martins2013" role="doc-biblioref">[2]</a></span>.</p>
 <p>As soluções selecionadas deverão ser reavaliadas com os modelos físicos de referência. A qualidade do surrogate será então medida não apenas pelo erro pontual, mas também pela preservação das decisões relevantes para a otimização.</p>
 </section>
-<section id="ponte-para-o-estudo-3d" class="level2" data-number="6.14">
-<h2 data-number="6.14" class="anchored" data-anchor-id="ponte-para-o-estudo-3d"><span class="header-section-number">6.14</span> Ponte para o estudo 3D</h2>
+<section id="ponte-para-o-estudo-3d" class="level2" data-number="6.15">
+<h2 data-number="6.15" class="anchored" data-anchor-id="ponte-para-o-estudo-3d"><span class="header-section-number">6.15</span> Ponte para o estudo 3D</h2>
 <p>O encerramento do caso 2D deverá produzir uma infraestrutura reutilizável: loaders, validação de dados, splits, construção de grafos, modelos, treinamento, métricas e rastreamento de artefatos. Os Capítulos 7 e 8 estenderão essa infraestrutura para malhas superficiais tridimensionais e para a otimização de configurações UCAV, sem assumir que hiperparâmetros ou conclusões do domínio 2D permaneçam válidos automaticamente.</p>
 
 
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-queipo2005sbao" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">N. V. Queipo, R. T. Haftka, W. Shyy, T. Goel, R. Vaidyanathan, e P. K. Tucker, <span>“Surrogate-Based Analysis and Optimization”</span>, <em>Progress in Aerospace Sciences</em>, v. 41, n. 1, p. 1–28, 2005, doi: <a href="https://doi.org/10.1016/j.paerosci.2005.02.001">10.1016/j.paerosci.2005.02.001</a>.</div>
+</div>
+<div id="ref-martins2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">J. R. R. A. Martins e A. B. Lambe, <span>“Multidisciplinary Design Optimization: A Survey of Architectures”</span>, <em>AIAA Journal</em>, v. 51, n. 9, p. 2049–2075, 2013, doi: <a href="https://doi.org/10.2514/1.J051895">10.2514/1.J051895</a>.</div>
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -829,8 +893,8 @@ G
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/05_multifidelity.html" class="pagination-link" aria-label="Modelagem multifidelidade e representação geométrica do estudo 2D">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span>
+      <a href="../chapters/05_multifidelity.html" class="pagination-link" aria-label="Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
