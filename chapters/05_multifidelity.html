@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Multifidelity Learning and Adaptive Data Generation – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
+<title>5&nbsp; Modelagem multifidelidade e representação geométrica do estudo 2D – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,7 +26,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -44,10 +64,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ed7344add5f1663e434276306a2aa159.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -117,7 +137,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05_multifidelity.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05_multifidelity.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -179,13 +199,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
     </ul>
@@ -198,14 +230,17 @@ window.Quarto = {
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#computational-cost-hierarchy" id="toc-computational-cost-hierarchy" class="nav-link active" data-scroll-target="#computational-cost-hierarchy"><span class="header-section-number">5.1</span> Computational cost hierarchy</a></li>
-  <li><a href="#low--and-high-fidelity-models" id="toc-low--and-high-fidelity-models" class="nav-link" data-scroll-target="#low--and-high-fidelity-models"><span class="header-section-number">5.2</span> Low- and high-fidelity models</a></li>
-  <li><a href="#electromagnetic-fidelity-hierarchy" id="toc-electromagnetic-fidelity-hierarchy" class="nav-link" data-scroll-target="#electromagnetic-fidelity-hierarchy"><span class="header-section-number">5.3</span> Electromagnetic fidelity hierarchy</a></li>
-  <li><a href="#aerodynamic-fidelity-hierarchy" id="toc-aerodynamic-fidelity-hierarchy" class="nav-link" data-scroll-target="#aerodynamic-fidelity-hierarchy"><span class="header-section-number">5.4</span> Aerodynamic fidelity hierarchy</a></li>
-  <li><a href="#multi-fidelity-gnns" id="toc-multi-fidelity-gnns" class="nav-link" data-scroll-target="#multi-fidelity-gnns"><span class="header-section-number">5.5</span> Multi-Fidelity GNNs</a></li>
-  <li><a href="#residual-correction-and-transfer-learning" id="toc-residual-correction-and-transfer-learning" class="nav-link" data-scroll-target="#residual-correction-and-transfer-learning"><span class="header-section-number">5.6</span> Residual correction and transfer learning</a></li>
-  <li><a href="#active-learning" id="toc-active-learning" class="nav-link" data-scroll-target="#active-learning"><span class="header-section-number">5.7</span> Active learning</a></li>
-  <li><a href="#uncertainty-driven-sampling" id="toc-uncertainty-driven-sampling" class="nav-link" data-scroll-target="#uncertainty-driven-sampling"><span class="header-section-number">5.8</span> Uncertainty-driven sampling</a></li>
+  <li><a href="#escopo-do-estudo-bidimensional" id="toc-escopo-do-estudo-bidimensional" class="nav-link active" data-scroll-target="#escopo-do-estudo-bidimensional"><span class="header-section-number">5.1</span> Escopo do estudo bidimensional</a></li>
+  <li><a href="#unidade-de-amostragem-e-identificação-das-configurações" id="toc-unidade-de-amostragem-e-identificação-das-configurações" class="nav-link" data-scroll-target="#unidade-de-amostragem-e-identificação-das-configurações"><span class="header-section-number">5.2</span> Unidade de amostragem e identificação das configurações</a></li>
+  <li><a href="#contrato-inicial-dos-dados-em-csv" id="toc-contrato-inicial-dos-dados-em-csv" class="nav-link" data-scroll-target="#contrato-inicial-dos-dados-em-csv"><span class="header-section-number">5.3</span> Contrato inicial dos dados em CSV</a></li>
+  <li><a href="#reconstrução-geométrica-em-cl20" id="toc-reconstrução-geométrica-em-cl20" class="nav-link" data-scroll-target="#reconstrução-geométrica-em-cl20"><span class="header-section-number">5.4</span> Reconstrução geométrica em <span class="math inline">\(Cl(2,0)\)</span></a></li>
+  <li><a href="#do-csv-ao-grafo" id="toc-do-csv-ao-grafo" class="nav-link" data-scroll-target="#do-csv-ao-grafo"><span class="header-section-number">5.5</span> Do CSV ao grafo</a></li>
+  <li><a href="#respostas-globais-e-campos-locais" id="toc-respostas-globais-e-campos-locais" class="nav-link" data-scroll-target="#respostas-globais-e-campos-locais"><span class="header-section-number">5.6</span> Respostas globais e campos locais</a></li>
+  <li><a href="#consistência-de-ld" id="toc-consistência-de-ld" class="nav-link" data-scroll-target="#consistência-de-ld"><span class="header-section-number">5.7</span> Consistência de <span class="math inline">\(L/D\)</span></a></li>
+  <li><a href="#definição-de-fidelidade-no-conjunto-2d" id="toc-definição-de-fidelidade-no-conjunto-2d" class="nav-link" data-scroll-target="#definição-de-fidelidade-no-conjunto-2d"><span class="header-section-number">5.8</span> Definição de fidelidade no conjunto 2D</a></li>
+  <li><a href="#estratégias-multifidelidade-a-avaliar" id="toc-estratégias-multifidelidade-a-avaliar" class="nav-link" data-scroll-target="#estratégias-multifidelidade-a-avaliar"><span class="header-section-number">5.9</span> Estratégias multifidelidade a avaliar</a></li>
+  <li><a href="#reprodutibilidade-da-preparação-dos-dados" id="toc-reprodutibilidade-da-preparação-dos-dados" class="nav-link" data-scroll-target="#reprodutibilidade-da-preparação-dos-dados"><span class="header-section-number">5.10</span> Reprodutibilidade da preparação dos dados</a></li>
+  <li><a href="#saídas-computacionais-deste-capítulo" id="toc-saídas-computacionais-deste-capítulo" class="nav-link" data-scroll-target="#saídas-computacionais-deste-capítulo"><span class="header-section-number">5.11</span> Saídas computacionais deste capítulo</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/05_multifidelity.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/05_multifidelity.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -214,7 +249,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></h1>
 </div>
 
 
@@ -231,66 +266,169 @@ window.Quarto = {
 </header>
 
 
-<p>A multifidelidade é central para tornar o treinamento das GNNs economicamente viável quando dados de alta fidelidade são caros.</p>
-<section id="computational-cost-hierarchy" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="computational-cost-hierarchy"><span class="header-section-number">5.1</span> Computational cost hierarchy</h2>
-<p>Caracterização explícita do custo dos diferentes níveis de solver.</p>
+<p>Este capítulo estabelece o primeiro bloco experimental do framework. O objetivo é transformar a formulação desenvolvida nos capítulos anteriores em um pipeline reproduzível para geometrias bidimensionais, preservando o significado físico das respostas e preparando a extensão tridimensional. O estudo 2D será usado para validar representação, ingestão de dados, construção de grafos, atributos em Álgebra Geométrica e relações entre níveis de fidelidade antes de aumentar a complexidade geométrica.</p>
+<section id="escopo-do-estudo-bidimensional" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="escopo-do-estudo-bidimensional"><span class="header-section-number">5.1</span> Escopo do estudo bidimensional</h2>
+<p>Serão considerados dois problemas disciplinares complementares. Na aerodinâmica, cada configuração corresponde a um aerofólio discretizado, acompanhado de respostas como <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span> e <span class="math inline">\(L/D\)</span>, além das condições de operação necessárias à interpretação dessas grandezas. No eletromagnetismo, cada configuração corresponde a uma geometria bidimensional ou a uma geometria tridimensional parametrizada a partir de uma seção 2D, acompanhada da resposta de espalhamento fornecida pelo solver.</p>
+<p>A grandeza eletromagnética deverá ser identificada a partir dos metadados do conjunto de dados. Se o solver resolver um problema estritamente bidimensional, a saída poderá corresponder a <em>scattering width</em> ou outra grandeza por unidade de comprimento. Se a resposta tiver sido calculada para uma extrusão finita ou uma geometria tridimensional, poderá ser uma RCS em <span class="math inline">\(\mathrm{m^2}\)</span> ou dBsm. O pipeline não converterá implicitamente uma definição na outra.</p>
 </section>
-<section id="low--and-high-fidelity-models" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="low--and-high-fidelity-models"><span class="header-section-number">5.2</span> Low- and high-fidelity models</h2>
-<p>Definição de baixa, média e alta fidelidade e critérios de compatibilidade entre respostas.</p>
+<section id="unidade-de-amostragem-e-identificação-das-configurações" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="unidade-de-amostragem-e-identificação-das-configurações"><span class="header-section-number">5.2</span> Unidade de amostragem e identificação das configurações</h2>
+<p>A unidade estatística primária será a <strong>configuração geométrica</strong>, identificada por um campo persistente como <span class="math inline">\(\texttt{configuration\_id}\)</span>. Todos os nós, arestas, faces, condições de operação e respostas pertencentes à mesma configuração deverão permanecer associados a esse identificador.</p>
+<p>Essa regra é essencial para evitar vazamento de dados. A divisão entre treinamento, validação e teste será realizada por configuração, e não por linha de CSV, nó ou elemento de malha.</p>
 </section>
-<section id="electromagnetic-fidelity-hierarchy" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="electromagnetic-fidelity-hierarchy"><span class="header-section-number">5.3</span> Electromagnetic fidelity hierarchy</h2>
-<p>Estrutura preliminar a revisar durante o projeto:</p>
-<p><span class="math display">\[
-\text{PO/LE-PO}
-\rightarrow
-\text{SBR+/UTD/PTD ou equivalente HF}
-\rightarrow
-\text{validação experimental, quando disponível}.
-\]</span></p>
-</section>
-<section id="aerodynamic-fidelity-hierarchy" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="aerodynamic-fidelity-hierarchy"><span class="header-section-number">5.4</span> Aerodynamic fidelity hierarchy</h2>
-<p>Estrutura preliminar:</p>
-<p><span class="math display">\[
-\text{painel/VSPAERO}
-\rightarrow
-\text{Euler}
-\rightarrow
-\text{RANS/CFD de referência}.
-\]</span></p>
-</section>
-<section id="multi-fidelity-gnns" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="multi-fidelity-gnns"><span class="header-section-number">5.5</span> Multi-Fidelity GNNs</h2>
-<p>Uma hipótese de referência será aprender a discrepância entre níveis:</p>
-<p><span class="math display">\[
-y_{HF} = y_{LF} + \Delta_\theta(G, y_{LF}).
-\]</span></p>
-</section>
-<section id="residual-correction-and-transfer-learning" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="residual-correction-and-transfer-learning"><span class="header-section-number">5.6</span> Residual correction and transfer learning</h2>
-<p>Serão comparadas estratégias de correção residual, <em>coarse-to-fine</em>, currículo e transferência entre fidelidades.</p>
-</section>
-<section id="active-learning" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="active-learning"><span class="header-section-number">5.7</span> Active learning</h2>
-<p>A aquisição de novos casos deverá considerar:</p>
+<section id="contrato-inicial-dos-dados-em-csv" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="contrato-inicial-dos-dados-em-csv"><span class="header-section-number">5.3</span> Contrato inicial dos dados em CSV</h2>
+<p>Os arquivos recebidos poderão possuir formatos diferentes, mas serão convertidos internamente para uma representação canônica. Para uma malha ou contorno nodal, o núcleo geométrico deverá conter, no mínimo,</p>
 <ul>
-<li>incerteza epistemológica;</li>
-<li>discrepância LF–HF;</li>
-<li>proximidade de regiões promissoras para a fronteira de Pareto;</li>
-<li>risco de picos de RCS ou degradação aerodinâmica.</li>
+<li>identificador da configuração;</li>
+<li>identificador do nó;</li>
+<li>coordenadas <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>;</li>
+<li>conectividade, quando não puder ser inferida de maneira inequívoca pela ordenação dos pontos.</li>
 </ul>
+<p>As condições físicas deverão ser preservadas em campos próprios. Para aerodinâmica, podem incluir <span class="math inline">\(M_\infty\)</span>, <span class="math inline">\(\alpha\)</span>, número de Reynolds e outras variáveis realmente presentes no solver. Para eletromagnetismo, podem incluir frequência, direção de incidência, polarização, propriedades materiais e direção de observação.</p>
+<p>As respostas globais serão armazenadas separadamente dos atributos geométricos. No primeiro conjunto experimental, espera-se trabalhar com aproximadamente 50 configurações e alvos como</p>
+<p><span class="math display">\[
+C_L,\qquad
+C_D,\qquad
+\frac{L}{D},\qquad
+R_{\mathrm{EM}},
+\]</span></p>
+<p>em que <span class="math inline">\(R_{\mathrm{EM}}\)</span> representa genericamente a resposta eletromagnética até que sua definição física seja confirmada pelos metadados do conjunto de dados.</p>
 </section>
-<section id="uncertainty-driven-sampling" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="uncertainty-driven-sampling"><span class="header-section-number">5.8</span> Uncertainty-driven sampling</h2>
-<p>A incerteza será avaliada como componente explícito do ciclo de geração de dados.</p>
-<blockquote class="blockquote">
-<p><strong>Status M0:</strong> estrutura editorial preparada; o conteúdo será expandido após o capítulo de GNNs.</p>
-</blockquote>
+<section id="reconstrução-geométrica-em-cl20" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="reconstrução-geométrica-em-cl20"><span class="header-section-number">5.4</span> Reconstrução geométrica em <span class="math inline">\(Cl(2,0)\)</span></h2>
+<p>Considere um contorno orientado por pontos consecutivos <span class="math inline">\(\mathbf x_i\in\mathbb R^2\)</span>. A aresta orientada é</p>
+<p><span class="math display">\[
+\mathbf e_i
+=
+\mathbf x_{i+1}-\mathbf x_i.
+\]</span></p>
+<p>Seu comprimento e sua tangente unitária são</p>
+<p><span class="math display">\[
+\ell_i=\|\mathbf e_i\|,
+\qquad
+\mathbf t_i=\frac{\mathbf e_i}{\ell_i}.
+\]</span></p>
+<p>Em <span class="math inline">\(Cl(2,0)\)</span>, com pseudoescalar <span class="math inline">\(I=e_1e_2\)</span>, a orientação do contorno permite construir uma normal local por dualidade. A convenção de sinal será fixada de acordo com a orientação escolhida para o contorno e verificada numericamente.</p>
+<p>Entre elementos vizinhos, produtos como</p>
+<p><span class="math display">\[
+\mathbf t_i\cdot\mathbf t_j
+\]</span></p>
+<p>medem alinhamento, enquanto</p>
+<p><span class="math display">\[
+\mathbf t_i\wedge\mathbf t_j
+\]</span></p>
+<p>representam a mudança orientada de direção no plano. Essas grandezas podem ser usadas para construir medidas discretas de curvatura e atributos geometricamente estruturados para a GNN.</p>
+<p>Se o arquivo representar uma malha triangular 2D, a área orientada da célula <span class="math inline">\(f=(i,j,k)\)</span> será representada por</p>
+<p><span class="math display">\[
+B_f
+=
+\frac12
+\mathbf r_{ij}\wedge\mathbf r_{ik},
+\]</span></p>
+<p>com <span class="math inline">\(\mathbf r_{ij}=\mathbf x_j-\mathbf x_i\)</span> e <span class="math inline">\(\mathbf r_{ik}=\mathbf x_k-\mathbf x_i\)</span>.</p>
+</section>
+<section id="do-csv-ao-grafo" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="do-csv-ao-grafo"><span class="header-section-number">5.5</span> Do CSV ao grafo</h2>
+<p>A conversão geométrica produzirá um grafo</p>
+<p><span class="math display">\[
+G=(V,E),
+\]</span></p>
+<p>em que os nós representam as entidades escolhidas da discretização e as arestas preservam a conectividade física ou geométrica. A escolha entre grafo de vértices, grafo de segmentos e grafo de células será determinada pela estrutura real dos CSVs e pela localização das variáveis de entrada.</p>
+<p>O primeiro baseline utilizará atributos convencionais, como posição relativa, comprimento, normal, curvatura e condições globais. Uma variante posterior acrescentará atributos derivados de Álgebra Geométrica. A comparação entre essas representações será feita com a mesma divisão de dados e orçamento de treinamento.</p>
+</section>
+<section id="respostas-globais-e-campos-locais" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="respostas-globais-e-campos-locais"><span class="header-section-number">5.6</span> Respostas globais e campos locais</h2>
+<p>A disponibilidade apenas de <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span>, <span class="math inline">\(L/D\)</span> e uma resposta eletromagnética global permite treinar um modelo de <strong>resposta global</strong>, mas não reconstruir a solução física completa.</p>
+<p>Para aerodinâmica, a reconstrução de campos exigiria, por exemplo, <span class="math inline">\(C_p\)</span>, pressão, densidade ou velocidade definidos nos nós ou elementos. Para eletromagnetismo, seriam necessários campos ou correntes complexas, como <span class="math inline">\(\widetilde{\mathbf E}_{\mathrm{sca}}\)</span> ou <span class="math inline">\(\widetilde{\mathbf J}_s\)</span>.</p>
+<p>O pipeline inicial será, portanto,</p>
+<p><span class="math display">\[
+G,\mathbf c
+\longmapsto
+\text{respostas globais},
+\]</span></p>
+<p>em que <span class="math inline">\(\mathbf c\)</span> reúne as condições de operação. Caso campos locais sejam incorporados posteriormente, o mesmo grafo poderá sustentar uma segunda etapa de predição campo–integração–resposta global.</p>
+</section>
+<section id="consistência-de-ld" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="consistência-de-ld"><span class="header-section-number">5.7</span> Consistência de <span class="math inline">\(L/D\)</span></h2>
+<p>A razão aerodinâmica não é uma quarta grandeza independente quando <span class="math inline">\(C_L\)</span> e <span class="math inline">\(C_D\)</span> estão disponíveis:</p>
+<p><span class="math display">\[
+\frac{L}{D}
+=
+\frac{C_L}{C_D}.
+\]</span></p>
+<p>O baseline deverá prever <span class="math inline">\(C_L\)</span> e <span class="math inline">\(C_D\)</span>, calculando <span class="math inline">\(L/D\)</span> a partir dessas previsões. Uma cabeça adicional para predição direta de <span class="math inline">\(L/D\)</span> poderá ser avaliada posteriormente, mas sua saída deverá ser comparada com</p>
+<p><span class="math display">\[
+\frac{\widehat C_L}{\widehat C_D}
+\]</span></p>
+<p>como teste de consistência.</p>
+</section>
+<section id="definição-de-fidelidade-no-conjunto-2d" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="definição-de-fidelidade-no-conjunto-2d"><span class="header-section-number">5.8</span> Definição de fidelidade no conjunto 2D</h2>
+<p>Um nível de fidelidade será caracterizado por seu conteúdo físico e numérico, não apenas pelo nome do solver. Para cada conjunto de dados deverão ser registrados, quando disponíveis,</p>
+<ul>
+<li>equações ou aproximações físicas;</li>
+<li>dimensionalidade do problema;</li>
+<li>discretização e resolução;</li>
+<li>condições de contorno;</li>
+<li>propriedades de material ou modelo de turbulência;</li>
+<li>critérios de convergência;</li>
+<li>tempo de processamento;</li>
+<li>uso de CPU/GPU, memória e armazenamento.</li>
+</ul>
+<p>A relação entre níveis somente será modelada como multifidelidade se o conjunto de dados contiver respostas comparáveis para a mesma grandeza física. Se o primeiro conjunto de 50 configurações possuir uma única fidelidade, o experimento começará com um baseline <em>single-fidelity</em> e a extensão multifidelidade será adicionada apenas quando houver dados compatíveis.</p>
+</section>
+<section id="estratégias-multifidelidade-a-avaliar" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="estratégias-multifidelidade-a-avaliar"><span class="header-section-number">5.9</span> Estratégias multifidelidade a avaliar</h2>
+<p>Quando pares ou conjuntos de fidelidades estiverem disponíveis, uma hipótese inicial será a correção de discrepância</p>
+<p><span class="math display">\[
+y_{\mathrm{ref}}
+=
+y_{\mathrm{base}}
++
+\Delta_{\boldsymbol\theta}
+\left(
+G,
+y_{\mathrm{base}},
+\mathbf c
+\right),
+\]</span></p>
+<p>em que <span class="math inline">\(y_{\mathrm{base}}\)</span> é a resposta do nível de base, <span class="math inline">\(y_{\mathrm{ref}}\)</span> é a resposta do nível de referência, <span class="math inline">\(G\)</span> é o grafo, <span class="math inline">\(\mathbf c\)</span> contém as condições físicas e <span class="math inline">\(\Delta_{\boldsymbol\theta}\)</span> é uma correção aprendida. A forma aditiva será tratada como hipótese e comparada com alternativas quando os dados permitirem.</p>
+<p>Também poderão ser avaliadas transferência de representação, treinamento <em>coarse-to-fine</em> e compartilhamento parcial de parâmetros entre fidelidades <span class="citation" data-cites="black2022 taghizadeh2025"><a href="#ref-black2022" role="doc-biblioref">[1]</a>, <a href="#ref-taghizadeh2025" role="doc-biblioref">[2]</a></span>.</p>
+</section>
+<section id="reprodutibilidade-da-preparação-dos-dados" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="reprodutibilidade-da-preparação-dos-dados"><span class="header-section-number">5.10</span> Reprodutibilidade da preparação dos dados</h2>
+<p>A divisão oficial do conjunto utilizará semente fixa</p>
+<p><span class="math display">\[
+\texttt{seed}=42.
+\]</span></p>
+<p>As proporções de treino, validação e teste serão parâmetros do job. Um valor inicial de referência é <span class="math inline">\(70\%/15\%/15\%\)</span>, mas nenhuma proporção será codificada de forma rígida no código.</p>
+<p>O manifest de cada execução deverá registrar, no mínimo, identificadores das configurações em cada subconjunto, versão dos arquivos de entrada, transformações geométricas aplicadas e parâmetros usados para construir o grafo.</p>
+</section>
+<section id="saídas-computacionais-deste-capítulo" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="saídas-computacionais-deste-capítulo"><span class="header-section-number">5.11</span> Saídas computacionais deste capítulo</h2>
+<p>A implementação associada a este capítulo deverá produzir, de forma reproduzível,</p>
+<ul>
+<li>validação dos CSVs;</li>
+<li>reconstrução das geometrias 2D;</li>
+<li>atributos convencionais e atributos derivados de <span class="math inline">\(Cl(2,0)\)</span>;</li>
+<li>grafos serializáveis;</li>
+<li>divisão por configuração com semente 42;</li>
+<li>manifestos de dados;</li>
+<li>testes unitários para orientação, comprimentos, áreas e operações geométricas.</li>
+</ul>
+<p>O capítulo seguinte utilizará esses artefatos para treinamento, validação e comparação das GNNs.</p>
 
 
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-black2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">N. Black e A. R. Najafi, <span>“Learning Finite Element Convergence with the Multi-Fidelity Graph Neural Network”</span>, <em>Computer Methods in Applied Mechanics and Engineering</em>, v. 397, p. 115120, 2022, doi: <a href="https://doi.org/10.1016/j.cma.2022.115120">10.1016/j.cma.2022.115120</a>.</div>
+</div>
+<div id="ref-taghizadeh2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">M. Taghizadeh, M. A. Nabian, e N. Alemazkoor, <span>“Multifidelity Graph Neural Networks for Efficient and Accurate Mesh-Based Partial Differential Equations Surrogate Modeling”</span>, <em>Computer-Aided Civil and Infrastructure Engineering</em>, v. 40, n. 7, p. 841–858, 2025, doi: <a href="https://doi.org/10.1111/mice.13312">10.1111/mice.13312</a>.</div>
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -701,8 +839,8 @@ y_{HF} = y_{LF} + \Delta_\theta(G, y_{LF}).
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/06_optimization.html" class="pagination-link" aria-label="GNN-Accelerated Multidisciplinary Aero-Stealth Optimization">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/06_optimization.html" class="pagination-link" aria-label="GNNs, treinamento, validação e otimização no estudo 2D">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -64,10 +64,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ed7344add5f1663e434276306a2aa159.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -199,13 +199,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
     </ul>
@@ -237,7 +249,8 @@ window.Quarto = {
   <li><a href="#hipóteses-de-pesquisa" id="toc-hipóteses-de-pesquisa" class="nav-link" data-scroll-target="#hipóteses-de-pesquisa"><span class="header-section-number">1.17</span> Hipóteses de pesquisa</a></li>
   <li><a href="#métricas-de-avaliação" id="toc-métricas-de-avaliação" class="nav-link" data-scroll-target="#métricas-de-avaliação"><span class="header-section-number">1.18</span> Métricas de avaliação</a></li>
   <li><a href="#estudos-de-ablação" id="toc-estudos-de-ablação" class="nav-link" data-scroll-target="#estudos-de-ablação"><span class="header-section-number">1.19</span> Estudos de ablação</a></li>
-  <li><a href="#delimitação-do-estudo" id="toc-delimitação-do-estudo" class="nav-link" data-scroll-target="#delimitação-do-estudo"><span class="header-section-number">1.20</span> Delimitação do estudo</a></li>
+  <li><a href="#progressão-experimental-de-2d-para-3d" id="toc-progressão-experimental-de-2d-para-3d" class="nav-link" data-scroll-target="#progressão-experimental-de-2d-para-3d"><span class="header-section-number">1.20</span> Progressão experimental de 2D para 3D</a></li>
+  <li><a href="#delimitação-do-estudo" id="toc-delimitação-do-estudo" class="nav-link" data-scroll-target="#delimitação-do-estudo"><span class="header-section-number">1.21</span> Delimitação do estudo</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/01_problem.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/01_problem.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -455,8 +468,13 @@ S_{\mathrm{MDO}}=
 </ul>
 <p>A Álgebra Geométrica permanece como formalismo adotado no framework final. A ablação tem a função de quantificar como cada componente modifica precisão, estabilidade, demanda de dados e comportamento da otimização, e não de decidir sua adoção.</p>
 </section>
-<section id="delimitação-do-estudo" class="level2" data-number="1.20">
-<h2 data-number="1.20" class="anchored" data-anchor-id="delimitação-do-estudo"><span class="header-section-number">1.20</span> Delimitação do estudo</h2>
+<section id="progressão-experimental-de-2d-para-3d" class="level2" data-number="1.20">
+<h2 data-number="1.20" class="anchored" data-anchor-id="progressão-experimental-de-2d-para-3d"><span class="header-section-number">1.20</span> Progressão experimental de 2D para 3D</h2>
+<p>A validação do framework será realizada em duas etapas complementares. A primeira utilizará problemas bidimensionais de aerofólios e espalhamento eletromagnético para construir e testar, de ponta a ponta, a representação geométrica, a conversão malha–grafo, os atributos em Álgebra Geométrica, os modelos substitutos e os protocolos de treinamento e validação. Essa etapa não será tratada como substituta do problema tridimensional: seu papel é fornecer um ambiente controlado no qual hipóteses arquiteturais, fontes de erro e ganhos de recursos possam ser isolados com maior transparência.</p>
+<p>A segunda etapa estenderá a infraestrutura validada para geometrias tridimensionais de configurações UCAV. As conclusões obtidas em 2D serão consideradas evidência metodológica preliminar, e propriedades como generalização geométrica, sensibilidade a remalhamento, dependências eletromagnéticas de longo alcance e desempenho em otimização serão novamente avaliadas no domínio 3D antes de qualquer conclusão de engenharia sobre a configuração completa.</p>
+</section>
+<section id="delimitação-do-estudo" class="level2" data-number="1.21">
+<h2 data-number="1.21" class="anchored" data-anchor-id="delimitação-do-estudo"><span class="header-section-number">1.21</span> Delimitação do estudo</h2>
 <p>O trabalho concentra-se na integração entre geometria UCAV, RCS, aerodinâmica subsônica, Álgebra Geométrica, GNNs multifidelidade e otimização matemática. Os solvers físicos de referência serão utilizados para geração de dados e reavaliação, enquanto as reformulações em AG terão profundidade suficiente para sustentar as representações, relações físicas e operações empregadas pelo modelo substituto e pela otimização.</p>
 <p>O resultado esperado é um <strong>framework reproduzível de otimização aero-stealth</strong> no qual a aceleração seja demonstrada por medidas de tempo e recursos computacionais, e a validade das decisões seja sustentada por reavaliação eletromagnética e aerodinâmica em níveis de fidelidade adequados.</p>
 

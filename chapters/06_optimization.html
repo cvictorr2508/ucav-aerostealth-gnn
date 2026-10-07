@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; GNN-Accelerated Multidisciplinary Aero-Stealth Optimization – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
+<title>6&nbsp; GNNs, treinamento, validação e otimização no estudo 2D – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -36,6 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../chapters/07_multifidelity_3d.html" rel="next">
 <link href="../chapters/05_multifidelity.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -43,10 +44,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ed7344add5f1663e434276306a2aa159.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -116,7 +117,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/06_optimization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/06_optimization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -178,13 +179,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
     </ul>
@@ -197,15 +210,20 @@ window.Quarto = {
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#design-variables" id="toc-design-variables" class="nav-link active" data-scroll-target="#design-variables"><span class="header-section-number">6.1</span> Design variables</a></li>
-  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives"><span class="header-section-number">6.2</span> Objectives</a></li>
-  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints"><span class="header-section-number">6.3</span> Constraints</a></li>
-  <li><a href="#nlp-and-minlp" id="toc-nlp-and-minlp" class="nav-link" data-scroll-target="#nlp-and-minlp"><span class="header-section-number">6.4</span> NLP and MINLP</a></li>
-  <li><a href="#multiobjective-optimization" id="toc-multiobjective-optimization" class="nav-link" data-scroll-target="#multiobjective-optimization"><span class="header-section-number">6.5</span> Multiobjective optimization</a></li>
-  <li><a href="#surrogate-assisted-optimization" id="toc-surrogate-assisted-optimization" class="nav-link" data-scroll-target="#surrogate-assisted-optimization"><span class="header-section-number">6.6</span> Surrogate-assisted optimization</a></li>
-  <li><a href="#high-fidelity-revalidation" id="toc-high-fidelity-revalidation" class="nav-link" data-scroll-target="#high-fidelity-revalidation"><span class="header-section-number">6.7</span> High-fidelity revalidation</a></li>
-  <li><a href="#computational-speed-up" id="toc-computational-speed-up" class="nav-link" data-scroll-target="#computational-speed-up"><span class="header-section-number">6.8</span> Computational speed-up</a></li>
-  <li><a href="#pareto-quality" id="toc-pareto-quality" class="nav-link" data-scroll-target="#pareto-quality"><span class="header-section-number">6.9</span> Pareto quality</a></li>
+  <li><a href="#pipeline-executável" id="toc-pipeline-executável" class="nav-link active" data-scroll-target="#pipeline-executável"><span class="header-section-number">6.1</span> Pipeline executável</a></li>
+  <li><a href="#reprodutibilidade" id="toc-reprodutibilidade" class="nav-link" data-scroll-target="#reprodutibilidade"><span class="header-section-number">6.2</span> Reprodutibilidade</a></li>
+  <li><a href="#jobs-configuráveis" id="toc-jobs-configuráveis" class="nav-link" data-scroll-target="#jobs-configuráveis"><span class="header-section-number">6.3</span> Jobs configuráveis</a></li>
+  <li><a href="#baselines-e-ablações" id="toc-baselines-e-ablações" class="nav-link" data-scroll-target="#baselines-e-ablações"><span class="header-section-number">6.4</span> Baselines e ablações</a></li>
+  <li><a href="#surrogate-aerodinâmico-2d" id="toc-surrogate-aerodinâmico-2d" class="nav-link" data-scroll-target="#surrogate-aerodinâmico-2d"><span class="header-section-number">6.5</span> Surrogate aerodinâmico 2D</a></li>
+  <li><a href="#surrogate-eletromagnético-2d" id="toc-surrogate-eletromagnético-2d" class="nav-link" data-scroll-target="#surrogate-eletromagnético-2d"><span class="header-section-number">6.6</span> Surrogate eletromagnético 2D</a></li>
+  <li><a href="#modelos-separados-antes-do-compartilhamento" id="toc-modelos-separados-antes-do-compartilhamento" class="nav-link" data-scroll-target="#modelos-separados-antes-do-compartilhamento"><span class="header-section-number">6.7</span> Modelos separados antes do compartilhamento</a></li>
+  <li><a href="#treinamento-validação-e-teste" id="toc-treinamento-validação-e-teste" class="nav-link" data-scroll-target="#treinamento-validação-e-teste"><span class="header-section-number">6.8</span> Treinamento, validação e teste</a></li>
+  <li><a href="#métricas-preditivas" id="toc-métricas-preditivas" class="nav-link" data-scroll-target="#métricas-preditivas"><span class="header-section-number">6.9</span> Métricas preditivas</a></li>
+  <li><a href="#métricas-de-recursos" id="toc-métricas-de-recursos" class="nav-link" data-scroll-target="#métricas-de-recursos"><span class="header-section-number">6.10</span> Métricas de recursos</a></li>
+  <li><a href="#artefatos-de-cada-execução" id="toc-artefatos-de-cada-execução" class="nav-link" data-scroll-target="#artefatos-de-cada-execução"><span class="header-section-number">6.11</span> Artefatos de cada execução</a></li>
+  <li><a href="#otimização-pré-condição-geométrica" id="toc-otimização-pré-condição-geométrica" class="nav-link" data-scroll-target="#otimização-pré-condição-geométrica"><span class="header-section-number">6.12</span> Otimização: pré-condição geométrica</a></li>
+  <li><a href="#formulação-aero-stealth-2d" id="toc-formulação-aero-stealth-2d" class="nav-link" data-scroll-target="#formulação-aero-stealth-2d"><span class="header-section-number">6.13</span> Formulação aero-stealth 2D</a></li>
+  <li><a href="#ponte-para-o-estudo-3d" id="toc-ponte-para-o-estudo-3d" class="nav-link" data-scroll-target="#ponte-para-o-estudo-3d"><span class="header-section-number">6.14</span> Ponte para o estudo 3D</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/06_optimization.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/06_optimization.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -214,7 +232,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></h1>
 </div>
 
 
@@ -231,51 +249,179 @@ window.Quarto = {
 </header>
 
 
-<p>Este capítulo integrará os surrogates eletromagnético e aerodinâmico ao processo de otimização multidisciplinar.</p>
-<section id="design-variables" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="design-variables"><span class="header-section-number">6.1</span> Design variables</h2>
-<p>Variáveis contínuas, inteiras e categóricas serão definidas a partir da parametrização real do UCAV.</p>
-</section>
-<section id="objectives" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="objectives"><span class="header-section-number">6.2</span> Objectives</h2>
-<p>Serão investigadas funções objetivo relacionadas a RCS, risco de picos e desempenho aerodinâmico.</p>
-</section>
-<section id="constraints" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="constraints"><span class="header-section-number">6.3</span> Constraints</h2>
-<p>Restrições físicas, geométricas e operacionais serão explicitadas antes da escolha final do algoritmo de otimização.</p>
-</section>
-<section id="nlp-and-minlp" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="nlp-and-minlp"><span class="header-section-number">6.4</span> NLP and MINLP</h2>
-<p>O problema será classificado como NLP ou MINLP somente após a definição das variáveis discretas. A Álgebra Geométrica estruturará representações e modelos físicos, enquanto os solvers de otimização operarão sobre objetivos e restrições escalares.</p>
-</section>
-<section id="multiobjective-optimization" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="multiobjective-optimization"><span class="header-section-number">6.5</span> Multiobjective optimization</h2>
-<p>A análise será orientada à fronteira de Pareto aero-stealth.</p>
-</section>
-<section id="surrogate-assisted-optimization" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="surrogate-assisted-optimization"><span class="header-section-number">6.6</span> Surrogate-assisted optimization</h2>
-<p>A GNN será usada para substituir avaliações caras durante grande parte da busca, com chamadas HF seletivas para calibração e validação.</p>
-</section>
-<section id="high-fidelity-revalidation" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="high-fidelity-revalidation"><span class="header-section-number">6.7</span> High-fidelity revalidation</h2>
-<p>Soluções candidatas deverão ser reavaliadas nos solvers de referência antes de conclusões de engenharia.</p>
-</section>
-<section id="computational-speed-up" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="computational-speed-up"><span class="header-section-number">6.8</span> Computational speed-up</h2>
-<p>Uma métrica central será o <em>speed-up</em> da otimização completa:</p>
+<p>Este capítulo transforma os grafos construídos no Capítulo 5 em experimentos de aprendizado reproduzíveis. O objetivo é estabelecer baselines, treinar modelos disciplinares, testar a contribuição de atributos em Álgebra Geométrica e, quando houver dados adequados, incorporar multifidelidade. A otimização somente será introduzida depois que o comportamento do surrogate estiver caracterizado.</p>
+<section id="pipeline-executável" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="pipeline-executável"><span class="header-section-number">6.1</span> Pipeline executável</h2>
+<p>O fluxo computacional será organizado como</p>
 <p><span class="math display">\[
-S_{\mathrm{MDO}}
-=
-\frac{T_{\mathrm{MDO,baseline}}}{T_{\mathrm{MDO,GNN}}}.
+\text{CSV}
+\rightarrow
+\text{validação}
+\rightarrow
+\text{AG 2D}
+\rightarrow
+\text{grafo}
+\rightarrow
+\text{split}
+\rightarrow
+\text{GNN}
+\rightarrow
+\text{treinamento}
+\rightarrow
+\text{validação}
+\rightarrow
+\text{teste}.
 \]</span></p>
-<p>O tempo total deverá incluir geração dos dados, treinamento, otimização e revalidação para evitar estimativas artificiais de aceleração.</p>
+<p>Cada etapa deverá ser executável de forma independente e produzir artefatos persistentes que permitam rastrear o caminho entre uma configuração original e sua previsão final.</p>
 </section>
-<section id="pareto-quality" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="pareto-quality"><span class="header-section-number">6.9</span> Pareto quality</h2>
-<p>Serão definidas métricas para comparar a fronteira produzida pelo surrogate com soluções revalidadas em alta fidelidade.</p>
-<blockquote class="blockquote">
-<p><strong>Status M0:</strong> estrutura editorial preparada; a formulação final será desenvolvida após a consolidação das disciplinas físicas e dos surrogates.</p>
-</blockquote>
+<section id="reprodutibilidade" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="reprodutibilidade"><span class="header-section-number">6.2</span> Reprodutibilidade</h2>
+<p>A execução oficial utilizará a semente</p>
+<p><span class="math display">\[
+\texttt{seed}=42.
+\]</span></p>
+<p>Ela deverá ser aplicada, quando tecnicamente possível, às bibliotecas de aleatoriedade da linguagem, NumPy, PyTorch, inicialização de pesos, embaralhamento, geração dos splits e operações CUDA controláveis. Operações que permaneçam não determinísticas deverão ser documentadas.</p>
+<p>A seed de referência será 42 para todos os resultados publicados. Experimentos de sensibilidade com outras sementes poderão ser executados separadamente, sem substituir o resultado oficial.</p>
+</section>
+<section id="jobs-configuráveis" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="jobs-configuráveis"><span class="header-section-number">6.3</span> Jobs configuráveis</h2>
+<p>Hiperparâmetros e proporções de dados não deverão exigir edição do código-fonte. Cada job receberá uma configuração externa contendo, por exemplo,</p>
+<ul>
+<li>proporções de treino, validação e teste;</li>
+<li><em>learning rate</em>;</li>
+<li>número máximo de épocas;</li>
+<li><em>batch size</em>;</li>
+<li><em>weight decay</em>;</li>
+<li>critério e paciência de <em>early stopping</em>;</li>
+<li>dimensão latente;</li>
+<li>número de camadas;</li>
+<li>função de agregação;</li>
+<li><em>dropout</em>;</li>
+<li>arquitetura e conjunto de features.</li>
+</ul>
+<p>A interface de linha de comando poderá sobrescrever valores do arquivo de configuração para permitir execução em estação de trabalho ou HPC.</p>
+</section>
+<section id="baselines-e-ablações" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="baselines-e-ablações"><span class="header-section-number">6.4</span> Baselines e ablações</h2>
+<p>A progressão experimental deverá separar a contribuição de cada mecanismo. A sequência de referência será:</p>
+<ol type="1">
+<li>modelo sem grafo baseado em descritores globais;</li>
+<li>MPNN convencional;</li>
+<li>MPNN com atributos geométricos estruturados;</li>
+<li>MPNN com features derivadas de Álgebra Geométrica;</li>
+<li>canais multivetoriais ou operações geometricamente estruturadas, quando implementados de forma matematicamente consistente;</li>
+<li>variante multifidelidade, quando houver dados compatíveis;</li>
+<li>arquitetura multitarefa aero–EM, somente depois da validação dos modelos disciplinares.</li>
+</ol>
+<p>As comparações deverão manter o mesmo split por configuração e um orçamento de treinamento comparável.</p>
+</section>
+<section id="surrogate-aerodinâmico-2d" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="surrogate-aerodinâmico-2d"><span class="header-section-number">6.5</span> Surrogate aerodinâmico 2D</h2>
+<p>O primeiro modelo disciplinar será escrito como</p>
+<p><span class="math display">\[
+\mathcal G_{\mathrm{aero},\boldsymbol\theta}
+:
+(G,\mathbf c_{\mathrm{aero}})
+\longmapsto
+(\widehat C_L,\widehat C_D),
+\]</span></p>
+<p>em que <span class="math inline">\(G\)</span> representa a geometria discretizada, <span class="math inline">\(\mathbf c_{\mathrm{aero}}\)</span> contém as condições físicas e <span class="math inline">\(\boldsymbol\theta\)</span> reúne os parâmetros treináveis.</p>
+<p>A eficiência aerodinâmica prevista será derivada de</p>
+<p><span class="math display">\[
+\widehat{L/D}
+=
+\frac{\widehat C_L}{\widehat C_D}.
+\]</span></p>
+<p>Se houver uma saída direta adicional para <span class="math inline">\(L/D\)</span>, será avaliada sua consistência com essa relação.</p>
+</section>
+<section id="surrogate-eletromagnético-2d" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="surrogate-eletromagnético-2d"><span class="header-section-number">6.6</span> Surrogate eletromagnético 2D</h2>
+<p>O segundo modelo disciplinar será</p>
+<p><span class="math display">\[
+\mathcal G_{\mathrm{EM},\boldsymbol\theta}
+:
+(G,\mathbf c_{\mathrm{EM}})
+\longmapsto
+\widehat R_{\mathrm{EM}},
+\]</span></p>
+<p>em que <span class="math inline">\(\widehat R_{\mathrm{EM}}\)</span> receberá o nome e a unidade da grandeza fornecida pelo solver. Se o alvo for uma curva angular, a saída será vetorial ou condicionada por direção de observação; se for escalar, será modelada como resposta global.</p>
+<p>A função de perda deverá respeitar a escala física usada pelo conjunto de dados. Resultados em escala linear e logarítmica não serão comparados sem explicitar a transformação.</p>
+</section>
+<section id="modelos-separados-antes-do-compartilhamento" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="modelos-separados-antes-do-compartilhamento"><span class="header-section-number">6.7</span> Modelos separados antes do compartilhamento</h2>
+<p>Aerodinâmica e eletromagnetismo compartilharão a mesma geometria, mas serão inicialmente treinados com processadores separados. Esse baseline permite medir o desempenho de cada disciplina sem interferência entre tarefas.</p>
+<p>Somente após essa caracterização será testada uma arquitetura com encoder geométrico compartilhado e heads específicos. Eventual ganho será tratado como resultado experimental, não como consequência automática do compartilhamento.</p>
+</section>
+<section id="treinamento-validação-e-teste" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="treinamento-validação-e-teste"><span class="header-section-number">6.8</span> Treinamento, validação e teste</h2>
+<p>O subconjunto de treinamento será usado para ajuste dos parâmetros. A validação controlará seleção de hiperparâmetros e <em>early stopping</em>. O teste permanecerá isolado até a escolha final da configuração experimental.</p>
+<p>Com aproximadamente 50 geometrias, o tamanho do conjunto limita a precisão com que se pode estimar generalização. A interpretação dos resultados deverá considerar intervalos, sensibilidade ao split e, quando apropriado, uma análise complementar por validação cruzada agrupada por geometria.</p>
+</section>
+<section id="métricas-preditivas" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="métricas-preditivas"><span class="header-section-number">6.9</span> Métricas preditivas</h2>
+<p>Para um alvo escalar <span class="math inline">\(y\)</span> e sua previsão <span class="math inline">\(\widehat y\)</span>, serão reportados pelo menos MAE, RMSE e <span class="math inline">\(R^2\)</span>. Para aerodinâmica, as métricas serão calculadas separadamente para <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span> e <span class="math inline">\(L/D\)</span>.</p>
+<p>Se a resposta eletromagnética for angular, métricas médias serão complementadas por erro de pico, deslocamento angular do pico, erro por setor e, quando aplicável, comparação entre polarizações.</p>
+</section>
+<section id="métricas-de-recursos" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="métricas-de-recursos"><span class="header-section-number">6.10</span> Métricas de recursos</h2>
+<p>Além da precisão, cada job deverá registrar</p>
+<ul>
+<li>tempo de treinamento;</li>
+<li>tempo de inferência;</li>
+<li>throughput;</li>
+<li>número de parâmetros;</li>
+<li>pico de memória;</li>
+<li>uso de CPU/GPU;</li>
+<li>armazenamento dos artefatos;</li>
+<li>número de avaliações dos modelos físicos utilizadas para gerar o conjunto.</li>
+</ul>
+<p>A utilidade do surrogate será julgada pela combinação de erro e demanda de recursos.</p>
+</section>
+<section id="artefatos-de-cada-execução" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="artefatos-de-cada-execução"><span class="header-section-number">6.11</span> Artefatos de cada execução</h2>
+<p>Cada job deverá produzir um diretório rastreável contendo, no mínimo,</p>
+<ul>
+<li>arquivo de configuração efetivamente utilizado;</li>
+<li>manifest do dataset e do split;</li>
+<li>histórico de treinamento;</li>
+<li>checkpoint selecionado;</li>
+<li>métricas de validação e teste;</li>
+<li>previsões por configuração;</li>
+<li>informações do ambiente de software;</li>
+<li>tempos e uso de recursos.</li>
+</ul>
+</section>
+<section id="otimização-pré-condição-geométrica" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="otimização-pré-condição-geométrica"><span class="header-section-number">6.12</span> Otimização: pré-condição geométrica</h2>
+<p>Uma GNN treinada a partir de 50 geometrias pode avaliar novas amostras representadas como grafos, mas uma otimização geométrica contínua exige uma parametrização explícita do espaço de projeto.</p>
+<p>Se cada configuração possuir um vetor de parâmetros</p>
+<p><span class="math display">\[
+\mathbf d
+=
+[d_1,\ldots,d_p],
+\]</span></p>
+<p>a cadeia poderá ser escrita como</p>
+<p><span class="math display">\[
+\mathbf d
+\rightarrow
+\text{geometria}
+\rightarrow
+G
+\rightarrow
+\text{GNN}
+\rightarrow
+(\widehat C_L,\widehat C_D,\widehat R_{\mathrm{EM}}).
+\]</span></p>
+<p>Sem <span class="math inline">\(\mathbf d\)</span> ou outro gerador de geometria, a etapa será corretamente descrita como seleção ou avaliação assistida por surrogate, e não como otimização contínua de novas formas.</p>
+</section>
+<section id="formulação-aero-stealth-2d" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="formulação-aero-stealth-2d"><span class="header-section-number">6.13</span> Formulação aero-stealth 2D</h2>
+<p>Quando a parametrização estiver disponível, uma formulação multiobjetivo poderá combinar uma medida eletromagnética e uma medida aerodinâmica. Para variáveis contínuas, o problema será tratado como NLP; MINLP somente será utilizado se houver decisões discretas reais.</p>
+<p>As soluções selecionadas deverão ser reavaliadas com os modelos físicos de referência. A qualidade do surrogate será então medida não apenas pelo erro pontual, mas também pela preservação das decisões relevantes para a otimização.</p>
+</section>
+<section id="ponte-para-o-estudo-3d" class="level2" data-number="6.14">
+<h2 data-number="6.14" class="anchored" data-anchor-id="ponte-para-o-estudo-3d"><span class="header-section-number">6.14</span> Ponte para o estudo 3D</h2>
+<p>O encerramento do caso 2D deverá produzir uma infraestrutura reutilizável: loaders, validação de dados, splits, construção de grafos, modelos, treinamento, métricas e rastreamento de artefatos. Os Capítulos 7 e 8 estenderão essa infraestrutura para malhas superficiais tridimensionais e para a otimização de configurações UCAV, sem assumir que hiperparâmetros ou conclusões do domínio 2D permaneçam válidos automaticamente.</p>
 
 
 </section>
@@ -683,11 +829,14 @@ S_{\mathrm{MDO}}
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/05_multifidelity.html" class="pagination-link" aria-label="Multifidelity Learning and Adaptive Data Generation">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span>
+      <a href="../chapters/05_multifidelity.html" class="pagination-link" aria-label="Modelagem multifidelidade e representação geométrica do estudo 2D">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../chapters/07_multifidelity_3d.html" class="pagination-link" aria-label="Modelagem multifidelidade e representação geométrica do estudo 3D">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

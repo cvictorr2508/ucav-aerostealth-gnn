@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
+<title>7&nbsp; Modelagem multifidelidade e representação geométrica do estudo 3D – Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,47 +26,28 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./chapters/01_problem.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/08_optimization_3d.html" rel="next">
+<link href="../chapters/06_optimization.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -95,6 +76,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -107,7 +117,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07_multifidelity_3d.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -122,10 +132,10 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</a> 
+      <a href="../">Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn" title="Código fonte" class="quarto-navigation-tool px-1" aria-label="Código fonte"><i class="bi bi-github"></i></a>
-    <a href="./Graph-Neural-Networks-e-Álgebra-Geométrica-para-Otimização-Aero-Stealth-de-UCAVs.pdf" title="Baixar PDF" class="quarto-navigation-tool px-1" aria-label="Baixar PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="../Graph-Neural-Networks-e-Álgebra-Geométrica-para-Otimização-Aero-Stealth-de-UCAVs.pdf" title="Baixar PDF" class="quarto-navigation-tool px-1" aria-label="Baixar PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -138,55 +148,55 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/01_problem.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/01_problem.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Contexto e Definição do Problema Aero-Stealth de um UCAV</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/02_geometric_algebra.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/02_geometric_algebra.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Álgebra Geométrica para representação física, geométrica e computacional</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/03_physics.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/03_physics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/04_graph_neural_networks.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/04_graph_neural_networks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Graph Neural Networks para modelagem substituta baseada em malhas</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
@@ -200,24 +210,25 @@ div.csl-indent {
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#ucav-aero-stealth-optimization-with-multifidelity-graph-neural-networks" id="toc-ucav-aero-stealth-optimization-with-multifidelity-graph-neural-networks" class="nav-link active" data-scroll-target="#ucav-aero-stealth-optimization-with-multifidelity-graph-neural-networks">UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks</a>
-  <ul class="collapse">
-  <li><a href="#sobre-este-projeto" id="toc-sobre-este-projeto" class="nav-link" data-scroll-target="#sobre-este-projeto">Sobre este projeto</a></li>
-  <li><a href="#objetivo-geral" id="toc-objetivo-geral" class="nav-link" data-scroll-target="#objetivo-geral">Objetivo geral</a></li>
-  <li><a href="#arquitetura-da-pesquisa" id="toc-arquitetura-da-pesquisa" class="nav-link" data-scroll-target="#arquitetura-da-pesquisa">Arquitetura da pesquisa</a></li>
-  <li><a href="#questões-metodológicas-centrais" id="toc-questões-metodológicas-centrais" class="nav-link" data-scroll-target="#questões-metodológicas-centrais">Questões metodológicas centrais</a></li>
-  <li><a href="#organização-do-ebook" id="toc-organização-do-ebook" class="nav-link" data-scroll-target="#organização-do-ebook">Organização do eBook</a></li>
-  </ul></li>
+  <li><a href="#geometrias-ucav-e-parametrização-3d" id="toc-geometrias-ucav-e-parametrização-3d" class="nav-link active" data-scroll-target="#geometrias-ucav-e-parametrização-3d"><span class="header-section-number">7.1</span> Geometrias UCAV e parametrização 3D</a></li>
+  <li><a href="#malhas-superficiais-e-grafos" id="toc-malhas-superficiais-e-grafos" class="nav-link" data-scroll-target="#malhas-superficiais-e-grafos"><span class="header-section-number">7.2</span> Malhas superficiais e grafos</a></li>
+  <li><a href="#álgebra-geométrica-em-cl30" id="toc-álgebra-geométrica-em-cl30" class="nav-link" data-scroll-target="#álgebra-geométrica-em-cl30"><span class="header-section-number">7.3</span> Álgebra Geométrica em <span class="math inline">\(Cl(3,0)\)</span></a></li>
+  <li><a href="#aerodinâmica-tridimensional" id="toc-aerodinâmica-tridimensional" class="nav-link" data-scroll-target="#aerodinâmica-tridimensional"><span class="header-section-number">7.4</span> Aerodinâmica tridimensional</a></li>
+  <li><a href="#espalhamento-eletromagnético-tridimensional" id="toc-espalhamento-eletromagnético-tridimensional" class="nav-link" data-scroll-target="#espalhamento-eletromagnético-tridimensional"><span class="header-section-number">7.5</span> Espalhamento eletromagnético tridimensional</a></li>
+  <li><a href="#fidelidades-em-e-aero" id="toc-fidelidades-em-e-aero" class="nav-link" data-scroll-target="#fidelidades-em-e-aero"><span class="header-section-number">7.6</span> Fidelidades EM e aero</a></li>
+  <li><a href="#correspondência-entre-fidelidades" id="toc-correspondência-entre-fidelidades" class="nav-link" data-scroll-target="#correspondência-entre-fidelidades"><span class="header-section-number">7.7</span> Correspondência entre fidelidades</a></li>
+  <li><a href="#dados-manifestos-e-rastreabilidade" id="toc-dados-manifestos-e-rastreabilidade" class="nav-link" data-scroll-target="#dados-manifestos-e-rastreabilidade"><span class="header-section-number">7.8</span> Dados, manifestos e rastreabilidade</a></li>
+  <li><a href="#transferência-do-pipeline-2d" id="toc-transferência-do-pipeline-2d" class="nav-link" data-scroll-target="#transferência-do-pipeline-2d"><span class="header-section-number">7.9</span> Transferência do pipeline 2D</a></li>
+  <li><a href="#critérios-de-prontidão-para-o-capítulo-8" id="toc-critérios-de-prontidão-para-o-capítulo-8" class="nav-link" data-scroll-target="#critérios-de-prontidão-para-o-capítulo-8"><span class="header-section-number">7.10</span> Critérios de prontidão para o Capítulo 8</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/07_multifidelity_3d.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/07_multifidelity_3d.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs</h1>
-<p class="subtitle lead">Modelagem multifidelidade de Maxwell e Euler e aceleração da otimização multidisciplinar</p>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></h1>
 </div>
 
 
@@ -234,64 +245,61 @@ div.csl-indent {
 </header>
 
 
-<section id="ucav-aero-stealth-optimization-with-multifidelity-graph-neural-networks" class="level1 unnumbered">
-<h1 class="unnumbered">UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks</h1>
-<section id="sobre-este-projeto" class="level2">
-<h2 class="anchored" data-anchor-id="sobre-este-projeto">Sobre este projeto</h2>
-<p>Este eBook documenta o desenvolvimento de um framework de otimização multidisciplinar aero-stealth para <strong>configurações UCAV de baixa observabilidade</strong>. A expressão UCAV (<em>Unmanned Combat Aerial Vehicle</em>) designa uma classe funcional de aeronave não tripulada de combate e não uma configuração aerodinâmica específica. Configurações sem cauda, <em>flying-wing</em>, <em>blended-wing-body</em> e outras famílias geométricas podem ser consideradas conforme o espaço de projeto for formalizado.</p>
-<p>A contribuição computacional central é o emprego de <strong>Graph Neural Networks (GNNs) multifidelidade</strong> como modelos substitutos para reduzir a demanda de recursos computacionais e o tempo de processamento das avaliações eletromagnéticas e aerodinâmicas repetidas durante a otimização.</p>
-<p>A <strong>Álgebra Geométrica (AG)</strong> é adotada como formalismo matemático estruturante para representar geometria, operações físicas e relações empregadas no aprendizado e na otimização. O projeto buscará formulações multivetoriais mais compactas e, quando matematicamente admissível, representações lineares nos objetos algébricos escolhidos, preservando explicitamente as não linearidades físicas intrínsecas.</p>
+<p>Este capítulo estenderá para três dimensões a infraestrutura validada no estudo 2D. A passagem para 3D não será tratada como simples aumento do número de coordenadas: superfícies triangulares, orientação de faces, remalhamento, campos vetoriais e dependências eletromagnéticas de longo alcance introduzem novas exigências geométricas, físicas e computacionais.</p>
+<section id="geometrias-ucav-e-parametrização-3d" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="geometrias-ucav-e-parametrização-3d"><span class="header-section-number">7.1</span> Geometrias UCAV e parametrização 3D</h2>
+<p>A geometria tridimensional deverá ser gerada a partir de um espaço de projeto explicitamente parametrizado. Cada configuração manterá rastreabilidade entre parâmetros de projeto, CAD ou representação geométrica intermediária, malha superficial, grafo e respostas dos solvers.</p>
 </section>
-<section id="objetivo-geral" class="level2">
-<h2 class="anchored" data-anchor-id="objetivo-geral">Objetivo geral</h2>
-<p>Desenvolver e validar um framework de otimização multidisciplinar aero-stealth para configurações UCAV, baseado em Álgebra Geométrica e modelos substitutos por Graph Neural Networks multifidelidade, de forma a reduzir a demanda de recursos computacionais das avaliações eletromagnéticas e aerodinâmicas e viabilizar sua integração com métodos determinísticos de otimização matemática.</p>
+<section id="malhas-superficiais-e-grafos" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="malhas-superficiais-e-grafos"><span class="header-section-number">7.2</span> Malhas superficiais e grafos</h2>
+<p>Serão avaliados grafos de vértices e de faces, escolhidos de acordo com a localização das variáveis físicas e com a discretização dos modelos de referência. A robustez a alterações de densidade e conectividade da malha será testada explicitamente.</p>
 </section>
-<section id="arquitetura-da-pesquisa" class="level2">
-<h2 class="anchored" data-anchor-id="arquitetura-da-pesquisa">Arquitetura da pesquisa</h2>
-<p>A arquitetura metodológica de referência é:</p>
-<p>$ . $</p>
-<p>A validação metodológica será conduzida em duas etapas. Primeiro, o pipeline completo será desenvolvido e testado em problemas bidimensionais de aerofólios e espalhamento eletromagnético, nos quais geometria, conectividade, atributos em Álgebra Geométrica, treinamento e erros podem ser inspecionados diretamente. Depois, a mesma infraestrutura será estendida para geometrias tridimensionais de configurações UCAV, preservando a separação entre o que foi demonstrado em 2D e o que precisa ser novamente validado em 3D.</p>
-<p>A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em <em>geometric deep learning</em> e simulação baseada em malhas <span class="citation" data-cites="bronstein2021 pfaff2021"><a href="#ref-bronstein2021" role="doc-biblioref">[1]</a>, <a href="#ref-pfaff2021" role="doc-biblioref">[2]</a></span>. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional <span class="citation" data-cites="shan2024"><a href="#ref-shan2024" role="doc-biblioref">[3]</a></span> e análise aero-eletromagnética multitarefa em malhas de configurações <em>blended-wing-body</em> <span class="citation" data-cites="li2026aeroem"><a href="#ref-li2026aeroem" role="doc-biblioref">[4]</a></span>. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.</p>
+<section id="álgebra-geométrica-em-cl30" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="álgebra-geométrica-em-cl30"><span class="header-section-number">7.3</span> Álgebra Geométrica em <span class="math inline">\(Cl(3,0)\)</span></h2>
+<p>Para uma face triangular <span class="math inline">\(f=(i,j,k)\)</span>, o bivetor de área orientada será</p>
+<p><span class="math display">\[
+B_f
+=
+\frac12
+\mathbf r_{ij}\wedge\mathbf r_{ik},
+\]</span></p>
+<p>e sua magnitude fornecerá a área. Normais, dualidade, rotores entre referenciais locais e relações de orientação entre faces serão incorporados de forma compatível com as definições do Capítulo 2.</p>
 </section>
-<section id="questões-metodológicas-centrais" class="level2">
-<h2 class="anchored" data-anchor-id="questões-metodológicas-centrais">Questões metodológicas centrais</h2>
-<p>O projeto investiga, entre outras questões:</p>
-<ol type="1">
-<li>quanto as GNNs reduzem o tempo de processamento e o número de avaliações dos modelos eletromagnéticos e aerodinâmicos de referência;</li>
-<li>como combinar modelos de diferentes fidelidades para ampliar o espaço de projeto avaliado com a mesma infraestrutura computacional;</li>
-<li>como incorporar relações físicas de Maxwell e Euler, formuladas em Álgebra Geométrica, à representação e ao treinamento das GNNs;</li>
-<li>como integrar os modelos substitutos a formulações determinísticas de otimização multiobjetivo, incluindo NLP e, quando houver variáveis discretas, MINLP;</li>
-<li>quanto o processo completo reduz a demanda de CPU/GPU, memória e tempo de processamento após contabilizar geração de dados, treinamento, otimização e reavaliação;</li>
-<li>em que medida a fronteira de Pareto prevista preserva sua qualidade após reavaliação pelos modelos físicos de referência.</li>
-</ol>
-<p>Quantificação de incerteza e aprendizado ativo poderão ser avaliados como estratégias auxiliares de seleção de novas simulações, caso acrescentem informação relevante ao processo multifidelidade.</p>
+<section id="aerodinâmica-tridimensional" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="aerodinâmica-tridimensional"><span class="header-section-number">7.4</span> Aerodinâmica tridimensional</h2>
+<p>As respostas poderão incluir <span class="math inline">\(C_p\)</span>, <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span>, <span class="math inline">\(C_m\)</span> e demais coeficientes relevantes. Os níveis de fidelidade serão definidos por conteúdo físico, discretização, modelos de turbulência quando aplicáveis, condições de contorno, convergência e demanda de recursos.</p>
 </section>
-<section id="organização-do-ebook" class="level2">
-<h2 class="anchored" data-anchor-id="organização-do-ebook">Organização do eBook</h2>
-<p>Os capítulos são organizados em quatro blocos:</p>
-<ul>
-<li>fundamentos do problema aero-stealth, da Álgebra Geométrica, da física governante e das GNNs;</li>
-<li>estudo bidimensional de representação geométrica, fidelidade, dados e construção dos grafos;</li>
-<li>treinamento, validação e uso dos surrogates no problema bidimensional;</li>
-<li>extensão tridimensional da mesma metodologia, culminando na otimização aero-stealth de configurações UCAV e na reavaliação com modelos de referência.</li>
-</ul>
+<section id="espalhamento-eletromagnético-tridimensional" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="espalhamento-eletromagnético-tridimensional"><span class="header-section-number">7.5</span> Espalhamento eletromagnético tridimensional</h2>
+<p>A resposta eletromagnética será tratada como RCS tridimensional quando sua definição física e normalização corresponderem a essa grandeza. A dependência angular, de frequência e de polarização deverá ser preservada:</p>
+<p><span class="math display">\[
+\sigma
+=
+\sigma(\theta,\phi,f,\mathrm{pol}).
+\]</span></p>
+<p>Quando campos ou correntes locais estiverem disponíveis, serão preservadas amplitude e fase para permitir reconstruções fisicamente coerentes de campo distante.</p>
+</section>
+<section id="fidelidades-em-e-aero" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="fidelidades-em-e-aero"><span class="header-section-number">7.6</span> Fidelidades EM e aero</h2>
+<p>As hierarquias não serão definidas apenas por nomes de solvers. Cada nível deverá ser documentado por suas hipóteses, discretização, resolução, tratamento de bordas ou viscosidade, critérios numéricos e recursos observados.</p>
+</section>
+<section id="correspondência-entre-fidelidades" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="correspondência-entre-fidelidades"><span class="header-section-number">7.7</span> Correspondência entre fidelidades</h2>
+<p>A construção multifidelidade exigirá compatibilidade entre grandezas. Respostas LF e HF deverão representar a mesma quantidade física sob condições equivalentes antes de serem usadas em correção residual, transferência de representação ou aprendizado conjunto.</p>
+</section>
+<section id="dados-manifestos-e-rastreabilidade" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="dados-manifestos-e-rastreabilidade"><span class="header-section-number">7.8</span> Dados, manifestos e rastreabilidade</h2>
+<p>Cada configuração 3D deverá manter identificadores persistentes para geometria, malha, fidelidade e condições físicas. Os splits continuarão sendo realizados por geometria, evitando vazamento entre remalhamentos ou condições derivadas da mesma configuração.</p>
+</section>
+<section id="transferência-do-pipeline-2d" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="transferência-do-pipeline-2d"><span class="header-section-number">7.9</span> Transferência do pipeline 2D</h2>
+<p>Loaders, configuração de jobs, seed oficial, métricas e estrutura de artefatos serão reutilizados. A representação geométrica, os hiperparâmetros e as arquiteturas serão novamente avaliados, pois desempenho no caso 2D não constitui validação automática em 3D.</p>
+</section>
+<section id="critérios-de-prontidão-para-o-capítulo-8" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="critérios-de-prontidão-para-o-capítulo-8"><span class="header-section-number">7.10</span> Critérios de prontidão para o Capítulo 8</h2>
+<p>Antes da otimização tridimensional, os surrogates disciplinares deverão demonstrar generalização em geometrias não vistas, estabilidade frente a remalhamento e erro compatível com as decisões de projeto que serão tomadas no domínio aero-stealth.</p>
 
 
-<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
-<div id="ref-bronstein2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, <span>“Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”</span>, <em>arXiv preprint arXiv:2104.13478</em>, 2021, doi: <a href="https://doi.org/10.48550/arXiv.2104.13478">10.48550/arXiv.2104.13478</a>.</div>
-</div>
-<div id="ref-pfaff2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, <span>“Learning Mesh-Based Simulation with Graph Networks”</span>, em <em>International Conference on Learning Representations</em>, 2021. Disponível em: <a href="https://openreview.net/forum?id=roNqYL0_XP">https://openreview.net/forum?id=roNqYL0_XP</a></div>
-</div>
-<div id="ref-shan2024" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline">T. Shan, M. Li, F. Yang, e S. Xu, <span>“Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”</span>, <em>IEEE Transactions on Antennas and Propagation</em>, v. 72, n. 1, p. 733–744, 2024, doi: <a href="https://doi.org/10.1109/TAP.2023.3331262">10.1109/TAP.2023.3331262</a>.</div>
-</div>
-<div id="ref-li2026aeroem" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[4] </div><div class="csl-right-inline">C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, <span>“Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”</span>, <em>Physics of Fluids</em>, v. 38, n. 5, p. 057104, 2026, doi: <a href="https://doi.org/10.1063/5.0326519">10.1063/5.0326519</a>.</div>
-</div>
-</div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -697,10 +705,13 @@ div.csl-indent {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../chapters/06_optimization.html" class="pagination-link" aria-label="GNNs, treinamento, validação e otimização no estudo 2D">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/01_problem.html" class="pagination-link" aria-label="Contexto e Definição do Problema Aero-Stealth de um UCAV">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Contexto e Definição do Problema Aero-Stealth de um UCAV</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/08_optimization_3d.html" class="pagination-link" aria-label="GNNs multifidelidade e otimização aero-stealth no estudo 3D">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -709,4 +720,4 @@ div.csl-indent {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/07_multifidelity_3d.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/07_multifidelity_3d.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></div></div></footer></body></html>

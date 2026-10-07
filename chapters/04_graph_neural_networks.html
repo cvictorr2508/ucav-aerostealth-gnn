@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -64,10 +64,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ed7344add5f1663e434276306a2aa159.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -199,13 +199,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
     </ul>
@@ -283,7 +295,8 @@ window.Quarto = {
   <li><a href="#estudos-de-ablação-e-comparação-justa" id="toc-estudos-de-ablação-e-comparação-justa" class="nav-link" data-scroll-target="#estudos-de-ablação-e-comparação-justa"><span class="header-section-number">4.21</span> Estudos de ablação e comparação justa</a></li>
   <li><a href="#posição-em-relação-à-literatura-recente" id="toc-posição-em-relação-à-literatura-recente" class="nav-link" data-scroll-target="#posição-em-relação-à-literatura-recente"><span class="header-section-number">4.22</span> Posição em relação à literatura recente</a></li>
   <li><a href="#arquitetura-conceitual-do-framework" id="toc-arquitetura-conceitual-do-framework" class="nav-link" data-scroll-target="#arquitetura-conceitual-do-framework"><span class="header-section-number">4.23</span> Arquitetura conceitual do framework</a></li>
-  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese"><span class="header-section-number">4.24</span> Síntese</a></li>
+  <li><a href="#progressão-experimental-dos-grafos-2d-para-3d" id="toc-progressão-experimental-dos-grafos-2d-para-3d" class="nav-link" data-scroll-target="#progressão-experimental-dos-grafos-2d-para-3d"><span class="header-section-number">4.24</span> Progressão experimental dos grafos 2D para 3D</a></li>
+  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese"><span class="header-section-number">4.25</span> Síntese</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/04_graph_neural_networks.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/04_graph_neural_networks.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -903,8 +916,13 @@ y_{\mathrm{LF}}
 \]</span></p>
 <p>A AG atua transversalmente na representação geométrica e, se os experimentos justificarem, nos canais e operadores internos da GNN. A multifidelidade atua na relação entre dados provenientes de modelos distintos. A física orienta atributos, alvos, condições de contorno, integrais e perdas. Nenhum desses componentes elimina a necessidade de validação e reavaliação com os solvers de referência.</p>
 </section>
-<section id="síntese" class="level2" data-number="4.24">
-<h2 data-number="4.24" class="anchored" data-anchor-id="síntese"><span class="header-section-number">4.24</span> Síntese</h2>
+<section id="progressão-experimental-dos-grafos-2d-para-3d" class="level2" data-number="4.24">
+<h2 data-number="4.24" class="anchored" data-anchor-id="progressão-experimental-dos-grafos-2d-para-3d"><span class="header-section-number">4.24</span> Progressão experimental dos grafos 2D para 3D</h2>
+<p>Os conceitos deste capítulo serão avaliados primeiro em grafos derivados de contornos e malhas bidimensionais. Nessa etapa, cada configuração geométrica será mantida integralmente em um único subconjunto de treino, validação ou teste, evitando que nós ou condições da mesma geometria contaminem mais de uma partição quando o objetivo for medir generalização geométrica.</p>
+<p>A mesma interface conceitual será posteriormente reutilizada em superfícies tridimensionais. O que muda entre as etapas é a complexidade geométrica e física: em 2D predominam contornos, arestas e relações em <span class="math inline">\(Cl(2,0)\)</span>; em 3D surgem faces orientadas, bivetores de área, rotores entre referenciais locais, maior variabilidade de malha e interações físicas de alcance potencialmente maior. Arquiteturas e hiperparâmetros bem-sucedidos em 2D serão tratados como pontos de partida, não como escolhas automaticamente válidas em 3D.</p>
+</section>
+<section id="síntese" class="level2" data-number="4.25">
+<h2 data-number="4.25" class="anchored" data-anchor-id="síntese"><span class="header-section-number">4.25</span> Síntese</h2>
 <p>A principal vantagem conceitual das GNNs neste problema é operar diretamente sobre malhas irregulares e aprender interações condicionadas pela geometria e pelas condições físicas. Para que essa vantagem se converta em contribuição de engenharia, a formulação precisa manter significado matemático explícito, tratar corretamente simetrias e orientação, controlar dependências da discretização, fornecer alcance suficiente para interações não locais e separar erro de campo, erro de resposta integrada e economia real de recursos.</p>
 <p>No eletromagnetismo, direção, polarização, frequência e coerência de fase precisam ser preservadas quando relevantes. Na aerodinâmica, campos superficiais e coeficientes integrados devem ser relacionados de maneira compatível com a discretização e com as hipóteses do modelo de Euler. Em ambas as disciplinas, generalização deve ser demonstrada em geometrias não vistas, e não apenas em novas condições sobre geometrias já presentes no treinamento.</p>
 <p>Com essa base, o Capítulo 5 passa à combinação explícita de dados provenientes de níveis distintos de fidelidade, com o objetivo de reduzir a quantidade de avaliações de referência necessária sem perder controle sobre a qualidade das respostas usadas pela otimização.</p>
@@ -1352,8 +1370,8 @@ y_{\mathrm{LF}}
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/05_multifidelity.html" class="pagination-link" aria-label="Multifidelity Learning and Adaptive Data Generation">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/05_multifidelity.html" class="pagination-link" aria-label="Modelagem multifidelidade e representação geométrica do estudo 2D">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -64,10 +64,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ed7344add5f1663e434276306a2aa159.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -199,13 +199,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
     </ul>
@@ -280,31 +292,32 @@ window.Quarto = {
   <li><a href="#divergência-expansão-ou-compressão-local" id="toc-divergência-expansão-ou-compressão-local" class="nav-link" data-scroll-target="#divergência-expansão-ou-compressão-local"><span class="header-section-number">2.11.2</span> Divergência: expansão ou compressão local</a></li>
   <li><a href="#derivada-exterior-circulação-local-orientada" id="toc-derivada-exterior-circulação-local-orientada" class="nav-link" data-scroll-target="#derivada-exterior-circulação-local-orientada"><span class="header-section-number">2.11.3</span> Derivada exterior: circulação local orientada</a></li>
   </ul></li>
-  <li><a href="#representação-geométrica-de-malhas" id="toc-representação-geométrica-de-malhas" class="nav-link" data-scroll-target="#representação-geométrica-de-malhas"><span class="header-section-number">2.12</span> Representação geométrica de malhas</a>
+  <li><a href="#ponte-computacional-para-geometrias-bidimensionais" id="toc-ponte-computacional-para-geometrias-bidimensionais" class="nav-link" data-scroll-target="#ponte-computacional-para-geometrias-bidimensionais"><span class="header-section-number">2.12</span> Ponte computacional para geometrias bidimensionais</a></li>
+  <li><a href="#representação-geométrica-de-malhas" id="toc-representação-geométrica-de-malhas" class="nav-link" data-scroll-target="#representação-geométrica-de-malhas"><span class="header-section-number">2.13</span> Representação geométrica de malhas</a>
   <ul class="collapse">
-  <li><a href="#de-vértices-a-arestas" id="toc-de-vértices-a-arestas" class="nav-link" data-scroll-target="#de-vértices-a-arestas"><span class="header-section-number">2.12.1</span> De vértices a arestas</a></li>
-  <li><a href="#a-face-como-bivetor-de-área" id="toc-a-face-como-bivetor-de-área" class="nav-link" data-scroll-target="#a-face-como-bivetor-de-área"><span class="header-section-number">2.12.2</span> A face como bivetor de área</a></li>
-  <li><a href="#da-face-orientada-à-normal" id="toc-da-face-orientada-à-normal" class="nav-link" data-scroll-target="#da-face-orientada-à-normal"><span class="header-section-number">2.12.3</span> Da face orientada à normal</a></li>
-  <li><a href="#relações-entre-faces-vizinhas" id="toc-relações-entre-faces-vizinhas" class="nav-link" data-scroll-target="#relações-entre-faces-vizinhas"><span class="header-section-number">2.12.4</span> Relações entre faces vizinhas</a></li>
-  <li><a href="#estados-multivetoriais-em-nós-ou-faces" id="toc-estados-multivetoriais-em-nós-ou-faces" class="nav-link" data-scroll-target="#estados-multivetoriais-em-nós-ou-faces"><span class="header-section-number">2.12.5</span> Estados multivetoriais em nós ou faces</a></li>
+  <li><a href="#de-vértices-a-arestas" id="toc-de-vértices-a-arestas" class="nav-link" data-scroll-target="#de-vértices-a-arestas"><span class="header-section-number">2.13.1</span> De vértices a arestas</a></li>
+  <li><a href="#a-face-como-bivetor-de-área" id="toc-a-face-como-bivetor-de-área" class="nav-link" data-scroll-target="#a-face-como-bivetor-de-área"><span class="header-section-number">2.13.2</span> A face como bivetor de área</a></li>
+  <li><a href="#da-face-orientada-à-normal" id="toc-da-face-orientada-à-normal" class="nav-link" data-scroll-target="#da-face-orientada-à-normal"><span class="header-section-number">2.13.3</span> Da face orientada à normal</a></li>
+  <li><a href="#relações-entre-faces-vizinhas" id="toc-relações-entre-faces-vizinhas" class="nav-link" data-scroll-target="#relações-entre-faces-vizinhas"><span class="header-section-number">2.13.4</span> Relações entre faces vizinhas</a></li>
+  <li><a href="#estados-multivetoriais-em-nós-ou-faces" id="toc-estados-multivetoriais-em-nós-ou-faces" class="nav-link" data-scroll-target="#estados-multivetoriais-em-nós-ou-faces"><span class="header-section-number">2.13.5</span> Estados multivetoriais em nós ou faces</a></li>
   </ul></li>
-  <li><a href="#ponte-para-o-eletromagnetismo" id="toc-ponte-para-o-eletromagnetismo" class="nav-link" data-scroll-target="#ponte-para-o-eletromagnetismo"><span class="header-section-number">2.13</span> Ponte para o eletromagnetismo</a>
+  <li><a href="#ponte-para-o-eletromagnetismo" id="toc-ponte-para-o-eletromagnetismo" class="nav-link" data-scroll-target="#ponte-para-o-eletromagnetismo"><span class="header-section-number">2.14</span> Ponte para o eletromagnetismo</a>
   <ul class="collapse">
-  <li><a href="#campo-eletromagnético-como-bivetor-de-espaço-tempo" id="toc-campo-eletromagnético-como-bivetor-de-espaço-tempo" class="nav-link" data-scroll-target="#campo-eletromagnético-como-bivetor-de-espaço-tempo"><span class="header-section-number">2.13.1</span> Campo eletromagnético como bivetor de espaço-tempo</a></li>
+  <li><a href="#campo-eletromagnético-como-bivetor-de-espaço-tempo" id="toc-campo-eletromagnético-como-bivetor-de-espaço-tempo" class="nav-link" data-scroll-target="#campo-eletromagnético-como-bivetor-de-espaço-tempo"><span class="header-section-number">2.14.1</span> Campo eletromagnético como bivetor de espaço-tempo</a></li>
   </ul></li>
-  <li><a href="#ponte-para-a-dinâmica-dos-fluidos" id="toc-ponte-para-a-dinâmica-dos-fluidos" class="nav-link" data-scroll-target="#ponte-para-a-dinâmica-dos-fluidos"><span class="header-section-number">2.14</span> Ponte para a dinâmica dos fluidos</a>
+  <li><a href="#ponte-para-a-dinâmica-dos-fluidos" id="toc-ponte-para-a-dinâmica-dos-fluidos" class="nav-link" data-scroll-target="#ponte-para-a-dinâmica-dos-fluidos"><span class="header-section-number">2.15</span> Ponte para a dinâmica dos fluidos</a>
   <ul class="collapse">
-  <li><a href="#vorticidade-como-bivetor" id="toc-vorticidade-como-bivetor" class="nav-link" data-scroll-target="#vorticidade-como-bivetor"><span class="header-section-number">2.14.1</span> Vorticidade como bivetor</a></li>
-  <li><a href="#o-termo-convectivo-continua-não-linear" id="toc-o-termo-convectivo-continua-não-linear" class="nav-link" data-scroll-target="#o-termo-convectivo-continua-não-linear"><span class="header-section-number">2.14.2</span> O termo convectivo continua não linear</a></li>
+  <li><a href="#vorticidade-como-bivetor" id="toc-vorticidade-como-bivetor" class="nav-link" data-scroll-target="#vorticidade-como-bivetor"><span class="header-section-number">2.15.1</span> Vorticidade como bivetor</a></li>
+  <li><a href="#o-termo-convectivo-continua-não-linear" id="toc-o-termo-convectivo-continua-não-linear" class="nav-link" data-scroll-target="#o-termo-convectivo-continua-não-linear"><span class="header-section-number">2.15.2</span> O termo convectivo continua não linear</a></li>
   </ul></li>
-  <li><a href="#ponte-para-graph-neural-networks" id="toc-ponte-para-graph-neural-networks" class="nav-link" data-scroll-target="#ponte-para-graph-neural-networks"><span class="header-section-number">2.15</span> Ponte para Graph Neural Networks</a>
+  <li><a href="#ponte-para-graph-neural-networks" id="toc-ponte-para-graph-neural-networks" class="nav-link" data-scroll-target="#ponte-para-graph-neural-networks"><span class="header-section-number">2.16</span> Ponte para Graph Neural Networks</a>
   <ul class="collapse">
-  <li><a href="#por-que-a-geometria-interessa-ao-aprendizado-em-grafos" id="toc-por-que-a-geometria-interessa-ao-aprendizado-em-grafos" class="nav-link" data-scroll-target="#por-que-a-geometria-interessa-ao-aprendizado-em-grafos"><span class="header-section-number">2.15.1</span> Por que a geometria interessa ao aprendizado em grafos</a></li>
-  <li><a href="#uma-mensagem-geometricamente-estruturada" id="toc-uma-mensagem-geometricamente-estruturada" class="nav-link" data-scroll-target="#uma-mensagem-geometricamente-estruturada"><span class="header-section-number">2.15.2</span> Uma mensagem geometricamente estruturada</a></li>
-  <li><a href="#estudos-de-ablação" id="toc-estudos-de-ablação" class="nav-link" data-scroll-target="#estudos-de-ablação"><span class="header-section-number">2.15.3</span> Estudos de ablação</a></li>
+  <li><a href="#por-que-a-geometria-interessa-ao-aprendizado-em-grafos" id="toc-por-que-a-geometria-interessa-ao-aprendizado-em-grafos" class="nav-link" data-scroll-target="#por-que-a-geometria-interessa-ao-aprendizado-em-grafos"><span class="header-section-number">2.16.1</span> Por que a geometria interessa ao aprendizado em grafos</a></li>
+  <li><a href="#uma-mensagem-geometricamente-estruturada" id="toc-uma-mensagem-geometricamente-estruturada" class="nav-link" data-scroll-target="#uma-mensagem-geometricamente-estruturada"><span class="header-section-number">2.16.2</span> Uma mensagem geometricamente estruturada</a></li>
+  <li><a href="#estudos-de-ablação" id="toc-estudos-de-ablação" class="nav-link" data-scroll-target="#estudos-de-ablação"><span class="header-section-number">2.16.3</span> Estudos de ablação</a></li>
   </ul></li>
-  <li><a href="#critérios-computacionais" id="toc-critérios-computacionais" class="nav-link" data-scroll-target="#critérios-computacionais"><span class="header-section-number">2.16</span> Critérios computacionais</a></li>
-  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese"><span class="header-section-number">2.17</span> Síntese</a></li>
+  <li><a href="#critérios-computacionais" id="toc-critérios-computacionais" class="nav-link" data-scroll-target="#critérios-computacionais"><span class="header-section-number">2.17</span> Critérios computacionais</a></li>
+  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese"><span class="header-section-number">2.18</span> Síntese</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/02_geometric_algebra.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/02_geometric_algebra.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -1040,10 +1053,19 @@ u=-\omega y\,e_1+\omega x\,e_2.
 <p>associado à vorticidade geométrica. A literatura demonstra o uso de bivetores para representar planos de rotação e estruturas vorticais em campos amostrados <span class="citation" data-cites="pollock2014"><a href="#ref-pollock2014" role="doc-biblioref">[6]</a></span>.</p>
 </section>
 </section>
-<section id="representação-geométrica-de-malhas" class="level2" data-number="2.12">
-<h2 data-number="2.12" class="anchored" data-anchor-id="representação-geométrica-de-malhas"><span class="header-section-number">2.12</span> Representação geométrica de malhas</h2>
-<section id="de-vértices-a-arestas" class="level3" data-number="2.12.1">
-<h3 data-number="2.12.1" class="anchored" data-anchor-id="de-vértices-a-arestas"><span class="header-section-number">2.12.1</span> De vértices a arestas</h3>
+<section id="ponte-computacional-para-geometrias-bidimensionais" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="ponte-computacional-para-geometrias-bidimensionais"><span class="header-section-number">2.12</span> Ponte computacional para geometrias bidimensionais</h2>
+<p>Antes da aplicação em superfícies tridimensionais, a mesma linguagem será usada em um estudo bidimensional. No plano euclidiano, a álgebra <span class="math inline">\(Cl(2,0)\)</span> possui base</p>
+<p>$ {1,e_1,e_2,e_{12}}, $</p>
+<p>com pseudoescalar <span class="math inline">\(I=e_{12}\)</span>. Para dois pontos consecutivos de um contorno discretizado, <span class="math inline">\(x_i\)</span> e <span class="math inline">\(x_{i+1}\)</span>, define-se a aresta orientada</p>
+<p>$ r_i=x_{i+1}-x_i. $</p>
+<p>Seu comprimento é <span class="math inline">\(\ell_i=\|r_i\|\)</span>, e a tangente unitária é <span class="math inline">\(t_i=r_i/\ell_i\)</span>. A normal orientada pode ser construída por dualidade, desde que a orientação do contorno e a convenção de dual estejam fixadas de forma consistente. Produtos internos entre tangentes vizinhas medem alinhamento, enquanto produtos exteriores registram a orientação da mudança local de direção.</p>
+<p>Essas quantidades serão usadas como atributos de grafos construídos a partir de aerofólios e contornos eletromagnéticos 2D. O objetivo é transformar as definições algébricas deste capítulo em operações numéricas verificáveis antes de estender a implementação para <span class="math inline">\(Cl(3,0)\)</span>, bivetores de faces e rotores em superfícies tridimensionais.</p>
+</section>
+<section id="representação-geométrica-de-malhas" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="representação-geométrica-de-malhas"><span class="header-section-number">2.13</span> Representação geométrica de malhas</h2>
+<section id="de-vértices-a-arestas" class="level3" data-number="2.13.1">
+<h3 data-number="2.13.1" class="anchored" data-anchor-id="de-vértices-a-arestas"><span class="header-section-number">2.13.1</span> De vértices a arestas</h3>
 <p>Malhas de <strong>Computational Electromagnetics (CEM)</strong> e <strong>Computational Fluid Dynamics (CFD)</strong> são normalmente armazenadas por coordenadas de vértices e conectividade. Para uma face triangular orientada <span class="math inline">\(f=(i,j,k)\)</span>, sejam <span class="math inline">\(x_i,x_j,x_k\)</span> as posições dos vértices. As arestas relativas podem ser representadas por</p>
 <p><span class="math display">\[
 r_{ij}=x_j-x_i,
@@ -1052,8 +1074,8 @@ r_{ik}=x_k-x_i.
 \]</span></p>
 <p>Esses vetores já são mais geométricos do que as coordenadas absolutas, pois representam relações entre pontos da malha.</p>
 </section>
-<section id="a-face-como-bivetor-de-área" class="level3" data-number="2.12.2">
-<h3 data-number="2.12.2" class="anchored" data-anchor-id="a-face-como-bivetor-de-área"><span class="header-section-number">2.12.2</span> A face como bivetor de área</h3>
+<section id="a-face-como-bivetor-de-área" class="level3" data-number="2.13.2">
+<h3 data-number="2.13.2" class="anchored" data-anchor-id="a-face-como-bivetor-de-área"><span class="header-section-number">2.13.2</span> A face como bivetor de área</h3>
 <p>A face orientada pode ser representada por</p>
 <p><span class="math display">\[
 \boxed{B_f=\frac{1}{2}r_{ij}\wedge r_{ik}}.
@@ -1081,8 +1103,8 @@ B_f=\frac{1}{2}e_{12}.
 \]</span></p>
 <p>A magnitude é <span class="math inline">\(1/2\)</span>, exatamente a área do triângulo, e o sinal de <span class="math inline">\(e_{12}\)</span> registra a ordem dos vértices.</p>
 </section>
-<section id="da-face-orientada-à-normal" class="level3" data-number="2.12.3">
-<h3 data-number="2.12.3" class="anchored" data-anchor-id="da-face-orientada-à-normal"><span class="header-section-number">2.12.3</span> Da face orientada à normal</h3>
+<section id="da-face-orientada-à-normal" class="level3" data-number="2.13.3">
+<h3 data-number="2.13.3" class="anchored" data-anchor-id="da-face-orientada-à-normal"><span class="header-section-number">2.13.3</span> Da face orientada à normal</h3>
 <p>Em <span class="math inline">\(Cl(3,0)\)</span>, adotando dual à direita,</p>
 <p><span class="math display">\[
 n_f=\frac{B_fI^{-1}}{\|B_f\|}.
@@ -1093,8 +1115,8 @@ n_f=e_3.
 \]</span></p>
 <p>Se a ordem dos vértices for invertida, <span class="math inline">\(B_f\)</span> muda de sinal e a normal também. Assim, área e orientação não são atributos desconectados: ambas são propriedades do mesmo bivetor.</p>
 </section>
-<section id="relações-entre-faces-vizinhas" class="level3" data-number="2.12.4">
-<h3 data-number="2.12.4" class="anchored" data-anchor-id="relações-entre-faces-vizinhas"><span class="header-section-number">2.12.4</span> Relações entre faces vizinhas</h3>
+<section id="relações-entre-faces-vizinhas" class="level3" data-number="2.13.4">
+<h3 data-number="2.13.4" class="anchored" data-anchor-id="relações-entre-faces-vizinhas"><span class="header-section-number">2.13.4</span> Relações entre faces vizinhas</h3>
 <p>Para duas faces vizinhas, o produto interno</p>
 <p><span class="math display">\[
 n_i\cdot n_j
@@ -1106,8 +1128,8 @@ n_i\wedge n_j
 <p>retém o plano e o sentido da variação de orientação. Um rotor <span class="math inline">\(R_{ij}\)</span> pode ainda representar diretamente a rotação que leva a orientação local da face <span class="math inline">\(i\)</span> à da face <span class="math inline">\(j\)</span>.</p>
 <p>Essa estrutura é especialmente útil em grafos derivados de malhas: uma aresta do grafo não precisa carregar apenas distância e ângulo escalar; ela pode transportar relações geométricas orientadas.</p>
 </section>
-<section id="estados-multivetoriais-em-nós-ou-faces" class="level3" data-number="2.12.5">
-<h3 data-number="2.12.5" class="anchored" data-anchor-id="estados-multivetoriais-em-nós-ou-faces"><span class="header-section-number">2.12.5</span> Estados multivetoriais em nós ou faces</h3>
+<section id="estados-multivetoriais-em-nós-ou-faces" class="level3" data-number="2.13.5">
+<h3 data-number="2.13.5" class="anchored" data-anchor-id="estados-multivetoriais-em-nós-ou-faces"><span class="header-section-number">2.13.5</span> Estados multivetoriais em nós ou faces</h3>
 <p>Uma representação local pode combinar graus diferentes,</p>
 <p><span class="math display">\[
 X_i=s_i+v_i+B_i+\tau_iI,
@@ -1122,10 +1144,10 @@ X_i=s_i+v_i+B_i+\tau_iI,
 <p>A presença de todos esses graus em <span class="math inline">\(Cl(3,0)\)</span> não significa que todos devam ser sempre utilizados. Cada canal deve corresponder a uma grandeza cuja lei de transformação e significado físico sejam conhecidos.</p>
 </section>
 </section>
-<section id="ponte-para-o-eletromagnetismo" class="level2" data-number="2.13">
-<h2 data-number="2.13" class="anchored" data-anchor-id="ponte-para-o-eletromagnetismo"><span class="header-section-number">2.13</span> Ponte para o eletromagnetismo</h2>
-<section id="campo-eletromagnético-como-bivetor-de-espaço-tempo" class="level3" data-number="2.13.1">
-<h3 data-number="2.13.1" class="anchored" data-anchor-id="campo-eletromagnético-como-bivetor-de-espaço-tempo"><span class="header-section-number">2.13.1</span> Campo eletromagnético como bivetor de espaço-tempo</h3>
+<section id="ponte-para-o-eletromagnetismo" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="ponte-para-o-eletromagnetismo"><span class="header-section-number">2.14</span> Ponte para o eletromagnetismo</h2>
+<section id="campo-eletromagnético-como-bivetor-de-espaço-tempo" class="level3" data-number="2.14.1">
+<h3 data-number="2.14.1" class="anchored" data-anchor-id="campo-eletromagnético-como-bivetor-de-espaço-tempo"><span class="header-section-number">2.14.1</span> Campo eletromagnético como bivetor de espaço-tempo</h3>
 <p>Na <strong>Spacetime Algebra (STA)</strong>, ou Álgebra do Espaço-Tempo, o campo eletromagnético pode ser organizado em um único bivetor <span class="math inline">\(F\)</span>. Com assinatura, unidades e convenção de corrente declaradas, as equações de Maxwell podem ser reunidas em uma equação multivetorial do tipo</p>
 <p><span class="math display">\[
 \nabla F=J,
@@ -1136,18 +1158,18 @@ X_i=s_i+v_i+B_i+\tau_iI,
 <p>Para o problema de <strong>Radar Cross Section (RCS)</strong>, essa base será usada no capítulo de física para distinguir campo incidente, campo espalhado, condições constitutivas, condições de contorno e extração do campo distante.</p>
 </section>
 </section>
-<section id="ponte-para-a-dinâmica-dos-fluidos" class="level2" data-number="2.14">
-<h2 data-number="2.14" class="anchored" data-anchor-id="ponte-para-a-dinâmica-dos-fluidos"><span class="header-section-number">2.14</span> Ponte para a dinâmica dos fluidos</h2>
-<section id="vorticidade-como-bivetor" class="level3" data-number="2.14.1">
-<h3 data-number="2.14.1" class="anchored" data-anchor-id="vorticidade-como-bivetor"><span class="header-section-number">2.14.1</span> Vorticidade como bivetor</h3>
+<section id="ponte-para-a-dinâmica-dos-fluidos" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="ponte-para-a-dinâmica-dos-fluidos"><span class="header-section-number">2.15</span> Ponte para a dinâmica dos fluidos</h2>
+<section id="vorticidade-como-bivetor" class="level3" data-number="2.15.1">
+<h3 data-number="2.15.1" class="anchored" data-anchor-id="vorticidade-como-bivetor"><span class="header-section-number">2.15.1</span> Vorticidade como bivetor</h3>
 <p>A mecânica dos fluidos fornece um exemplo natural de grandeza cuja interpretação geométrica é favorecida por bivetores. Em três dimensões, a vorticidade é tradicionalmente representada por um pseudovetor associado ao <em>curl</em> da velocidade. Na AG, pode-se utilizar diretamente</p>
 <p><span class="math display">\[
 \Omega=\nabla\wedge u.
 \]</span></p>
 <p>O bivetor identifica o plano local de rotação do campo de velocidade. Sen <span class="citation" data-cites="sen2023"><a href="#ref-sen2023" role="doc-biblioref">[5]</a></span> emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, Parameswaran et al. <span class="citation" data-cites="parameswaran2024"><a href="#ref-parameswaran2024" role="doc-biblioref">[9]</a></span> desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.</p>
 </section>
-<section id="o-termo-convectivo-continua-não-linear" class="level3" data-number="2.14.2">
-<h3 data-number="2.14.2" class="anchored" data-anchor-id="o-termo-convectivo-continua-não-linear"><span class="header-section-number">2.14.2</span> O termo convectivo continua não linear</h3>
+<section id="o-termo-convectivo-continua-não-linear" class="level3" data-number="2.15.2">
+<h3 data-number="2.15.2" class="anchored" data-anchor-id="o-termo-convectivo-continua-não-linear"><span class="header-section-number">2.15.2</span> O termo convectivo continua não linear</h3>
 <p>Uma identidade útil de cálculo geométrico é</p>
 <p><span class="math display">\[
 (u\cdot\nabla)u
@@ -1162,16 +1184,16 @@ X_i=s_i+v_i+B_i+\tau_iI,
 <p>continuam sendo tensoriais. O uso da AG concentra-se nas parcelas para as quais orientação, vorticidade, derivadas geométricas e transformações admitem uma representação multivetorial consistente.</p>
 </section>
 </section>
-<section id="ponte-para-graph-neural-networks" class="level2" data-number="2.15">
-<h2 data-number="2.15" class="anchored" data-anchor-id="ponte-para-graph-neural-networks"><span class="header-section-number">2.15</span> Ponte para Graph Neural Networks</h2>
-<section id="por-que-a-geometria-interessa-ao-aprendizado-em-grafos" class="level3" data-number="2.15.1">
-<h3 data-number="2.15.1" class="anchored" data-anchor-id="por-que-a-geometria-interessa-ao-aprendizado-em-grafos"><span class="header-section-number">2.15.1</span> Por que a geometria interessa ao aprendizado em grafos</h3>
+<section id="ponte-para-graph-neural-networks" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="ponte-para-graph-neural-networks"><span class="header-section-number">2.16</span> Ponte para Graph Neural Networks</h2>
+<section id="por-que-a-geometria-interessa-ao-aprendizado-em-grafos" class="level3" data-number="2.16.1">
+<h3 data-number="2.16.1" class="anchored" data-anchor-id="por-que-a-geometria-interessa-ao-aprendizado-em-grafos"><span class="header-section-number">2.16.1</span> Por que a geometria interessa ao aprendizado em grafos</h3>
 <p>Uma GNN processa dados por meio de nós, arestas e agregação de mensagens. Em uma malha física, entretanto, os atributos associados a esses elementos não são apenas números abstratos: posição relativa é um vetor, orientação de face pode ser um bivetor, alinhamento pode ser um escalar e transformação relativa pode ser um rotor.</p>
 <p>Codificar essas grandezas apenas como uma sequência de números é possível, mas transfere para a rede a responsabilidade de aprender, a partir dos dados, relações geométricas que já são conhecidas analiticamente. A AG oferece uma forma de manter parte dessa estrutura explícita.</p>
 <p>Zhong e Cao <span class="citation" data-cites="zhong2025"><a href="#ref-zhong2025" role="doc-biblioref">[10]</a></span> propõem uma <strong>Graph Geometric Algebra Network (GGAN)</strong> na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.</p>
 </section>
-<section id="uma-mensagem-geometricamente-estruturada" class="level3" data-number="2.15.2">
-<h3 data-number="2.15.2" class="anchored" data-anchor-id="uma-mensagem-geometricamente-estruturada"><span class="header-section-number">2.15.2</span> Uma mensagem geometricamente estruturada</h3>
+<section id="uma-mensagem-geometricamente-estruturada" class="level3" data-number="2.16.2">
+<h3 data-number="2.16.2" class="anchored" data-anchor-id="uma-mensagem-geometricamente-estruturada"><span class="header-section-number">2.16.2</span> Uma mensagem geometricamente estruturada</h3>
 <p>Em forma abstrata, uma mensagem entre nós ou faces <span class="math inline">\(i\)</span> e <span class="math inline">\(j\)</span> pode ser escrita como</p>
 <p><span class="math display">\[
 m_{ij}=\Phi_\theta\!\left(
@@ -1196,13 +1218,13 @@ X_i,
 </ul>
 <p>A arquitetura concreta deve respeitar como cada grandeza se transforma sob rotação, reflexão e mudança de referencial. Um escalar, por exemplo, não deve ser tratado como se tivesse a mesma lei de transformação de um vetor ou de um bivetor.</p>
 </section>
-<section id="estudos-de-ablação" class="level3" data-number="2.15.3">
-<h3 data-number="2.15.3" class="anchored" data-anchor-id="estudos-de-ablação"><span class="header-section-number">2.15.3</span> Estudos de ablação</h3>
+<section id="estudos-de-ablação" class="level3" data-number="2.16.3">
+<h3 data-number="2.16.3" class="anchored" data-anchor-id="estudos-de-ablação"><span class="header-section-number">2.16.3</span> Estudos de ablação</h3>
 <p>A AG permanece como formalismo do framework. Estudos de ablação serão utilizados para quantificar a contribuição de escolhas específicas: canais bivetoriais, rotores, produtos geométricos ou atributos cartesianos convencionais. O objetivo é medir impacto em precisão, generalização e eficiência, e não decidir se a estrutura matemática fundamental será abandonada.</p>
 </section>
 </section>
-<section id="critérios-computacionais" class="level2" data-number="2.16">
-<h2 data-number="2.16" class="anchored" data-anchor-id="critérios-computacionais"><span class="header-section-number">2.16</span> Critérios computacionais</h2>
+<section id="critérios-computacionais" class="level2" data-number="2.17">
+<h2 data-number="2.17" class="anchored" data-anchor-id="critérios-computacionais"><span class="header-section-number">2.17</span> Critérios computacionais</h2>
 <p>Uma expressão algebricamente mais compacta não é necessariamente mais rápida em computador. Uma implementação multivetorial pode reduzir parâmetros ou evitar transformações redundantes, mas também pode introduzir mais componentes e produtos.</p>
 <p>Por isso, qualquer vantagem computacional será tratada como resultado experimental. A avaliação considerará, conforme aplicável:</p>
 <ul>
@@ -1220,8 +1242,8 @@ X_i,
 </ul>
 <p>A AG é, portanto, o formalismo matemático adotado; o ganho computacional de cada representação é uma propriedade a ser demonstrada por benchmark.</p>
 </section>
-<section id="síntese" class="level2" data-number="2.17">
-<h2 data-number="2.17" class="anchored" data-anchor-id="síntese"><span class="header-section-number">2.17</span> Síntese</h2>
+<section id="síntese" class="level2" data-number="2.18">
+<h2 data-number="2.18" class="anchored" data-anchor-id="síntese"><span class="header-section-number">2.18</span> Síntese</h2>
 <p>A construção apresentada neste capítulo começa com objetos familiares e adiciona estrutura progressivamente. Vetores fornecem direção; o produto interno introduz métrica; o produto exterior representa subespaços orientados; e o produto geométrico reúne essas informações em uma operação associativa. A graduação distingue escalares, vetores, bivetores e elementos de ordem superior, enquanto multivetores permitem combinar graus sem perder sua identidade geométrica.</p>
 <p>A base recíproca permite extrair componentes e construir operadores diferenciais mesmo quando a base não é ortonormal. O pseudoescalar introduz dualidade entre dimensões complementares. Involuções e reversão permitem controlar sinais e construir inversas. Versores e rotores transformam reflexões e rotações em produtos da própria álgebra. Outermorphisms estendem transformações de vetores a áreas e volumes orientados. A derivada geométrica reúne divergência e derivada exterior em um único produto.</p>
 <p>Para o framework aero-stealth, essas ferramentas sustentam três conexões. A primeira é geométrica: faces, áreas orientadas, normais e transformações relativas de uma malha podem ser representadas sem reduzir toda informação a coordenadas cartesianas. A segunda é física: o eletromagnetismo admite uma formulação particularmente compacta em espaço-tempo, enquanto a aerodinâmica se beneficia de representações geométricas de vorticidade e derivadas sem perder a estrutura tensorial e não linear das equações de Euler. A terceira é computacional: atributos e operações de AG podem integrar mensagens e estados internos das GNNs empregadas como modelos substitutos multifidelidade.</p>

@@ -34,7 +34,7 @@
     "href": "index.html#arquitetura-da-pesquisa",
     "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
     "section": "Arquitetura da pesquisa",
-    "text": "Arquitetura da pesquisa\nA arquitetura metodológica de referência é:\n\\[\n\\text{CAD/OpenVSP}\n\\rightarrow\n\\text{malha/grafo}\n\\rightarrow\n\\text{modelos em diferentes fidelidades}\n\\rightarrow\n\\boxed{\\text{GNN multifidelidade}}\n\\rightarrow\n\\text{otimização matemática aero-stealth}\n\\rightarrow\n\\text{reavaliação por modelos de referência}.\n\\]\nA motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em geometric deep learning e simulação baseada em malhas [1], [2]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional [3] e análise aero-eletromagnética multitarefa em malhas de configurações blended-wing-body [4]. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.",
+    "text": "Arquitetura da pesquisa\nA arquitetura metodológica de referência é:\n$ . $\nA validação metodológica será conduzida em duas etapas. Primeiro, o pipeline completo será desenvolvido e testado em problemas bidimensionais de aerofólios e espalhamento eletromagnético, nos quais geometria, conectividade, atributos em Álgebra Geométrica, treinamento e erros podem ser inspecionados diretamente. Depois, a mesma infraestrutura será estendida para geometrias tridimensionais de configurações UCAV, preservando a separação entre o que foi demonstrado em 2D e o que precisa ser novamente validado em 3D.\nA motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em geometric deep learning e simulação baseada em malhas [1], [2]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional [3] e análise aero-eletromagnética multitarefa em malhas de configurações blended-wing-body [4]. O presente framework integra essa capacidade de modelagem a uma arquitetura multifidelidade e a métodos determinísticos de otimização multidisciplinar.",
     "crumbs": [
       "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
     ]
@@ -54,7 +54,7 @@
     "href": "index.html#organização-do-ebook",
     "title": "Graph Neural Networks e Álgebra Geométrica para Otimização Aero-Stealth de UCAVs",
     "section": "Organização do eBook",
-    "text": "Organização do eBook\nOs capítulos são organizados em torno de:\n\ncontexto UCAV e definição do problema aero-stealth;\nfundamentos e aplicação da Álgebra Geométrica;\nequações físicas de Maxwell/RCS e Euler/aerodinâmica;\nGNNs para surrogate modeling;\nmodelagem multifidelidade e estratégias de geração de dados;\notimização matemática multidisciplinar acelerada e validação.\n\n\n\n\n\n[1] M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”, arXiv preprint arXiv:2104.13478, 2021, doi: 10.48550/arXiv.2104.13478.\n\n\n[2] T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, “Learning Mesh-Based Simulation with Graph Networks”, em International Conference on Learning Representations, 2021. Disponível em: https://openreview.net/forum?id=roNqYL0_XP\n\n\n[3] T. Shan, M. Li, F. Yang, e S. Xu, “Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 1, p. 733–744, 2024, doi: 10.1109/TAP.2023.3331262.\n\n\n[4] C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, “Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”, Physics of Fluids, v. 38, n. 5, p. 057104, 2026, doi: 10.1063/5.0326519.",
+    "text": "Organização do eBook\nOs capítulos são organizados em quatro blocos:\n\nfundamentos do problema aero-stealth, da Álgebra Geométrica, da física governante e das GNNs;\nestudo bidimensional de representação geométrica, fidelidade, dados e construção dos grafos;\ntreinamento, validação e uso dos surrogates no problema bidimensional;\nextensão tridimensional da mesma metodologia, culminando na otimização aero-stealth de configurações UCAV e na reavaliação com modelos de referência.\n\n\n\n\n\n[1] M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”, arXiv preprint arXiv:2104.13478, 2021, doi: 10.48550/arXiv.2104.13478.\n\n\n[2] T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, “Learning Mesh-Based Simulation with Graph Networks”, em International Conference on Learning Representations, 2021. Disponível em: https://openreview.net/forum?id=roNqYL0_XP\n\n\n[3] T. Shan, M. Li, F. Yang, e S. Xu, “Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 1, p. 733–744, 2024, doi: 10.1109/TAP.2023.3331262.\n\n\n[4] C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, “Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”, Physics of Fluids, v. 38, n. 5, p. 057104, 2026, doi: 10.1063/5.0326519.",
     "crumbs": [
       "UCAV Aero-Stealth Optimization with Multifidelity Graph Neural Networks"
     ]
@@ -250,11 +250,21 @@
     ]
   },
   {
+    "objectID": "chapters/01_problem.html#progressão-experimental-de-2d-para-3d",
+    "href": "chapters/01_problem.html#progressão-experimental-de-2d-para-3d",
+    "title": "1  Contexto e Definição do Problema Aero-Stealth de um UCAV",
+    "section": "1.20 Progressão experimental de 2D para 3D",
+    "text": "1.20 Progressão experimental de 2D para 3D\nA validação do framework será realizada em duas etapas complementares. A primeira utilizará problemas bidimensionais de aerofólios e espalhamento eletromagnético para construir e testar, de ponta a ponta, a representação geométrica, a conversão malha–grafo, os atributos em Álgebra Geométrica, os modelos substitutos e os protocolos de treinamento e validação. Essa etapa não será tratada como substituta do problema tridimensional: seu papel é fornecer um ambiente controlado no qual hipóteses arquiteturais, fontes de erro e ganhos de recursos possam ser isolados com maior transparência.\nA segunda etapa estenderá a infraestrutura validada para geometrias tridimensionais de configurações UCAV. As conclusões obtidas em 2D serão consideradas evidência metodológica preliminar, e propriedades como generalização geométrica, sensibilidade a remalhamento, dependências eletromagnéticas de longo alcance e desempenho em otimização serão novamente avaliadas no domínio 3D antes de qualquer conclusão de engenharia sobre a configuração completa.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Contexto e Definição do Problema Aero-Stealth de um UCAV</span>"
+    ]
+  },
+  {
     "objectID": "chapters/01_problem.html#delimitação-do-estudo",
     "href": "chapters/01_problem.html#delimitação-do-estudo",
     "title": "1  Contexto e Definição do Problema Aero-Stealth de um UCAV",
-    "section": "1.20 Delimitação do estudo",
-    "text": "1.20 Delimitação do estudo\nO trabalho concentra-se na integração entre geometria UCAV, RCS, aerodinâmica subsônica, Álgebra Geométrica, GNNs multifidelidade e otimização matemática. Os solvers físicos de referência serão utilizados para geração de dados e reavaliação, enquanto as reformulações em AG terão profundidade suficiente para sustentar as representações, relações físicas e operações empregadas pelo modelo substituto e pela otimização.\nO resultado esperado é um framework reproduzível de otimização aero-stealth no qual a aceleração seja demonstrada por medidas de tempo e recursos computacionais, e a validade das decisões seja sustentada por reavaliação eletromagnética e aerodinâmica em níveis de fidelidade adequados.\n\n\n\n\n[1] Department of the Air Force, “Air Force Instruction 16-401: Designating and Naming Defense Military Aerospace Vehicles”. Department of the Air Force, 2020.\n\n\n[2] E. Sepulveda e H. Smith, “Technology Challenges of Stealth Unmanned Combat Aerial Vehicles”, The Aeronautical Journal, v. 121, n. 1243, p. 1261–1295, 2017, doi: 10.1017/aer.2017.53.\n\n\n[3] C. M. Liersch, R. M. Cummings, A. Schütte, J. Vormweg, R. G. Maye, e T. L. Jeans, “Multi-Disciplinary Design and Performance Assessment of Effective, Agile NATO Air Vehicles”, Aerospace Science and Technology, v. 99, p. 105764, 2020, doi: 10.1016/j.ast.2020.105764.\n\n\n[4] H. Aleisa, K. Kontis, B. Pirlepeli, e M. Nikbay, “Conceptual Design of a Nonconstant Swept Flying Wing Unmanned Combat Aerial Vehicle”, Journal of Aircraft, v. 60, n. 6, p. 1872–1888, 2023, doi: 10.2514/1.C037257.\n\n\n[5] M. Nikbay, S. Yildiz, B. Pirlepeli, e K. Kontis, “Multidisciplinary Design Optimization of a Non-Planar Flying Wing UCAV Concept”, Aerospace Science and Technology, v. 177, p. 112285, 2026, doi: 10.1016/j.ast.2026.112285.\n\n\n[6] J. R. R. A. Martins e A. B. Lambe, “Multidisciplinary Design Optimization: A Survey of Architectures”, AIAA Journal, v. 51, n. 9, p. 2049–2075, 2013, doi: 10.2514/1.J051895.\n\n\n[7] J.-X. Leng, Z.-G. Wang, W. Huang, Y. Shen, e K. An, “Multidisciplinary Design Optimization Processes for Efficiency Improvement of Aircraft: State-of-the-Art Review”, International Journal of Aeronautical and Space Sciences, v. 26, n. 4, p. 2020–2042, 2025, doi: 10.1007/s42405-024-00811-8.\n\n\n[8] T. Hu e X. Yu, “Aerodynamic/Stealthy/Structural Multidisciplinary Design Optimization of Unmanned Combat Air Vehicle”, Chinese Journal of Aeronautics, v. 22, n. 4, p. 380–386, 2009, doi: 10.1016/S1000-9361(08)60114-4.\n\n\n[9] N.-V. Nguyen et al., “Multidisciplinary Unmanned Combat Air Vehicle System Design Using Multi-Fidelity Model”, Aerospace Science and Technology, v. 26, n. 1, p. 200–210, 2013, doi: 10.1016/j.ast.2012.04.004.\n\n\n[10] E. Sepulveda, H. Smith, e D. Sziroczak, “Multidisciplinary Analysis of Subsonic Stealth Unmanned Combat Aerial Vehicles”, CEAS Aeronautical Journal, v. 10, p. 431–442, 2019, doi: 10.1007/s13272-018-0325-0.\n\n\n[11] A. Papageorgiou, M. Tarkian, K. Amadori, e J. Ölvander, “Multidisciplinary Optimization of Unmanned Aircraft Considering Radar Signature, Sensors, and Trajectory Constraints”, Journal of Aircraft, v. 55, n. 3, 2018, doi: 10.2514/1.C034314.\n\n\n[12] J. P. R. Silva, “Implementação Teórica e Prática para Caracterização de Seção Reta Radar em Laboratório”, Bachelor's thesis, Universidade de Brasília, Brasília, DF, 2026.\n\n\n[13] R. Shi, T. Long, N. Ye, Y. Wu, Z. Wei, e Z. Liu, “Metamodel-Based Multidisciplinary Design Optimization Methods for Aerospace System”, Astrodynamics, v. 5, p. 185–215, 2021, doi: 10.1007/s42064-021-0109-x.\n\n\n[14] N. Black e A. R. Najafi, “Learning Finite Element Convergence with the Multi-Fidelity Graph Neural Network”, Computer Methods in Applied Mechanics and Engineering, v. 397, p. 115120, 2022, doi: 10.1016/j.cma.2022.115120.\n\n\n[15] M. Taghizadeh, M. A. Nabian, e N. Alemazkoor, “Multifidelity Graph Neural Networks for Efficient and Accurate Mesh-Based Partial Differential Equations Surrogate Modeling”, Computer-Aided Civil and Infrastructure Engineering, v. 40, n. 7, p. 841–858, 2025, doi: 10.1111/mice.13312.\n\n\n[16] E. F. Knott, J. F. Shaeffer, e M. T. Tuley, Radar Cross Section, 2º ed. Artech House, 1993.\n\n\n[17] J. Chen, E. Hachem, e J. Viquerat, “Graph Neural Networks for Laminar Flow Prediction Around Random Two-Dimensional Shapes”, Physics of Fluids, v. 33, n. 12, p. 123607, 2021, doi: 10.1063/5.0064108.\n\n\n[18] J.-Z. Peng, Y. Hua, N. Aubry, Z.-H. Chen, M. Mei, e W.-T. Wu, “Data and Physics-Driven Modeling for Fluid Flow with a Physics-Informed Graph Convolutional Neural Network”, Ocean Engineering, v. 301, p. 117551, 2024, doi: 10.1016/j.oceaneng.2024.117551.\n\n\n[19] Z. Li et al., “Geometry-Informed Neural Operator for Large-Scale 3D PDEs”, em Advances in Neural Information Processing Systems, 2023, p. 35836–35854. doi: 10.52202/075280-1556.\n\n\n[20] M. Li, J. Bai, L. Li, X. Meng, Q. Liu, e B. Chen, “A Gradient-Based Aero-Stealth Optimization Design Method for Flying Wing Aircraft”, Aerospace Science and Technology, v. 92, p. 156–169, 2019, doi: 10.1016/j.ast.2019.05.067.\n\n\n[21] C. Thoulon, G. Roge, e O. Pironneau, “Gradient-Based Aero-Stealth Optimization of a Simplified Aircraft”, Fluids, v. 9, n. 8, p. 174, 2024, doi: 10.3390/fluids9080174.\n\n\n[22] J. Lee e S. Leyffer, Org., Mixed Integer Nonlinear Programming, v. 154. New York: Springer, 2012. doi: 10.1007/978-1-4614-1927-3.\n\n\n[23] P. Belotti, C. Kirches, S. Leyffer, J. Linderoth, J. Luedtke, e A. Mahajan, “Mixed-Integer Nonlinear Optimization”, Acta Numerica, v. 22, p. 1–131, 2013, doi: 10.1017/S0962492913000032.\n\n\n[24] S. Roy, K. Moore, J. T. Hwang, J. S. Gray, W. A. Crossley, e J. R. R. A. Martins, “A Mixed Integer Efficient Global Optimization Algorithm for the Simultaneous Aircraft Allocation-Mission-Design Problem”, em 58th AIAA/ASCE/AHS/ASC Structures, Structural Dynamics, and Materials Conference, 2017. doi: 10.2514/6.2017-1305.\n\n\n[25] T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, “Learning Mesh-Based Simulation with Graph Networks”, em International Conference on Learning Representations, 2021. Disponível em: https://openreview.net/forum?id=roNqYL0_XP\n\n\n[26] M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”, arXiv preprint arXiv:2104.13478, 2021, doi: 10.48550/arXiv.2104.13478.\n\n\n[27] T. Shan, M. Li, F. Yang, e S. Xu, “Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 1, p. 733–744, 2024, doi: 10.1109/TAP.2023.3331262.\n\n\n[28] D.-H. Kong, J.-N. Cao, W.-W. Zhang, W.-C. Huang, X. He, et al., “An AI Predictor: From Point Clouds to Scattered Far Fields for 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 6, p. 5179–5190, 2024, doi: 10.1109/TAP.2024.3390615.\n\n\n[29] C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, “Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”, Physics of Fluids, v. 38, n. 5, p. 057104, 2026, doi: 10.1063/5.0326519.\n\n\n[30] J. Dressel, K. Y. Bliokh, e F. Nori, “Spacetime Algebra as a Powerful Tool for Electromagnetism”, Physics Reports, v. 589, p. 1–71, 2015, doi: 10.1016/j.physrep.2015.06.001.\n\n\n[31] D. Hestenes e G. Sobczyk, Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics. Dordrecht, The Netherlands: D. Reidel Publishing Company, 1984. doi: 10.1007/978-94-009-6292-7.\n\n\n[32] C. Doran e A. Lasenby, Geometric Algebra for Physicists. Cambridge University Press, 2003. doi: 10.1017/CBO9780511807497.",
+    "section": "1.21 Delimitação do estudo",
+    "text": "1.21 Delimitação do estudo\nO trabalho concentra-se na integração entre geometria UCAV, RCS, aerodinâmica subsônica, Álgebra Geométrica, GNNs multifidelidade e otimização matemática. Os solvers físicos de referência serão utilizados para geração de dados e reavaliação, enquanto as reformulações em AG terão profundidade suficiente para sustentar as representações, relações físicas e operações empregadas pelo modelo substituto e pela otimização.\nO resultado esperado é um framework reproduzível de otimização aero-stealth no qual a aceleração seja demonstrada por medidas de tempo e recursos computacionais, e a validade das decisões seja sustentada por reavaliação eletromagnética e aerodinâmica em níveis de fidelidade adequados.\n\n\n\n\n[1] Department of the Air Force, “Air Force Instruction 16-401: Designating and Naming Defense Military Aerospace Vehicles”. Department of the Air Force, 2020.\n\n\n[2] E. Sepulveda e H. Smith, “Technology Challenges of Stealth Unmanned Combat Aerial Vehicles”, The Aeronautical Journal, v. 121, n. 1243, p. 1261–1295, 2017, doi: 10.1017/aer.2017.53.\n\n\n[3] C. M. Liersch, R. M. Cummings, A. Schütte, J. Vormweg, R. G. Maye, e T. L. Jeans, “Multi-Disciplinary Design and Performance Assessment of Effective, Agile NATO Air Vehicles”, Aerospace Science and Technology, v. 99, p. 105764, 2020, doi: 10.1016/j.ast.2020.105764.\n\n\n[4] H. Aleisa, K. Kontis, B. Pirlepeli, e M. Nikbay, “Conceptual Design of a Nonconstant Swept Flying Wing Unmanned Combat Aerial Vehicle”, Journal of Aircraft, v. 60, n. 6, p. 1872–1888, 2023, doi: 10.2514/1.C037257.\n\n\n[5] M. Nikbay, S. Yildiz, B. Pirlepeli, e K. Kontis, “Multidisciplinary Design Optimization of a Non-Planar Flying Wing UCAV Concept”, Aerospace Science and Technology, v. 177, p. 112285, 2026, doi: 10.1016/j.ast.2026.112285.\n\n\n[6] J. R. R. A. Martins e A. B. Lambe, “Multidisciplinary Design Optimization: A Survey of Architectures”, AIAA Journal, v. 51, n. 9, p. 2049–2075, 2013, doi: 10.2514/1.J051895.\n\n\n[7] J.-X. Leng, Z.-G. Wang, W. Huang, Y. Shen, e K. An, “Multidisciplinary Design Optimization Processes for Efficiency Improvement of Aircraft: State-of-the-Art Review”, International Journal of Aeronautical and Space Sciences, v. 26, n. 4, p. 2020–2042, 2025, doi: 10.1007/s42405-024-00811-8.\n\n\n[8] T. Hu e X. Yu, “Aerodynamic/Stealthy/Structural Multidisciplinary Design Optimization of Unmanned Combat Air Vehicle”, Chinese Journal of Aeronautics, v. 22, n. 4, p. 380–386, 2009, doi: 10.1016/S1000-9361(08)60114-4.\n\n\n[9] N.-V. Nguyen et al., “Multidisciplinary Unmanned Combat Air Vehicle System Design Using Multi-Fidelity Model”, Aerospace Science and Technology, v. 26, n. 1, p. 200–210, 2013, doi: 10.1016/j.ast.2012.04.004.\n\n\n[10] E. Sepulveda, H. Smith, e D. Sziroczak, “Multidisciplinary Analysis of Subsonic Stealth Unmanned Combat Aerial Vehicles”, CEAS Aeronautical Journal, v. 10, p. 431–442, 2019, doi: 10.1007/s13272-018-0325-0.\n\n\n[11] A. Papageorgiou, M. Tarkian, K. Amadori, e J. Ölvander, “Multidisciplinary Optimization of Unmanned Aircraft Considering Radar Signature, Sensors, and Trajectory Constraints”, Journal of Aircraft, v. 55, n. 3, 2018, doi: 10.2514/1.C034314.\n\n\n[12] J. P. R. Silva, “Implementação Teórica e Prática para Caracterização de Seção Reta Radar em Laboratório”, Bachelor's thesis, Universidade de Brasília, Brasília, DF, 2026.\n\n\n[13] R. Shi, T. Long, N. Ye, Y. Wu, Z. Wei, e Z. Liu, “Metamodel-Based Multidisciplinary Design Optimization Methods for Aerospace System”, Astrodynamics, v. 5, p. 185–215, 2021, doi: 10.1007/s42064-021-0109-x.\n\n\n[14] N. Black e A. R. Najafi, “Learning Finite Element Convergence with the Multi-Fidelity Graph Neural Network”, Computer Methods in Applied Mechanics and Engineering, v. 397, p. 115120, 2022, doi: 10.1016/j.cma.2022.115120.\n\n\n[15] M. Taghizadeh, M. A. Nabian, e N. Alemazkoor, “Multifidelity Graph Neural Networks for Efficient and Accurate Mesh-Based Partial Differential Equations Surrogate Modeling”, Computer-Aided Civil and Infrastructure Engineering, v. 40, n. 7, p. 841–858, 2025, doi: 10.1111/mice.13312.\n\n\n[16] E. F. Knott, J. F. Shaeffer, e M. T. Tuley, Radar Cross Section, 2º ed. Artech House, 1993.\n\n\n[17] J. Chen, E. Hachem, e J. Viquerat, “Graph Neural Networks for Laminar Flow Prediction Around Random Two-Dimensional Shapes”, Physics of Fluids, v. 33, n. 12, p. 123607, 2021, doi: 10.1063/5.0064108.\n\n\n[18] J.-Z. Peng, Y. Hua, N. Aubry, Z.-H. Chen, M. Mei, e W.-T. Wu, “Data and Physics-Driven Modeling for Fluid Flow with a Physics-Informed Graph Convolutional Neural Network”, Ocean Engineering, v. 301, p. 117551, 2024, doi: 10.1016/j.oceaneng.2024.117551.\n\n\n[19] Z. Li et al., “Geometry-Informed Neural Operator for Large-Scale 3D PDEs”, em Advances in Neural Information Processing Systems, 2023, p. 35836–35854. doi: 10.52202/075280-1556.\n\n\n[20] M. Li, J. Bai, L. Li, X. Meng, Q. Liu, e B. Chen, “A Gradient-Based Aero-Stealth Optimization Design Method for Flying Wing Aircraft”, Aerospace Science and Technology, v. 92, p. 156–169, 2019, doi: 10.1016/j.ast.2019.05.067.\n\n\n[21] C. Thoulon, G. Roge, e O. Pironneau, “Gradient-Based Aero-Stealth Optimization of a Simplified Aircraft”, Fluids, v. 9, n. 8, p. 174, 2024, doi: 10.3390/fluids9080174.\n\n\n[22] J. Lee e S. Leyffer, Org., Mixed Integer Nonlinear Programming, v. 154. New York: Springer, 2012. doi: 10.1007/978-1-4614-1927-3.\n\n\n[23] P. Belotti, C. Kirches, S. Leyffer, J. Linderoth, J. Luedtke, e A. Mahajan, “Mixed-Integer Nonlinear Optimization”, Acta Numerica, v. 22, p. 1–131, 2013, doi: 10.1017/S0962492913000032.\n\n\n[24] S. Roy, K. Moore, J. T. Hwang, J. S. Gray, W. A. Crossley, e J. R. R. A. Martins, “A Mixed Integer Efficient Global Optimization Algorithm for the Simultaneous Aircraft Allocation-Mission-Design Problem”, em 58th AIAA/ASCE/AHS/ASC Structures, Structural Dynamics, and Materials Conference, 2017. doi: 10.2514/6.2017-1305.\n\n\n[25] T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, “Learning Mesh-Based Simulation with Graph Networks”, em International Conference on Learning Representations, 2021. Disponível em: https://openreview.net/forum?id=roNqYL0_XP\n\n\n[26] M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”, arXiv preprint arXiv:2104.13478, 2021, doi: 10.48550/arXiv.2104.13478.\n\n\n[27] T. Shan, M. Li, F. Yang, e S. Xu, “Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 1, p. 733–744, 2024, doi: 10.1109/TAP.2023.3331262.\n\n\n[28] D.-H. Kong, J.-N. Cao, W.-W. Zhang, W.-C. Huang, X. He, et al., “An AI Predictor: From Point Clouds to Scattered Far Fields for 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 6, p. 5179–5190, 2024, doi: 10.1109/TAP.2024.3390615.\n\n\n[29] C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, “Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”, Physics of Fluids, v. 38, n. 5, p. 057104, 2026, doi: 10.1063/5.0326519.\n\n\n[30] J. Dressel, K. Y. Bliokh, e F. Nori, “Spacetime Algebra as a Powerful Tool for Electromagnetism”, Physics Reports, v. 589, p. 1–71, 2015, doi: 10.1016/j.physrep.2015.06.001.\n\n\n[31] D. Hestenes e G. Sobczyk, Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics. Dordrecht, The Netherlands: D. Reidel Publishing Company, 1984. doi: 10.1007/978-94-009-6292-7.\n\n\n[32] C. Doran e A. Lasenby, Geometric Algebra for Physicists. Cambridge University Press, 2003. doi: 10.1017/CBO9780511807497.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Contexto e Definição do Problema Aero-Stealth de um UCAV</span>"
     ]
@@ -370,11 +380,21 @@
     ]
   },
   {
+    "objectID": "chapters/02_geometric_algebra.html#ponte-computacional-para-geometrias-bidimensionais",
+    "href": "chapters/02_geometric_algebra.html#ponte-computacional-para-geometrias-bidimensionais",
+    "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
+    "section": "2.12 Ponte computacional para geometrias bidimensionais",
+    "text": "2.12 Ponte computacional para geometrias bidimensionais\nAntes da aplicação em superfícies tridimensionais, a mesma linguagem será usada em um estudo bidimensional. No plano euclidiano, a álgebra \\(Cl(2,0)\\) possui base\n$ {1,e_1,e_2,e_{12}}, $\ncom pseudoescalar \\(I=e_{12}\\). Para dois pontos consecutivos de um contorno discretizado, \\(x_i\\) e \\(x_{i+1}\\), define-se a aresta orientada\n$ r_i=x_{i+1}-x_i. $\nSeu comprimento é \\(\\ell_i=\\|r_i\\|\\), e a tangente unitária é \\(t_i=r_i/\\ell_i\\). A normal orientada pode ser construída por dualidade, desde que a orientação do contorno e a convenção de dual estejam fixadas de forma consistente. Produtos internos entre tangentes vizinhas medem alinhamento, enquanto produtos exteriores registram a orientação da mudança local de direção.\nEssas quantidades serão usadas como atributos de grafos construídos a partir de aerofólios e contornos eletromagnéticos 2D. O objetivo é transformar as definições algébricas deste capítulo em operações numéricas verificáveis antes de estender a implementação para \\(Cl(3,0)\\), bivetores de faces e rotores em superfícies tridimensionais.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
+    ]
+  },
+  {
     "objectID": "chapters/02_geometric_algebra.html#representação-geométrica-de-malhas",
     "href": "chapters/02_geometric_algebra.html#representação-geométrica-de-malhas",
     "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
-    "section": "2.12 Representação geométrica de malhas",
-    "text": "2.12 Representação geométrica de malhas\n\n2.12.1 De vértices a arestas\nMalhas de Computational Electromagnetics (CEM) e Computational Fluid Dynamics (CFD) são normalmente armazenadas por coordenadas de vértices e conectividade. Para uma face triangular orientada \\(f=(i,j,k)\\), sejam \\(x_i,x_j,x_k\\) as posições dos vértices. As arestas relativas podem ser representadas por\n\\[\nr_{ij}=x_j-x_i,\n\\qquad\nr_{ik}=x_k-x_i.\n\\]\nEsses vetores já são mais geométricos do que as coordenadas absolutas, pois representam relações entre pontos da malha.\n\n\n2.12.2 A face como bivetor de área\nA face orientada pode ser representada por\n\\[\n\\boxed{B_f=\\frac{1}{2}r_{ij}\\wedge r_{ik}}.\n\\]\nO fator \\(1/2\\) converte a área do paralelogramo na área do triângulo. No caso euclidiano,\n\\[\n\\|B_f\\|=A_f,\n\\]\nonde \\(A_f\\) é a área da face.\nConsidere o triângulo com\n\\[\nx_1=(0,0,0),\\qquad\nx_2=(1,0,0),\\qquad\nx_3=(0,1,0).\n\\]\nEntão\n\\[\nr_{12}=e_1,\n\\qquad\nr_{13}=e_2,\n\\]\ne\n\\[\nB_f=\\frac{1}{2}e_{12}.\n\\]\nA magnitude é \\(1/2\\), exatamente a área do triângulo, e o sinal de \\(e_{12}\\) registra a ordem dos vértices.\n\n\n2.12.3 Da face orientada à normal\nEm \\(Cl(3,0)\\), adotando dual à direita,\n\\[\nn_f=\\frac{B_fI^{-1}}{\\|B_f\\|}.\n\\]\nPara o triângulo do exemplo,\n\\[\nn_f=e_3.\n\\]\nSe a ordem dos vértices for invertida, \\(B_f\\) muda de sinal e a normal também. Assim, área e orientação não são atributos desconectados: ambas são propriedades do mesmo bivetor.\n\n\n2.12.4 Relações entre faces vizinhas\nPara duas faces vizinhas, o produto interno\n\\[\nn_i\\cdot n_j\n\\]\nmede alinhamento. Já\n\\[\nn_i\\wedge n_j\n\\]\nretém o plano e o sentido da variação de orientação. Um rotor \\(R_{ij}\\) pode ainda representar diretamente a rotação que leva a orientação local da face \\(i\\) à da face \\(j\\).\nEssa estrutura é especialmente útil em grafos derivados de malhas: uma aresta do grafo não precisa carregar apenas distância e ângulo escalar; ela pode transportar relações geométricas orientadas.\n\n\n2.12.5 Estados multivetoriais em nós ou faces\nUma representação local pode combinar graus diferentes,\n\\[\nX_i=s_i+v_i+B_i+\\tau_iI,\n\\]\nonde:\n\n\\(s_i\\) reúne atributos escalares, como pressão, densidade, área ou curvatura escalar;\n\\(v_i\\) reúne grandezas vetoriais, como posição relativa ou velocidade;\n\\(B_i\\) reúne planos ou áreas orientadas;\n\\(\\tau_iI\\) representa uma componente pseudoescalar apenas quando houver significado físico ou geométrico para ela.\n\nA presença de todos esses graus em \\(Cl(3,0)\\) não significa que todos devam ser sempre utilizados. Cada canal deve corresponder a uma grandeza cuja lei de transformação e significado físico sejam conhecidos.",
+    "section": "2.13 Representação geométrica de malhas",
+    "text": "2.13 Representação geométrica de malhas\n\n2.13.1 De vértices a arestas\nMalhas de Computational Electromagnetics (CEM) e Computational Fluid Dynamics (CFD) são normalmente armazenadas por coordenadas de vértices e conectividade. Para uma face triangular orientada \\(f=(i,j,k)\\), sejam \\(x_i,x_j,x_k\\) as posições dos vértices. As arestas relativas podem ser representadas por\n\\[\nr_{ij}=x_j-x_i,\n\\qquad\nr_{ik}=x_k-x_i.\n\\]\nEsses vetores já são mais geométricos do que as coordenadas absolutas, pois representam relações entre pontos da malha.\n\n\n2.13.2 A face como bivetor de área\nA face orientada pode ser representada por\n\\[\n\\boxed{B_f=\\frac{1}{2}r_{ij}\\wedge r_{ik}}.\n\\]\nO fator \\(1/2\\) converte a área do paralelogramo na área do triângulo. No caso euclidiano,\n\\[\n\\|B_f\\|=A_f,\n\\]\nonde \\(A_f\\) é a área da face.\nConsidere o triângulo com\n\\[\nx_1=(0,0,0),\\qquad\nx_2=(1,0,0),\\qquad\nx_3=(0,1,0).\n\\]\nEntão\n\\[\nr_{12}=e_1,\n\\qquad\nr_{13}=e_2,\n\\]\ne\n\\[\nB_f=\\frac{1}{2}e_{12}.\n\\]\nA magnitude é \\(1/2\\), exatamente a área do triângulo, e o sinal de \\(e_{12}\\) registra a ordem dos vértices.\n\n\n2.13.3 Da face orientada à normal\nEm \\(Cl(3,0)\\), adotando dual à direita,\n\\[\nn_f=\\frac{B_fI^{-1}}{\\|B_f\\|}.\n\\]\nPara o triângulo do exemplo,\n\\[\nn_f=e_3.\n\\]\nSe a ordem dos vértices for invertida, \\(B_f\\) muda de sinal e a normal também. Assim, área e orientação não são atributos desconectados: ambas são propriedades do mesmo bivetor.\n\n\n2.13.4 Relações entre faces vizinhas\nPara duas faces vizinhas, o produto interno\n\\[\nn_i\\cdot n_j\n\\]\nmede alinhamento. Já\n\\[\nn_i\\wedge n_j\n\\]\nretém o plano e o sentido da variação de orientação. Um rotor \\(R_{ij}\\) pode ainda representar diretamente a rotação que leva a orientação local da face \\(i\\) à da face \\(j\\).\nEssa estrutura é especialmente útil em grafos derivados de malhas: uma aresta do grafo não precisa carregar apenas distância e ângulo escalar; ela pode transportar relações geométricas orientadas.\n\n\n2.13.5 Estados multivetoriais em nós ou faces\nUma representação local pode combinar graus diferentes,\n\\[\nX_i=s_i+v_i+B_i+\\tau_iI,\n\\]\nonde:\n\n\\(s_i\\) reúne atributos escalares, como pressão, densidade, área ou curvatura escalar;\n\\(v_i\\) reúne grandezas vetoriais, como posição relativa ou velocidade;\n\\(B_i\\) reúne planos ou áreas orientadas;\n\\(\\tau_iI\\) representa uma componente pseudoescalar apenas quando houver significado físico ou geométrico para ela.\n\nA presença de todos esses graus em \\(Cl(3,0)\\) não significa que todos devam ser sempre utilizados. Cada canal deve corresponder a uma grandeza cuja lei de transformação e significado físico sejam conhecidos.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
     ]
@@ -383,8 +403,8 @@
     "objectID": "chapters/02_geometric_algebra.html#ponte-para-o-eletromagnetismo",
     "href": "chapters/02_geometric_algebra.html#ponte-para-o-eletromagnetismo",
     "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
-    "section": "2.13 Ponte para o eletromagnetismo",
-    "text": "2.13 Ponte para o eletromagnetismo\n\n2.13.1 Campo eletromagnético como bivetor de espaço-tempo\nNa Spacetime Algebra (STA), ou Álgebra do Espaço-Tempo, o campo eletromagnético pode ser organizado em um único bivetor \\(F\\). Com assinatura, unidades e convenção de corrente declaradas, as equações de Maxwell podem ser reunidas em uma equação multivetorial do tipo\n\\[\n\\nabla F=J,\n\\]\nonde \\(J\\) representa a corrente de espaço-tempo [2], [8].\nA razão pela qual uma única equação contém várias equações físicas é a estrutura por graus do produto geométrico. Quando \\(\\nabla F\\) é separado em parcelas de diferentes graus, recuperam-se as contribuições associadas às equações homogêneas e não homogêneas de Maxwell.\nEssa escrita deve ser entendida como unificação representacional, não como “linearização” das equações. Em meios lineares, Maxwell já é linear nos campos. A vantagem da STA consiste em representar, dentro de uma mesma estrutura, campo, dualidade, polarização, transformações e operadores.\nPara o problema de Radar Cross Section (RCS), essa base será usada no capítulo de física para distinguir campo incidente, campo espalhado, condições constitutivas, condições de contorno e extração do campo distante.",
+    "section": "2.14 Ponte para o eletromagnetismo",
+    "text": "2.14 Ponte para o eletromagnetismo\n\n2.14.1 Campo eletromagnético como bivetor de espaço-tempo\nNa Spacetime Algebra (STA), ou Álgebra do Espaço-Tempo, o campo eletromagnético pode ser organizado em um único bivetor \\(F\\). Com assinatura, unidades e convenção de corrente declaradas, as equações de Maxwell podem ser reunidas em uma equação multivetorial do tipo\n\\[\n\\nabla F=J,\n\\]\nonde \\(J\\) representa a corrente de espaço-tempo [2], [8].\nA razão pela qual uma única equação contém várias equações físicas é a estrutura por graus do produto geométrico. Quando \\(\\nabla F\\) é separado em parcelas de diferentes graus, recuperam-se as contribuições associadas às equações homogêneas e não homogêneas de Maxwell.\nEssa escrita deve ser entendida como unificação representacional, não como “linearização” das equações. Em meios lineares, Maxwell já é linear nos campos. A vantagem da STA consiste em representar, dentro de uma mesma estrutura, campo, dualidade, polarização, transformações e operadores.\nPara o problema de Radar Cross Section (RCS), essa base será usada no capítulo de física para distinguir campo incidente, campo espalhado, condições constitutivas, condições de contorno e extração do campo distante.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
     ]
@@ -393,8 +413,8 @@
     "objectID": "chapters/02_geometric_algebra.html#ponte-para-a-dinâmica-dos-fluidos",
     "href": "chapters/02_geometric_algebra.html#ponte-para-a-dinâmica-dos-fluidos",
     "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
-    "section": "2.14 Ponte para a dinâmica dos fluidos",
-    "text": "2.14 Ponte para a dinâmica dos fluidos\n\n2.14.1 Vorticidade como bivetor\nA mecânica dos fluidos fornece um exemplo natural de grandeza cuja interpretação geométrica é favorecida por bivetores. Em três dimensões, a vorticidade é tradicionalmente representada por um pseudovetor associado ao curl da velocidade. Na AG, pode-se utilizar diretamente\n\\[\n\\Omega=\\nabla\\wedge u.\n\\]\nO bivetor identifica o plano local de rotação do campo de velocidade. Sen [5] emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, Parameswaran et al. [9] desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.\n\n\n2.14.2 O termo convectivo continua não linear\nUma identidade útil de cálculo geométrico é\n\\[\n(u\\cdot\\nabla)u\n=u\\cdot(\\nabla\\wedge u)\n+\\frac{1}{2}\\nabla(u^2).\n\\]\nEla separa o termo convectivo em uma contribuição relacionada à rotação local e outra relacionada ao gradiente da energia cinética específica. A identidade melhora a interpretação geométrica, mas não remove a dependência quadrática em \\(u\\). Portanto, ela não transforma as equações de Euler em um sistema globalmente linear [5].\nNo caso compressível conservativo, estruturas como\n\\[\n\\rho u\\otimes u\n\\]\ncontinuam sendo tensoriais. O uso da AG concentra-se nas parcelas para as quais orientação, vorticidade, derivadas geométricas e transformações admitem uma representação multivetorial consistente.",
+    "section": "2.15 Ponte para a dinâmica dos fluidos",
+    "text": "2.15 Ponte para a dinâmica dos fluidos\n\n2.15.1 Vorticidade como bivetor\nA mecânica dos fluidos fornece um exemplo natural de grandeza cuja interpretação geométrica é favorecida por bivetores. Em três dimensões, a vorticidade é tradicionalmente representada por um pseudovetor associado ao curl da velocidade. Na AG, pode-se utilizar diretamente\n\\[\n\\Omega=\\nabla\\wedge u.\n\\]\nO bivetor identifica o plano local de rotação do campo de velocidade. Sen [5] emprega essa estrutura em uma formulação geométrica que relaciona vorticidade e vetor de Lamb. Por sua vez, Parameswaran et al. [9] desenvolvem equações fluidodinâmicas análogas às de Maxwell em espaço-tempo.\n\n\n2.15.2 O termo convectivo continua não linear\nUma identidade útil de cálculo geométrico é\n\\[\n(u\\cdot\\nabla)u\n=u\\cdot(\\nabla\\wedge u)\n+\\frac{1}{2}\\nabla(u^2).\n\\]\nEla separa o termo convectivo em uma contribuição relacionada à rotação local e outra relacionada ao gradiente da energia cinética específica. A identidade melhora a interpretação geométrica, mas não remove a dependência quadrática em \\(u\\). Portanto, ela não transforma as equações de Euler em um sistema globalmente linear [5].\nNo caso compressível conservativo, estruturas como\n\\[\n\\rho u\\otimes u\n\\]\ncontinuam sendo tensoriais. O uso da AG concentra-se nas parcelas para as quais orientação, vorticidade, derivadas geométricas e transformações admitem uma representação multivetorial consistente.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
     ]
@@ -403,8 +423,8 @@
     "objectID": "chapters/02_geometric_algebra.html#ponte-para-graph-neural-networks",
     "href": "chapters/02_geometric_algebra.html#ponte-para-graph-neural-networks",
     "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
-    "section": "2.15 Ponte para Graph Neural Networks",
-    "text": "2.15 Ponte para Graph Neural Networks\n\n2.15.1 Por que a geometria interessa ao aprendizado em grafos\nUma GNN processa dados por meio de nós, arestas e agregação de mensagens. Em uma malha física, entretanto, os atributos associados a esses elementos não são apenas números abstratos: posição relativa é um vetor, orientação de face pode ser um bivetor, alinhamento pode ser um escalar e transformação relativa pode ser um rotor.\nCodificar essas grandezas apenas como uma sequência de números é possível, mas transfere para a rede a responsabilidade de aprender, a partir dos dados, relações geométricas que já são conhecidas analiticamente. A AG oferece uma forma de manter parte dessa estrutura explícita.\nZhong e Cao [10] propõem uma Graph Geometric Algebra Network (GGAN) na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.\n\n\n2.15.2 Uma mensagem geometricamente estruturada\nEm forma abstrata, uma mensagem entre nós ou faces \\(i\\) e \\(j\\) pode ser escrita como\n\\[\nm_{ij}=\\Phi_\\theta\\!\\left(\nX_i,X_j,R_{ij},B_{ij},c\n\\right),\n\\]\nseguida de\n\\[\nX_i'=\\Psi_\\theta\\!\\left(\nX_i,\n\\operatorname{AGG}_{j\\in\\mathcal N(i)}m_{ij}\n\\right).\n\\]\nAqui:\n\n\\(X_i\\) e \\(X_j\\) são estados locais, possivelmente multivetoriais;\n\\(R_{ij}\\) representa orientação relativa;\n\\(B_{ij}\\) representa uma relação plana ou área orientada;\n\\(c\\) reúne condições físicas globais, como Mach, ângulo de ataque, frequência ou polarização;\n\\(\\Phi_\\theta\\) e \\(\\Psi_\\theta\\) são funções aprendidas;\n\\(\\operatorname{AGG}\\) agrega as mensagens da vizinhança.\n\nA arquitetura concreta deve respeitar como cada grandeza se transforma sob rotação, reflexão e mudança de referencial. Um escalar, por exemplo, não deve ser tratado como se tivesse a mesma lei de transformação de um vetor ou de um bivetor.\n\n\n2.15.3 Estudos de ablação\nA AG permanece como formalismo do framework. Estudos de ablação serão utilizados para quantificar a contribuição de escolhas específicas: canais bivetoriais, rotores, produtos geométricos ou atributos cartesianos convencionais. O objetivo é medir impacto em precisão, generalização e eficiência, e não decidir se a estrutura matemática fundamental será abandonada.",
+    "section": "2.16 Ponte para Graph Neural Networks",
+    "text": "2.16 Ponte para Graph Neural Networks\n\n2.16.1 Por que a geometria interessa ao aprendizado em grafos\nUma GNN processa dados por meio de nós, arestas e agregação de mensagens. Em uma malha física, entretanto, os atributos associados a esses elementos não são apenas números abstratos: posição relativa é um vetor, orientação de face pode ser um bivetor, alinhamento pode ser um escalar e transformação relativa pode ser um rotor.\nCodificar essas grandezas apenas como uma sequência de números é possível, mas transfere para a rede a responsabilidade de aprender, a partir dos dados, relações geométricas que já são conhecidas analiticamente. A AG oferece uma forma de manter parte dessa estrutura explícita.\nZhong e Cao [10] propõem uma Graph Geometric Algebra Network (GGAN) na qual atributos são organizados como componentes multivetoriais e operações de AG participam da agregação de vizinhança. Esse antecedente demonstra a viabilidade computacional da combinação entre AG e GNNs, embora suas tarefas de classificação de nós e grafos sejam distintas da predição de campos físicos em malhas.\n\n\n2.16.2 Uma mensagem geometricamente estruturada\nEm forma abstrata, uma mensagem entre nós ou faces \\(i\\) e \\(j\\) pode ser escrita como\n\\[\nm_{ij}=\\Phi_\\theta\\!\\left(\nX_i,X_j,R_{ij},B_{ij},c\n\\right),\n\\]\nseguida de\n\\[\nX_i'=\\Psi_\\theta\\!\\left(\nX_i,\n\\operatorname{AGG}_{j\\in\\mathcal N(i)}m_{ij}\n\\right).\n\\]\nAqui:\n\n\\(X_i\\) e \\(X_j\\) são estados locais, possivelmente multivetoriais;\n\\(R_{ij}\\) representa orientação relativa;\n\\(B_{ij}\\) representa uma relação plana ou área orientada;\n\\(c\\) reúne condições físicas globais, como Mach, ângulo de ataque, frequência ou polarização;\n\\(\\Phi_\\theta\\) e \\(\\Psi_\\theta\\) são funções aprendidas;\n\\(\\operatorname{AGG}\\) agrega as mensagens da vizinhança.\n\nA arquitetura concreta deve respeitar como cada grandeza se transforma sob rotação, reflexão e mudança de referencial. Um escalar, por exemplo, não deve ser tratado como se tivesse a mesma lei de transformação de um vetor ou de um bivetor.\n\n\n2.16.3 Estudos de ablação\nA AG permanece como formalismo do framework. Estudos de ablação serão utilizados para quantificar a contribuição de escolhas específicas: canais bivetoriais, rotores, produtos geométricos ou atributos cartesianos convencionais. O objetivo é medir impacto em precisão, generalização e eficiência, e não decidir se a estrutura matemática fundamental será abandonada.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
     ]
@@ -413,8 +433,8 @@
     "objectID": "chapters/02_geometric_algebra.html#critérios-computacionais",
     "href": "chapters/02_geometric_algebra.html#critérios-computacionais",
     "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
-    "section": "2.16 Critérios computacionais",
-    "text": "2.16 Critérios computacionais\nUma expressão algebricamente mais compacta não é necessariamente mais rápida em computador. Uma implementação multivetorial pode reduzir parâmetros ou evitar transformações redundantes, mas também pode introduzir mais componentes e produtos.\nPor isso, qualquer vantagem computacional será tratada como resultado experimental. A avaliação considerará, conforme aplicável:\n\nnúmero de parâmetros treináveis;\nmemória de pico durante treinamento e inferência;\ntempo de treinamento;\ntempo de inferência;\nnúmero de operações ou kernels relevantes;\nestabilidade numérica;\nerro de predição;\ngeneralização a geometrias não vistas;\nsensibilidade a rotações e mudanças de referencial;\nimpacto no número de avaliações dos modelos físicos de referência;\nimpacto no tempo total da otimização aero-stealth.\n\nA AG é, portanto, o formalismo matemático adotado; o ganho computacional de cada representação é uma propriedade a ser demonstrada por benchmark.",
+    "section": "2.17 Critérios computacionais",
+    "text": "2.17 Critérios computacionais\nUma expressão algebricamente mais compacta não é necessariamente mais rápida em computador. Uma implementação multivetorial pode reduzir parâmetros ou evitar transformações redundantes, mas também pode introduzir mais componentes e produtos.\nPor isso, qualquer vantagem computacional será tratada como resultado experimental. A avaliação considerará, conforme aplicável:\n\nnúmero de parâmetros treináveis;\nmemória de pico durante treinamento e inferência;\ntempo de treinamento;\ntempo de inferência;\nnúmero de operações ou kernels relevantes;\nestabilidade numérica;\nerro de predição;\ngeneralização a geometrias não vistas;\nsensibilidade a rotações e mudanças de referencial;\nimpacto no número de avaliações dos modelos físicos de referência;\nimpacto no tempo total da otimização aero-stealth.\n\nA AG é, portanto, o formalismo matemático adotado; o ganho computacional de cada representação é uma propriedade a ser demonstrada por benchmark.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
     ]
@@ -423,8 +443,8 @@
     "objectID": "chapters/02_geometric_algebra.html#síntese",
     "href": "chapters/02_geometric_algebra.html#síntese",
     "title": "2  Álgebra Geométrica para representação física, geométrica e computacional",
-    "section": "2.17 Síntese",
-    "text": "2.17 Síntese\nA construção apresentada neste capítulo começa com objetos familiares e adiciona estrutura progressivamente. Vetores fornecem direção; o produto interno introduz métrica; o produto exterior representa subespaços orientados; e o produto geométrico reúne essas informações em uma operação associativa. A graduação distingue escalares, vetores, bivetores e elementos de ordem superior, enquanto multivetores permitem combinar graus sem perder sua identidade geométrica.\nA base recíproca permite extrair componentes e construir operadores diferenciais mesmo quando a base não é ortonormal. O pseudoescalar introduz dualidade entre dimensões complementares. Involuções e reversão permitem controlar sinais e construir inversas. Versores e rotores transformam reflexões e rotações em produtos da própria álgebra. Outermorphisms estendem transformações de vetores a áreas e volumes orientados. A derivada geométrica reúne divergência e derivada exterior em um único produto.\nPara o framework aero-stealth, essas ferramentas sustentam três conexões. A primeira é geométrica: faces, áreas orientadas, normais e transformações relativas de uma malha podem ser representadas sem reduzir toda informação a coordenadas cartesianas. A segunda é física: o eletromagnetismo admite uma formulação particularmente compacta em espaço-tempo, enquanto a aerodinâmica se beneficia de representações geométricas de vorticidade e derivadas sem perder a estrutura tensorial e não linear das equações de Euler. A terceira é computacional: atributos e operações de AG podem integrar mensagens e estados internos das GNNs empregadas como modelos substitutos multifidelidade.\nA partir dessa base, o capítulo seguinte formula as equações eletromagnéticas e aerodinâmicas, especificando quais objetos serão representados por multivetores, quais permanecerão tensores ou operadores e quais projeções escalares serão necessárias para discretização, aprendizado e otimização.\n\n\n\n\n[1] D. Hestenes e G. Sobczyk, Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics. Dordrecht, The Netherlands: D. Reidel Publishing Company, 1984. doi: 10.1007/978-94-009-6292-7.\n\n\n[2] C. Doran e A. Lasenby, Geometric Algebra for Physicists. Cambridge University Press, 2003. doi: 10.1017/CBO9780511807497.\n\n\n[3] W. E. Baylis, Org., Clifford (Geometric) Algebras with Applications to Physics, Mathematics, and Engineering. Birkhäuser, 1996. doi: 10.1007/978-1-4612-4104-1.\n\n\n[4] P. Grinfeld, Introduction to Tensor Analysis and the Calculus of Moving Surfaces. Springer, 2013. doi: 10.1007/978-1-4614-7867-6.\n\n\n[5] D. Sen, “Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”, Pramana – Journal of Physics, v. 97, p. 132, 2023, doi: 10.1007/s12043-023-02617-x.\n\n\n[6] S. Pollock e S. Mann, “Vortex Detection in Vector Fields Using Geometric Algebra”, Advances in Applied Clifford Algebras, v. 24, p. 423–442, 2014, doi: 10.1007/s00006-013-0434-0.\n\n\n[7] J. G. Van Bladel, Electromagnetic Fields, 2º ed. Wiley-IEEE Press, 2007.\n\n\n[8] J. Dressel, K. Y. Bliokh, e F. Nori, “Spacetime Algebra as a Powerful Tool for Electromagnetism”, Physics Reports, v. 589, p. 1–71, 2015, doi: 10.1016/j.physrep.2015.06.001.\n\n\n[9] R. Parameswaran, S. M. Panakkal, e M. J. Vedan, “Fluid Maxwell’s Equations in the Language of Geometric Algebra”, Pramana – Journal of Physics, v. 98, p. 62, 2024, doi: 10.1007/s12043-024-02731-4.\n\n\n[10] J. Zhong e W. Cao, “Graph Geometric Algebra Networks for Graph Representation Learning”, Scientific Reports, v. 15, p. 170, 2025, doi: 10.1038/s41598-024-84483-0.",
+    "section": "2.18 Síntese",
+    "text": "2.18 Síntese\nA construção apresentada neste capítulo começa com objetos familiares e adiciona estrutura progressivamente. Vetores fornecem direção; o produto interno introduz métrica; o produto exterior representa subespaços orientados; e o produto geométrico reúne essas informações em uma operação associativa. A graduação distingue escalares, vetores, bivetores e elementos de ordem superior, enquanto multivetores permitem combinar graus sem perder sua identidade geométrica.\nA base recíproca permite extrair componentes e construir operadores diferenciais mesmo quando a base não é ortonormal. O pseudoescalar introduz dualidade entre dimensões complementares. Involuções e reversão permitem controlar sinais e construir inversas. Versores e rotores transformam reflexões e rotações em produtos da própria álgebra. Outermorphisms estendem transformações de vetores a áreas e volumes orientados. A derivada geométrica reúne divergência e derivada exterior em um único produto.\nPara o framework aero-stealth, essas ferramentas sustentam três conexões. A primeira é geométrica: faces, áreas orientadas, normais e transformações relativas de uma malha podem ser representadas sem reduzir toda informação a coordenadas cartesianas. A segunda é física: o eletromagnetismo admite uma formulação particularmente compacta em espaço-tempo, enquanto a aerodinâmica se beneficia de representações geométricas de vorticidade e derivadas sem perder a estrutura tensorial e não linear das equações de Euler. A terceira é computacional: atributos e operações de AG podem integrar mensagens e estados internos das GNNs empregadas como modelos substitutos multifidelidade.\nA partir dessa base, o capítulo seguinte formula as equações eletromagnéticas e aerodinâmicas, especificando quais objetos serão representados por multivetores, quais permanecerão tensores ou operadores e quais projeções escalares serão necessárias para discretização, aprendizado e otimização.\n\n\n\n\n[1] D. Hestenes e G. Sobczyk, Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics. Dordrecht, The Netherlands: D. Reidel Publishing Company, 1984. doi: 10.1007/978-94-009-6292-7.\n\n\n[2] C. Doran e A. Lasenby, Geometric Algebra for Physicists. Cambridge University Press, 2003. doi: 10.1017/CBO9780511807497.\n\n\n[3] W. E. Baylis, Org., Clifford (Geometric) Algebras with Applications to Physics, Mathematics, and Engineering. Birkhäuser, 1996. doi: 10.1007/978-1-4612-4104-1.\n\n\n[4] P. Grinfeld, Introduction to Tensor Analysis and the Calculus of Moving Surfaces. Springer, 2013. doi: 10.1007/978-1-4614-7867-6.\n\n\n[5] D. Sen, “Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”, Pramana – Journal of Physics, v. 97, p. 132, 2023, doi: 10.1007/s12043-023-02617-x.\n\n\n[6] S. Pollock e S. Mann, “Vortex Detection in Vector Fields Using Geometric Algebra”, Advances in Applied Clifford Algebras, v. 24, p. 423–442, 2014, doi: 10.1007/s00006-013-0434-0.\n\n\n[7] J. G. Van Bladel, Electromagnetic Fields, 2º ed. Wiley-IEEE Press, 2007.\n\n\n[8] J. Dressel, K. Y. Bliokh, e F. Nori, “Spacetime Algebra as a Powerful Tool for Electromagnetism”, Physics Reports, v. 589, p. 1–71, 2015, doi: 10.1016/j.physrep.2015.06.001.\n\n\n[9] R. Parameswaran, S. M. Panakkal, e M. J. Vedan, “Fluid Maxwell’s Equations in the Language of Geometric Algebra”, Pramana – Journal of Physics, v. 98, p. 62, 2024, doi: 10.1007/s12043-024-02731-4.\n\n\n[10] J. Zhong e W. Cao, “Graph Geometric Algebra Networks for Graph Representation Learning”, Scientific Reports, v. 15, p. 170, 2025, doi: 10.1038/s41598-024-84483-0.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Álgebra Geométrica para representação física, geométrica e computacional</span>"
     ]
@@ -660,11 +680,21 @@
     ]
   },
   {
+    "objectID": "chapters/03_physics.html#problemas-bidimensionais-e-respostas-tridimensionais",
+    "href": "chapters/03_physics.html#problemas-bidimensionais-e-respostas-tridimensionais",
+    "title": "3  Física governante: eletromagnetismo, RCS e aerodinâmica compressível",
+    "section": "3.24 Problemas bidimensionais e respostas tridimensionais",
+    "text": "3.24 Problemas bidimensionais e respostas tridimensionais\nA etapa bidimensional exige distinguir simplificação geométrica de equivalência física. Em aerodinâmica, um aerofólio 2D representa uma seção e permite estudar coeficientes seccionais e campos associados a um escoamento bidimensional; esses resultados não incluem efeitos tridimensionais de asa finita, como vórtices de ponta e arrasto induzido.\nNo eletromagnetismo, a distinção é ainda mais importante. Um problema de espalhamento estritamente bidimensional é frequentemente formulado em termos de uma grandeza por unidade de comprimento, como scattering width, cuja dimensão física não é a mesma da RCS tridimensional em \\(\\mathrm{m^2}\\). Se os dados utilizados nos estudos 2D forem provenientes de uma extrusão finita ou de um solver tridimensional parametrizado por uma seção 2D, a saída poderá continuar sendo RCS, desde que a geometria e a normalização correspondentes sejam explicitadas. Caso sejam dados de um problema EM verdadeiramente 2D, a grandeza física deverá ser denominada e interpretada de acordo com a formulação que a gerou.\nEssa distinção será preservada na ingestão dos dados e nas funções de perda: nenhuma conversão entre scattering width e RCS será realizada implicitamente.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span>"
+    ]
+  },
+  {
     "objectID": "chapters/03_physics.html#ponte-entre-os-dois-domínios-físicos-e-as-gnns",
     "href": "chapters/03_physics.html#ponte-entre-os-dois-domínios-físicos-e-as-gnns",
     "title": "3  Física governante: eletromagnetismo, RCS e aerodinâmica compressível",
-    "section": "3.24 Ponte entre os dois domínios físicos e as GNNs",
-    "text": "3.24 Ponte entre os dois domínios físicos e as GNNs\nOs domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas diferentes. Isso motiva a investigação de representações geométricas compartilháveis sem pressupor que um único modelo multitarefa seja necessariamente superior.\nUma geometria discretizada pode ser representada por um grafo\n\\[\nG=(V,E,\\mathcal F),\n\\]\nno qual nós, arestas ou faces carregam atributos. A partir do capítulo anterior, exemplos naturais são posição \\(\\mathbf x_i\\), normal \\(\\hat{\\mathbf n}_i\\), área \\(A_i\\), bivetor orientado de face \\(B_i\\), curvatura local, vetores relativos e rotores associados à orientação entre elementos vizinhos.\nPara o problema eletromagnético, uma representação abstrata é\n\\[\n\\mathcal G_{\\mathrm{EM}}:\n(G,f,\\theta,\\phi,\\mathrm{pol})\n\\longrightarrow\n\\sigma(\\theta_s,\\phi_s,\\mathrm{pol}_s),\n\\]\nou, quando campos intermediários forem incluídos,\n\\[\n\\mathcal G_{\\mathrm{EM}}:\n(G,c_{\\mathrm{EM}})\n\\longrightarrow\n(\\mathbf J_s,\n\\mathbf E_{\\mathrm{sca}},\n\\sigma).\n\\]\nPara aerodinâmica,\n\\[\n\\mathcal G_{\\mathrm{aero}}:\n(G,M_\\infty,\\alpha,\\beta,\\rho_\\infty,p_\\infty,\\ldots)\n\\longrightarrow\n(C_p,C_L,C_D,C_m,\\ldots).\n\\]\nO mesmo \\(G\\) fornece uma base geométrica comum; os condicionantes físicos e as saídas permanecem específicos de cada domínio. Compartilhamento de codificadores, cabeças especializadas ou modelos separados são hipóteses arquiteturais a serem comparadas empiricamente.",
+    "section": "3.25 Ponte entre os dois domínios físicos e as GNNs",
+    "text": "3.25 Ponte entre os dois domínios físicos e as GNNs\nOs domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas diferentes. Isso motiva a investigação de representações geométricas compartilháveis sem pressupor que um único modelo multitarefa seja necessariamente superior.\nUma geometria discretizada pode ser representada por um grafo\n\\[\nG=(V,E,\\mathcal F),\n\\]\nno qual nós, arestas ou faces carregam atributos. A partir do capítulo anterior, exemplos naturais são posição \\(\\mathbf x_i\\), normal \\(\\hat{\\mathbf n}_i\\), área \\(A_i\\), bivetor orientado de face \\(B_i\\), curvatura local, vetores relativos e rotores associados à orientação entre elementos vizinhos.\nPara o problema eletromagnético, uma representação abstrata é\n\\[\n\\mathcal G_{\\mathrm{EM}}:\n(G,f,\\theta,\\phi,\\mathrm{pol})\n\\longrightarrow\n\\sigma(\\theta_s,\\phi_s,\\mathrm{pol}_s),\n\\]\nou, quando campos intermediários forem incluídos,\n\\[\n\\mathcal G_{\\mathrm{EM}}:\n(G,c_{\\mathrm{EM}})\n\\longrightarrow\n(\\mathbf J_s,\n\\mathbf E_{\\mathrm{sca}},\n\\sigma).\n\\]\nPara aerodinâmica,\n\\[\n\\mathcal G_{\\mathrm{aero}}:\n(G,M_\\infty,\\alpha,\\beta,\\rho_\\infty,p_\\infty,\\ldots)\n\\longrightarrow\n(C_p,C_L,C_D,C_m,\\ldots).\n\\]\nO mesmo \\(G\\) fornece uma base geométrica comum; os condicionantes físicos e as saídas permanecem específicos de cada domínio. Compartilhamento de codificadores, cabeças especializadas ou modelos separados são hipóteses arquiteturais a serem comparadas empiricamente.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span>"
     ]
@@ -673,8 +703,8 @@
     "objectID": "chapters/03_physics.html#resíduos-físicos-como-informação-de-treinamento",
     "href": "chapters/03_physics.html#resíduos-físicos-como-informação-de-treinamento",
     "title": "3  Física governante: eletromagnetismo, RCS e aerodinâmica compressível",
-    "section": "3.25 Resíduos físicos como informação de treinamento",
-    "text": "3.25 Resíduos físicos como informação de treinamento\nA incorporação de física ao treinamento só é válida quando o resíduo pode ser calculado a partir das variáveis produzidas pela rede. Se a GNN prevê campos eletromagnéticos compatíveis com a formulação em STA, um resíduo conceitual é\n\\[\n\\mathcal R_{\\mathrm M}\n=\n\\nabla F-\\mathcal J,\n\\]\nacompanhado, quando apropriado, por resíduos de condições de contorno e radiação.\nSe a rede prevê variáveis conservativas aerodinâmicas,\n\\[\n\\mathcal R_\\rho\n=\n\\frac{\\partial\\rho}{\\partial t}\n+\n\\nabla\\cdot(\\rho\\mathbf u),\n\\]\n\\[\n\\mathcal R_{\\rho\\mathbf u}\n=\n\\frac{\\partial(\\rho\\mathbf u)}{\\partial t}\n+\n\\nabla\\cdot\n(\\rho\\mathbf u\\otimes\\mathbf u+p\\mathsf I),\n\\]\n\\[\n\\mathcal R_{\\rho E}\n=\n\\frac{\\partial(\\rho E)}{\\partial t}\n+\n\\nabla\\cdot[(\\rho E+p)\\mathbf u].\n\\]\nPor outro lado, uma rede que prevê apenas \\(C_L\\), \\(C_D\\) ou uma RCS agregada não contém informação suficiente para calcular diretamente esses resíduos diferenciais. Nesse caso, devem ser usadas consistências compatíveis com as saídas disponíveis ou devem ser previstos campos intermediários.\nUma função de perda genérica pode assumir a forma\n\\[\n\\mathcal L\n=\n\\mathcal L_{\\mathrm{dados}}\n+\n\\lambda_{\\mathrm{phys}}\\mathcal L_{\\mathrm{phys}}\n+\n\\lambda_{\\mathrm{bc}}\\mathcal L_{\\mathrm{bc}}.\n\\]\nComo os termos podem possuir unidades e escalas muito diferentes, normalização ou adimensionalização deve ser considerada antes de interpretar os pesos \\(\\lambda\\). Um peso numericamente pequeno não significa, por si só, baixa importância física.",
+    "section": "3.26 Resíduos físicos como informação de treinamento",
+    "text": "3.26 Resíduos físicos como informação de treinamento\nA incorporação de física ao treinamento só é válida quando o resíduo pode ser calculado a partir das variáveis produzidas pela rede. Se a GNN prevê campos eletromagnéticos compatíveis com a formulação em STA, um resíduo conceitual é\n\\[\n\\mathcal R_{\\mathrm M}\n=\n\\nabla F-\\mathcal J,\n\\]\nacompanhado, quando apropriado, por resíduos de condições de contorno e radiação.\nSe a rede prevê variáveis conservativas aerodinâmicas,\n\\[\n\\mathcal R_\\rho\n=\n\\frac{\\partial\\rho}{\\partial t}\n+\n\\nabla\\cdot(\\rho\\mathbf u),\n\\]\n\\[\n\\mathcal R_{\\rho\\mathbf u}\n=\n\\frac{\\partial(\\rho\\mathbf u)}{\\partial t}\n+\n\\nabla\\cdot\n(\\rho\\mathbf u\\otimes\\mathbf u+p\\mathsf I),\n\\]\n\\[\n\\mathcal R_{\\rho E}\n=\n\\frac{\\partial(\\rho E)}{\\partial t}\n+\n\\nabla\\cdot[(\\rho E+p)\\mathbf u].\n\\]\nPor outro lado, uma rede que prevê apenas \\(C_L\\), \\(C_D\\) ou uma RCS agregada não contém informação suficiente para calcular diretamente esses resíduos diferenciais. Nesse caso, devem ser usadas consistências compatíveis com as saídas disponíveis ou devem ser previstos campos intermediários.\nUma função de perda genérica pode assumir a forma\n\\[\n\\mathcal L\n=\n\\mathcal L_{\\mathrm{dados}}\n+\n\\lambda_{\\mathrm{phys}}\\mathcal L_{\\mathrm{phys}}\n+\n\\lambda_{\\mathrm{bc}}\\mathcal L_{\\mathrm{bc}}.\n\\]\nComo os termos podem possuir unidades e escalas muito diferentes, normalização ou adimensionalização deve ser considerada antes de interpretar os pesos \\(\\lambda\\). Um peso numericamente pequeno não significa, por si só, baixa importância física.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span>"
     ]
@@ -683,8 +713,8 @@
     "objectID": "chapters/03_physics.html#síntese-do-capítulo",
     "href": "chapters/03_physics.html#síntese-do-capítulo",
     "title": "3  Física governante: eletromagnetismo, RCS e aerodinâmica compressível",
-    "section": "3.26 Síntese do capítulo",
-    "text": "3.26 Síntese do capítulo\nA assinatura radar e o desempenho aerodinâmico derivam de sistemas físicos diferentes, mas ambos são condicionados pela geometria e podem ser discretizados sobre malhas. No eletromagnetismo, Maxwell conecta fontes, materiais e propagação; a passagem para o domínio da frequência transforma derivadas temporais em multiplicações por \\(j\\omega\\), mantendo a estrutura diferencial espacial; condições de contorno produzem o campo espalhado, e seu comportamento assintótico conduz à RCS. Na STA, os campos elétrico e magnético podem ser reunidos no bivetor de Faraday \\(F\\), sem atribuir à AG uma linearização que não existe.\nNa aerodinâmica, Euler aplica conservação de massa, quantidade de movimento e energia a um gás perfeito compressível e invíscido. A forma conservativa conecta naturalmente fluxos às faces da malha. A derivada geométrica separa expansão e rotação local, enquanto bivetores fornecem uma representação natural para vorticidade. Entretanto, o fluxo de quantidade de movimento permanece um operador tensorial e a não linearidade convectiva continua fisicamente presente.\nEsses dois blocos definem variáveis, hipóteses, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. A continuidade metodológica é deliberada: física → representação geométrica → dados multifidelidade → GNN → otimização determinística, sem confundir compacidade matemática com simplificação física nem precisão preditiva com validade de engenharia.\n\n\n\n\n[1] J. Dressel, K. Y. Bliokh, e F. Nori, “Spacetime Algebra as a Powerful Tool for Electromagnetism”, Physics Reports, v. 589, p. 1–71, 2015, doi: 10.1016/j.physrep.2015.06.001.\n\n\n[2] C. Doran e A. Lasenby, Geometric Algebra for Physicists. Cambridge University Press, 2003. doi: 10.1017/CBO9780511807497.\n\n\n[3] E. F. Knott, J. F. Shaeffer, e M. T. Tuley, Radar Cross Section, 2º ed. Artech House, 1993.\n\n\n[4] K. S. Yee, “Numerical Solution of Initial Boundary Value Problems Involving Maxwell’s Equations in Isotropic Media”, IEEE Transactions on Antennas and Propagation, v. 14, n. 3, p. 302–307, 1966, doi: 10.1109/TAP.1966.1138693.\n\n\n[5] S. M. Rao, D. R. Wilton, e A. W. Glisson, “Electromagnetic Scattering by Surfaces of Arbitrary Shape”, IEEE Transactions on Antennas and Propagation, v. 30, n. 3, p. 409–418, 1982, doi: 10.1109/TAP.1982.1142818.\n\n\n[6] D. Sen, “Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”, Pramana – Journal of Physics, v. 97, p. 132, 2023, doi: 10.1007/s12043-023-02617-x.\n\n\n[7] R. Parameswaran, S. M. Panakkal, e M. J. Vedan, “Fluid Maxwell’s Equations in the Language of Geometric Algebra”, Pramana – Journal of Physics, v. 98, p. 62, 2024, doi: 10.1007/s12043-024-02731-4.",
+    "section": "3.27 Síntese do capítulo",
+    "text": "3.27 Síntese do capítulo\nA assinatura radar e o desempenho aerodinâmico derivam de sistemas físicos diferentes, mas ambos são condicionados pela geometria e podem ser discretizados sobre malhas. No eletromagnetismo, Maxwell conecta fontes, materiais e propagação; a passagem para o domínio da frequência transforma derivadas temporais em multiplicações por \\(j\\omega\\), mantendo a estrutura diferencial espacial; condições de contorno produzem o campo espalhado, e seu comportamento assintótico conduz à RCS. Na STA, os campos elétrico e magnético podem ser reunidos no bivetor de Faraday \\(F\\), sem atribuir à AG uma linearização que não existe.\nNa aerodinâmica, Euler aplica conservação de massa, quantidade de movimento e energia a um gás perfeito compressível e invíscido. A forma conservativa conecta naturalmente fluxos às faces da malha. A derivada geométrica separa expansão e rotação local, enquanto bivetores fornecem uma representação natural para vorticidade. Entretanto, o fluxo de quantidade de movimento permanece um operador tensorial e a não linearidade convectiva continua fisicamente presente.\nEsses dois blocos definem variáveis, hipóteses, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. A continuidade metodológica é deliberada: física → representação geométrica → dados multifidelidade → GNN → otimização determinística, sem confundir compacidade matemática com simplificação física nem precisão preditiva com validade de engenharia.\n\n\n\n\n[1] J. Dressel, K. Y. Bliokh, e F. Nori, “Spacetime Algebra as a Powerful Tool for Electromagnetism”, Physics Reports, v. 589, p. 1–71, 2015, doi: 10.1016/j.physrep.2015.06.001.\n\n\n[2] C. Doran e A. Lasenby, Geometric Algebra for Physicists. Cambridge University Press, 2003. doi: 10.1017/CBO9780511807497.\n\n\n[3] E. F. Knott, J. F. Shaeffer, e M. T. Tuley, Radar Cross Section, 2º ed. Artech House, 1993.\n\n\n[4] K. S. Yee, “Numerical Solution of Initial Boundary Value Problems Involving Maxwell’s Equations in Isotropic Media”, IEEE Transactions on Antennas and Propagation, v. 14, n. 3, p. 302–307, 1966, doi: 10.1109/TAP.1966.1138693.\n\n\n[5] S. M. Rao, D. R. Wilton, e A. W. Glisson, “Electromagnetic Scattering by Surfaces of Arbitrary Shape”, IEEE Transactions on Antennas and Propagation, v. 30, n. 3, p. 409–418, 1982, doi: 10.1109/TAP.1982.1142818.\n\n\n[6] D. Sen, “Field Theoretic Formulation of Fluid Mechanics According to the Geometric Algebra”, Pramana – Journal of Physics, v. 97, p. 132, 2023, doi: 10.1007/s12043-023-02617-x.\n\n\n[7] R. Parameswaran, S. M. Panakkal, e M. J. Vedan, “Fluid Maxwell’s Equations in the Language of Geometric Algebra”, Pramana – Journal of Physics, v. 98, p. 62, 2024, doi: 10.1007/s12043-024-02731-4.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Física governante: eletromagnetismo, RCS e aerodinâmica compressível</span>"
     ]
@@ -930,11 +960,21 @@
     ]
   },
   {
+    "objectID": "chapters/04_graph_neural_networks.html#progressão-experimental-dos-grafos-2d-para-3d",
+    "href": "chapters/04_graph_neural_networks.html#progressão-experimental-dos-grafos-2d-para-3d",
+    "title": "4  Graph Neural Networks para modelagem substituta baseada em malhas",
+    "section": "4.24 Progressão experimental dos grafos 2D para 3D",
+    "text": "4.24 Progressão experimental dos grafos 2D para 3D\nOs conceitos deste capítulo serão avaliados primeiro em grafos derivados de contornos e malhas bidimensionais. Nessa etapa, cada configuração geométrica será mantida integralmente em um único subconjunto de treino, validação ou teste, evitando que nós ou condições da mesma geometria contaminem mais de uma partição quando o objetivo for medir generalização geométrica.\nA mesma interface conceitual será posteriormente reutilizada em superfícies tridimensionais. O que muda entre as etapas é a complexidade geométrica e física: em 2D predominam contornos, arestas e relações em \\(Cl(2,0)\\); em 3D surgem faces orientadas, bivetores de área, rotores entre referenciais locais, maior variabilidade de malha e interações físicas de alcance potencialmente maior. Arquiteturas e hiperparâmetros bem-sucedidos em 2D serão tratados como pontos de partida, não como escolhas automaticamente válidas em 3D.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks para modelagem substituta baseada em malhas</span>"
+    ]
+  },
+  {
     "objectID": "chapters/04_graph_neural_networks.html#síntese",
     "href": "chapters/04_graph_neural_networks.html#síntese",
     "title": "4  Graph Neural Networks para modelagem substituta baseada em malhas",
-    "section": "4.24 Síntese",
-    "text": "4.24 Síntese\nA principal vantagem conceitual das GNNs neste problema é operar diretamente sobre malhas irregulares e aprender interações condicionadas pela geometria e pelas condições físicas. Para que essa vantagem se converta em contribuição de engenharia, a formulação precisa manter significado matemático explícito, tratar corretamente simetrias e orientação, controlar dependências da discretização, fornecer alcance suficiente para interações não locais e separar erro de campo, erro de resposta integrada e economia real de recursos.\nNo eletromagnetismo, direção, polarização, frequência e coerência de fase precisam ser preservadas quando relevantes. Na aerodinâmica, campos superficiais e coeficientes integrados devem ser relacionados de maneira compatível com a discretização e com as hipóteses do modelo de Euler. Em ambas as disciplinas, generalização deve ser demonstrada em geometrias não vistas, e não apenas em novas condições sobre geometrias já presentes no treinamento.\nCom essa base, o Capítulo 5 passa à combinação explícita de dados provenientes de níveis distintos de fidelidade, com o objetivo de reduzir a quantidade de avaliações de referência necessária sem perder controle sobre a qualidade das respostas usadas pela otimização.\n\n\n\n\n[1] M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”, arXiv preprint arXiv:2104.13478, 2021, doi: 10.48550/arXiv.2104.13478.\n\n\n[2] T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, “Learning Mesh-Based Simulation with Graph Networks”, em International Conference on Learning Representations, 2021. Disponível em: https://openreview.net/forum?id=roNqYL0_XP\n\n\n[3] C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, “Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”, Physics of Fluids, v. 38, n. 5, p. 057104, 2026, doi: 10.1063/5.0326519.\n\n\n[4] T. Shan, M. Li, F. Yang, e S. Xu, “Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 1, p. 733–744, 2024, doi: 10.1109/TAP.2023.3331262.\n\n\n[5] D.-H. Kong, J.-N. Cao, W.-W. Zhang, W.-C. Huang, X. He, et al., “An AI Predictor: From Point Clouds to Scattered Far Fields for 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 6, p. 5179–5190, 2024, doi: 10.1109/TAP.2024.3390615.\n\n\n[6] J. Chen, E. Hachem, e J. Viquerat, “Graph Neural Networks for Laminar Flow Prediction Around Random Two-Dimensional Shapes”, Physics of Fluids, v. 33, n. 12, p. 123607, 2021, doi: 10.1063/5.0064108.\n\n\n[7] J.-Z. Peng, Y. Hua, N. Aubry, Z.-H. Chen, M. Mei, e W.-T. Wu, “Data and Physics-Driven Modeling for Fluid Flow with a Physics-Informed Graph Convolutional Neural Network”, Ocean Engineering, v. 301, p. 117551, 2024, doi: 10.1016/j.oceaneng.2024.117551.\n\n\n[8] N. Black e A. R. Najafi, “Learning Finite Element Convergence with the Multi-Fidelity Graph Neural Network”, Computer Methods in Applied Mechanics and Engineering, v. 397, p. 115120, 2022, doi: 10.1016/j.cma.2022.115120.\n\n\n[9] M. Taghizadeh, M. A. Nabian, e N. Alemazkoor, “Multifidelity Graph Neural Networks for Efficient and Accurate Mesh-Based Partial Differential Equations Surrogate Modeling”, Computer-Aided Civil and Infrastructure Engineering, v. 40, n. 7, p. 841–858, 2025, doi: 10.1111/mice.13312.\n\n\n[10] Z. Li et al., “Geometry-Informed Neural Operator for Large-Scale 3D PDEs”, em Advances in Neural Information Processing Systems, 2023, p. 35836–35854. doi: 10.52202/075280-1556.",
+    "section": "4.25 Síntese",
+    "text": "4.25 Síntese\nA principal vantagem conceitual das GNNs neste problema é operar diretamente sobre malhas irregulares e aprender interações condicionadas pela geometria e pelas condições físicas. Para que essa vantagem se converta em contribuição de engenharia, a formulação precisa manter significado matemático explícito, tratar corretamente simetrias e orientação, controlar dependências da discretização, fornecer alcance suficiente para interações não locais e separar erro de campo, erro de resposta integrada e economia real de recursos.\nNo eletromagnetismo, direção, polarização, frequência e coerência de fase precisam ser preservadas quando relevantes. Na aerodinâmica, campos superficiais e coeficientes integrados devem ser relacionados de maneira compatível com a discretização e com as hipóteses do modelo de Euler. Em ambas as disciplinas, generalização deve ser demonstrada em geometrias não vistas, e não apenas em novas condições sobre geometrias já presentes no treinamento.\nCom essa base, o Capítulo 5 passa à combinação explícita de dados provenientes de níveis distintos de fidelidade, com o objetivo de reduzir a quantidade de avaliações de referência necessária sem perder controle sobre a qualidade das respostas usadas pela otimização.\n\n\n\n\n[1] M. M. Bronstein, J. Bruna, T. Cohen, e P. Veličković, “Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges”, arXiv preprint arXiv:2104.13478, 2021, doi: 10.48550/arXiv.2104.13478.\n\n\n[2] T. Pfaff, M. Fortunato, A. Sanchez-Gonzalez, e P. W. Battaglia, “Learning Mesh-Based Simulation with Graph Networks”, em International Conference on Learning Representations, 2021. Disponível em: https://openreview.net/forum?id=roNqYL0_XP\n\n\n[3] C. Li, B. Shu, K. Zhao, L. Yu, Y. Li, e H. Zhao, “Multi-task Diffusion Graph Model for Aero-Electromagnetic Analysis of Blended-Wing-Body Configurations”, Physics of Fluids, v. 38, n. 5, p. 057104, 2026, doi: 10.1063/5.0326519.\n\n\n[4] T. Shan, M. Li, F. Yang, e S. Xu, “Solving Combined Field Integral Equations With Physics-Informed Graph Residual Learning for EM Scattering of 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 1, p. 733–744, 2024, doi: 10.1109/TAP.2023.3331262.\n\n\n[5] D.-H. Kong, J.-N. Cao, W.-W. Zhang, W.-C. Huang, X. He, et al., “An AI Predictor: From Point Clouds to Scattered Far Fields for 3-D PEC Targets”, IEEE Transactions on Antennas and Propagation, v. 72, n. 6, p. 5179–5190, 2024, doi: 10.1109/TAP.2024.3390615.\n\n\n[6] J. Chen, E. Hachem, e J. Viquerat, “Graph Neural Networks for Laminar Flow Prediction Around Random Two-Dimensional Shapes”, Physics of Fluids, v. 33, n. 12, p. 123607, 2021, doi: 10.1063/5.0064108.\n\n\n[7] J.-Z. Peng, Y. Hua, N. Aubry, Z.-H. Chen, M. Mei, e W.-T. Wu, “Data and Physics-Driven Modeling for Fluid Flow with a Physics-Informed Graph Convolutional Neural Network”, Ocean Engineering, v. 301, p. 117551, 2024, doi: 10.1016/j.oceaneng.2024.117551.\n\n\n[8] N. Black e A. R. Najafi, “Learning Finite Element Convergence with the Multi-Fidelity Graph Neural Network”, Computer Methods in Applied Mechanics and Engineering, v. 397, p. 115120, 2022, doi: 10.1016/j.cma.2022.115120.\n\n\n[9] M. Taghizadeh, M. A. Nabian, e N. Alemazkoor, “Multifidelity Graph Neural Networks for Efficient and Accurate Mesh-Based Partial Differential Equations Surrogate Modeling”, Computer-Aided Civil and Infrastructure Engineering, v. 40, n. 7, p. 841–858, 2025, doi: 10.1111/mice.13312.\n\n\n[10] Z. Li et al., “Geometry-Informed Neural Operator for Large-Scale 3D PDEs”, em Advances in Neural Information Processing Systems, 2023, p. 35836–35854. doi: 10.52202/075280-1556.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Graph Neural Networks para modelagem substituta baseada em malhas</span>"
     ]
@@ -942,171 +982,471 @@
   {
     "objectID": "chapters/05_multifidelity.html",
     "href": "chapters/05_multifidelity.html",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
     "section": "",
-    "text": "5.1 Computational cost hierarchy\nA multifidelidade é central para tornar o treinamento das GNNs economicamente viável quando dados de alta fidelidade são caros.\nCaracterização explícita do custo dos diferentes níveis de solver.",
+    "text": "5.1 Escopo do estudo bidimensional\nEste capítulo estabelece o primeiro bloco experimental do framework. O objetivo é transformar a formulação desenvolvida nos capítulos anteriores em um pipeline reproduzível para geometrias bidimensionais, preservando o significado físico das respostas e preparando a extensão tridimensional. O estudo 2D será usado para validar representação, ingestão de dados, construção de grafos, atributos em Álgebra Geométrica e relações entre níveis de fidelidade antes de aumentar a complexidade geométrica.\nSerão considerados dois problemas disciplinares complementares. Na aerodinâmica, cada configuração corresponde a um aerofólio discretizado, acompanhado de respostas como \\(C_L\\), \\(C_D\\) e \\(L/D\\), além das condições de operação necessárias à interpretação dessas grandezas. No eletromagnetismo, cada configuração corresponde a uma geometria bidimensional ou a uma geometria tridimensional parametrizada a partir de uma seção 2D, acompanhada da resposta de espalhamento fornecida pelo solver.\nA grandeza eletromagnética deverá ser identificada a partir dos metadados do conjunto de dados. Se o solver resolver um problema estritamente bidimensional, a saída poderá corresponder a scattering width ou outra grandeza por unidade de comprimento. Se a resposta tiver sido calculada para uma extrusão finita ou uma geometria tridimensional, poderá ser uma RCS em \\(\\mathrm{m^2}\\) ou dBsm. O pipeline não converterá implicitamente uma definição na outra.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#low--and-high-fidelity-models",
-    "href": "chapters/05_multifidelity.html#low--and-high-fidelity-models",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.2 Low- and high-fidelity models",
-    "text": "5.2 Low- and high-fidelity models\nDefinição de baixa, média e alta fidelidade e critérios de compatibilidade entre respostas.",
+    "objectID": "chapters/05_multifidelity.html#unidade-de-amostragem-e-identificação-das-configurações",
+    "href": "chapters/05_multifidelity.html#unidade-de-amostragem-e-identificação-das-configurações",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.2 Unidade de amostragem e identificação das configurações",
+    "text": "5.2 Unidade de amostragem e identificação das configurações\nA unidade estatística primária será a configuração geométrica, identificada por um campo persistente como \\(\\texttt{configuration\\_id}\\). Todos os nós, arestas, faces, condições de operação e respostas pertencentes à mesma configuração deverão permanecer associados a esse identificador.\nEssa regra é essencial para evitar vazamento de dados. A divisão entre treinamento, validação e teste será realizada por configuração, e não por linha de CSV, nó ou elemento de malha.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#electromagnetic-fidelity-hierarchy",
-    "href": "chapters/05_multifidelity.html#electromagnetic-fidelity-hierarchy",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.3 Electromagnetic fidelity hierarchy",
-    "text": "5.3 Electromagnetic fidelity hierarchy\nEstrutura preliminar a revisar durante o projeto:\n\\[\n\\text{PO/LE-PO}\n\\rightarrow\n\\text{SBR+/UTD/PTD ou equivalente HF}\n\\rightarrow\n\\text{validação experimental, quando disponível}.\n\\]",
+    "objectID": "chapters/05_multifidelity.html#contrato-inicial-dos-dados-em-csv",
+    "href": "chapters/05_multifidelity.html#contrato-inicial-dos-dados-em-csv",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.3 Contrato inicial dos dados em CSV",
+    "text": "5.3 Contrato inicial dos dados em CSV\nOs arquivos recebidos poderão possuir formatos diferentes, mas serão convertidos internamente para uma representação canônica. Para uma malha ou contorno nodal, o núcleo geométrico deverá conter, no mínimo,\n\nidentificador da configuração;\nidentificador do nó;\ncoordenadas \\(x\\) e \\(y\\);\nconectividade, quando não puder ser inferida de maneira inequívoca pela ordenação dos pontos.\n\nAs condições físicas deverão ser preservadas em campos próprios. Para aerodinâmica, podem incluir \\(M_\\infty\\), \\(\\alpha\\), número de Reynolds e outras variáveis realmente presentes no solver. Para eletromagnetismo, podem incluir frequência, direção de incidência, polarização, propriedades materiais e direção de observação.\nAs respostas globais serão armazenadas separadamente dos atributos geométricos. No primeiro conjunto experimental, espera-se trabalhar com aproximadamente 50 configurações e alvos como\n\\[\nC_L,\\qquad\nC_D,\\qquad\n\\frac{L}{D},\\qquad\nR_{\\mathrm{EM}},\n\\]\nem que \\(R_{\\mathrm{EM}}\\) representa genericamente a resposta eletromagnética até que sua definição física seja confirmada pelos metadados do conjunto de dados.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#aerodynamic-fidelity-hierarchy",
-    "href": "chapters/05_multifidelity.html#aerodynamic-fidelity-hierarchy",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.4 Aerodynamic fidelity hierarchy",
-    "text": "5.4 Aerodynamic fidelity hierarchy\nEstrutura preliminar:\n\\[\n\\text{painel/VSPAERO}\n\\rightarrow\n\\text{Euler}\n\\rightarrow\n\\text{RANS/CFD de referência}.\n\\]",
+    "objectID": "chapters/05_multifidelity.html#reconstrução-geométrica-em-cl20",
+    "href": "chapters/05_multifidelity.html#reconstrução-geométrica-em-cl20",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.4 Reconstrução geométrica em \\(Cl(2,0)\\)",
+    "text": "5.4 Reconstrução geométrica em \\(Cl(2,0)\\)\nConsidere um contorno orientado por pontos consecutivos \\(\\mathbf x_i\\in\\mathbb R^2\\). A aresta orientada é\n\\[\n\\mathbf e_i\n=\n\\mathbf x_{i+1}-\\mathbf x_i.\n\\]\nSeu comprimento e sua tangente unitária são\n\\[\n\\ell_i=\\|\\mathbf e_i\\|,\n\\qquad\n\\mathbf t_i=\\frac{\\mathbf e_i}{\\ell_i}.\n\\]\nEm \\(Cl(2,0)\\), com pseudoescalar \\(I=e_1e_2\\), a orientação do contorno permite construir uma normal local por dualidade. A convenção de sinal será fixada de acordo com a orientação escolhida para o contorno e verificada numericamente.\nEntre elementos vizinhos, produtos como\n\\[\n\\mathbf t_i\\cdot\\mathbf t_j\n\\]\nmedem alinhamento, enquanto\n\\[\n\\mathbf t_i\\wedge\\mathbf t_j\n\\]\nrepresentam a mudança orientada de direção no plano. Essas grandezas podem ser usadas para construir medidas discretas de curvatura e atributos geometricamente estruturados para a GNN.\nSe o arquivo representar uma malha triangular 2D, a área orientada da célula \\(f=(i,j,k)\\) será representada por\n\\[\nB_f\n=\n\\frac12\n\\mathbf r_{ij}\\wedge\\mathbf r_{ik},\n\\]\ncom \\(\\mathbf r_{ij}=\\mathbf x_j-\\mathbf x_i\\) e \\(\\mathbf r_{ik}=\\mathbf x_k-\\mathbf x_i\\).",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#multi-fidelity-gnns",
-    "href": "chapters/05_multifidelity.html#multi-fidelity-gnns",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.5 Multi-Fidelity GNNs",
-    "text": "5.5 Multi-Fidelity GNNs\nUma hipótese de referência será aprender a discrepância entre níveis:\n\\[\ny_{HF} = y_{LF} + \\Delta_\\theta(G, y_{LF}).\n\\]",
+    "objectID": "chapters/05_multifidelity.html#do-csv-ao-grafo",
+    "href": "chapters/05_multifidelity.html#do-csv-ao-grafo",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.5 Do CSV ao grafo",
+    "text": "5.5 Do CSV ao grafo\nA conversão geométrica produzirá um grafo\n\\[\nG=(V,E),\n\\]\nem que os nós representam as entidades escolhidas da discretização e as arestas preservam a conectividade física ou geométrica. A escolha entre grafo de vértices, grafo de segmentos e grafo de células será determinada pela estrutura real dos CSVs e pela localização das variáveis de entrada.\nO primeiro baseline utilizará atributos convencionais, como posição relativa, comprimento, normal, curvatura e condições globais. Uma variante posterior acrescentará atributos derivados de Álgebra Geométrica. A comparação entre essas representações será feita com a mesma divisão de dados e orçamento de treinamento.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#residual-correction-and-transfer-learning",
-    "href": "chapters/05_multifidelity.html#residual-correction-and-transfer-learning",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.6 Residual correction and transfer learning",
-    "text": "5.6 Residual correction and transfer learning\nSerão comparadas estratégias de correção residual, coarse-to-fine, currículo e transferência entre fidelidades.",
+    "objectID": "chapters/05_multifidelity.html#respostas-globais-e-campos-locais",
+    "href": "chapters/05_multifidelity.html#respostas-globais-e-campos-locais",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.6 Respostas globais e campos locais",
+    "text": "5.6 Respostas globais e campos locais\nA disponibilidade apenas de \\(C_L\\), \\(C_D\\), \\(L/D\\) e uma resposta eletromagnética global permite treinar um modelo de resposta global, mas não reconstruir a solução física completa.\nPara aerodinâmica, a reconstrução de campos exigiria, por exemplo, \\(C_p\\), pressão, densidade ou velocidade definidos nos nós ou elementos. Para eletromagnetismo, seriam necessários campos ou correntes complexas, como \\(\\widetilde{\\mathbf E}_{\\mathrm{sca}}\\) ou \\(\\widetilde{\\mathbf J}_s\\).\nO pipeline inicial será, portanto,\n\\[\nG,\\mathbf c\n\\longmapsto\n\\text{respostas globais},\n\\]\nem que \\(\\mathbf c\\) reúne as condições de operação. Caso campos locais sejam incorporados posteriormente, o mesmo grafo poderá sustentar uma segunda etapa de predição campo–integração–resposta global.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#active-learning",
-    "href": "chapters/05_multifidelity.html#active-learning",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.7 Active learning",
-    "text": "5.7 Active learning\nA aquisição de novos casos deverá considerar:\n\nincerteza epistemológica;\ndiscrepância LF–HF;\nproximidade de regiões promissoras para a fronteira de Pareto;\nrisco de picos de RCS ou degradação aerodinâmica.",
+    "objectID": "chapters/05_multifidelity.html#consistência-de-ld",
+    "href": "chapters/05_multifidelity.html#consistência-de-ld",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.7 Consistência de \\(L/D\\)",
+    "text": "5.7 Consistência de \\(L/D\\)\nA razão aerodinâmica não é uma quarta grandeza independente quando \\(C_L\\) e \\(C_D\\) estão disponíveis:\n\\[\n\\frac{L}{D}\n=\n\\frac{C_L}{C_D}.\n\\]\nO baseline deverá prever \\(C_L\\) e \\(C_D\\), calculando \\(L/D\\) a partir dessas previsões. Uma cabeça adicional para predição direta de \\(L/D\\) poderá ser avaliada posteriormente, mas sua saída deverá ser comparada com\n\\[\n\\frac{\\widehat C_L}{\\widehat C_D}\n\\]\ncomo teste de consistência.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/05_multifidelity.html#uncertainty-driven-sampling",
-    "href": "chapters/05_multifidelity.html#uncertainty-driven-sampling",
-    "title": "5  Multifidelity Learning and Adaptive Data Generation",
-    "section": "5.8 Uncertainty-driven sampling",
-    "text": "5.8 Uncertainty-driven sampling\nA incerteza será avaliada como componente explícito do ciclo de geração de dados.\n\nStatus M0: estrutura editorial preparada; o conteúdo será expandido após o capítulo de GNNs.",
+    "objectID": "chapters/05_multifidelity.html#definição-de-fidelidade-no-conjunto-2d",
+    "href": "chapters/05_multifidelity.html#definição-de-fidelidade-no-conjunto-2d",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.8 Definição de fidelidade no conjunto 2D",
+    "text": "5.8 Definição de fidelidade no conjunto 2D\nUm nível de fidelidade será caracterizado por seu conteúdo físico e numérico, não apenas pelo nome do solver. Para cada conjunto de dados deverão ser registrados, quando disponíveis,\n\nequações ou aproximações físicas;\ndimensionalidade do problema;\ndiscretização e resolução;\ncondições de contorno;\npropriedades de material ou modelo de turbulência;\ncritérios de convergência;\ntempo de processamento;\nuso de CPU/GPU, memória e armazenamento.\n\nA relação entre níveis somente será modelada como multifidelidade se o conjunto de dados contiver respostas comparáveis para a mesma grandeza física. Se o primeiro conjunto de 50 configurações possuir uma única fidelidade, o experimento começará com um baseline single-fidelity e a extensão multifidelidade será adicionada apenas quando houver dados compatíveis.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Multifidelity Learning and Adaptive Data Generation</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#estratégias-multifidelidade-a-avaliar",
+    "href": "chapters/05_multifidelity.html#estratégias-multifidelidade-a-avaliar",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.9 Estratégias multifidelidade a avaliar",
+    "text": "5.9 Estratégias multifidelidade a avaliar\nQuando pares ou conjuntos de fidelidades estiverem disponíveis, uma hipótese inicial será a correção de discrepância\n\\[\ny_{\\mathrm{ref}}\n=\ny_{\\mathrm{base}}\n+\n\\Delta_{\\boldsymbol\\theta}\n\\left(\nG,\ny_{\\mathrm{base}},\n\\mathbf c\n\\right),\n\\]\nem que \\(y_{\\mathrm{base}}\\) é a resposta do nível de base, \\(y_{\\mathrm{ref}}\\) é a resposta do nível de referência, \\(G\\) é o grafo, \\(\\mathbf c\\) contém as condições físicas e \\(\\Delta_{\\boldsymbol\\theta}\\) é uma correção aprendida. A forma aditiva será tratada como hipótese e comparada com alternativas quando os dados permitirem.\nTambém poderão ser avaliadas transferência de representação, treinamento coarse-to-fine e compartilhamento parcial de parâmetros entre fidelidades [1], [2].",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#reprodutibilidade-da-preparação-dos-dados",
+    "href": "chapters/05_multifidelity.html#reprodutibilidade-da-preparação-dos-dados",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.10 Reprodutibilidade da preparação dos dados",
+    "text": "5.10 Reprodutibilidade da preparação dos dados\nA divisão oficial do conjunto utilizará semente fixa\n\\[\n\\texttt{seed}=42.\n\\]\nAs proporções de treino, validação e teste serão parâmetros do job. Um valor inicial de referência é \\(70\\%/15\\%/15\\%\\), mas nenhuma proporção será codificada de forma rígida no código.\nO manifest de cada execução deverá registrar, no mínimo, identificadores das configurações em cada subconjunto, versão dos arquivos de entrada, transformações geométricas aplicadas e parâmetros usados para construir o grafo.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05_multifidelity.html#saídas-computacionais-deste-capítulo",
+    "href": "chapters/05_multifidelity.html#saídas-computacionais-deste-capítulo",
+    "title": "5  Modelagem multifidelidade e representação geométrica do estudo 2D",
+    "section": "5.11 Saídas computacionais deste capítulo",
+    "text": "5.11 Saídas computacionais deste capítulo\nA implementação associada a este capítulo deverá produzir, de forma reproduzível,\n\nvalidação dos CSVs;\nreconstrução das geometrias 2D;\natributos convencionais e atributos derivados de \\(Cl(2,0)\\);\ngrafos serializáveis;\ndivisão por configuração com semente 42;\nmanifestos de dados;\ntestes unitários para orientação, comprimentos, áreas e operações geométricas.\n\nO capítulo seguinte utilizará esses artefatos para treinamento, validação e comparação das GNNs.\n\n\n\n\n[1] N. Black e A. R. Najafi, “Learning Finite Element Convergence with the Multi-Fidelity Graph Neural Network”, Computer Methods in Applied Mechanics and Engineering, v. 397, p. 115120, 2022, doi: 10.1016/j.cma.2022.115120.\n\n\n[2] M. Taghizadeh, M. A. Nabian, e N. Alemazkoor, “Multifidelity Graph Neural Networks for Efficient and Accurate Mesh-Based Partial Differential Equations Surrogate Modeling”, Computer-Aided Civil and Infrastructure Engineering, v. 40, n. 7, p. 841–858, 2025, doi: 10.1111/mice.13312.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 2D</span>"
     ]
   },
   {
     "objectID": "chapters/06_optimization.html",
     "href": "chapters/06_optimization.html",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
     "section": "",
-    "text": "6.1 Design variables\nEste capítulo integrará os surrogates eletromagnético e aerodinâmico ao processo de otimização multidisciplinar.\nVariáveis contínuas, inteiras e categóricas serão definidas a partir da parametrização real do UCAV.",
+    "text": "6.1 Pipeline executável\nEste capítulo transforma os grafos construídos no Capítulo 5 em experimentos de aprendizado reproduzíveis. O objetivo é estabelecer baselines, treinar modelos disciplinares, testar a contribuição de atributos em Álgebra Geométrica e, quando houver dados adequados, incorporar multifidelidade. A otimização somente será introduzida depois que o comportamento do surrogate estiver caracterizado.\nO fluxo computacional será organizado como\n\\[\n\\text{CSV}\n\\rightarrow\n\\text{validação}\n\\rightarrow\n\\text{AG 2D}\n\\rightarrow\n\\text{grafo}\n\\rightarrow\n\\text{split}\n\\rightarrow\n\\text{GNN}\n\\rightarrow\n\\text{treinamento}\n\\rightarrow\n\\text{validação}\n\\rightarrow\n\\text{teste}.\n\\]\nCada etapa deverá ser executável de forma independente e produzir artefatos persistentes que permitam rastrear o caminho entre uma configuração original e sua previsão final.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#objectives",
-    "href": "chapters/06_optimization.html#objectives",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.2 Objectives",
-    "text": "6.2 Objectives\nSerão investigadas funções objetivo relacionadas a RCS, risco de picos e desempenho aerodinâmico.",
+    "objectID": "chapters/06_optimization.html#reprodutibilidade",
+    "href": "chapters/06_optimization.html#reprodutibilidade",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.2 Reprodutibilidade",
+    "text": "6.2 Reprodutibilidade\nA execução oficial utilizará a semente\n\\[\n\\texttt{seed}=42.\n\\]\nEla deverá ser aplicada, quando tecnicamente possível, às bibliotecas de aleatoriedade da linguagem, NumPy, PyTorch, inicialização de pesos, embaralhamento, geração dos splits e operações CUDA controláveis. Operações que permaneçam não determinísticas deverão ser documentadas.\nA seed de referência será 42 para todos os resultados publicados. Experimentos de sensibilidade com outras sementes poderão ser executados separadamente, sem substituir o resultado oficial.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#constraints",
-    "href": "chapters/06_optimization.html#constraints",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.3 Constraints",
-    "text": "6.3 Constraints\nRestrições físicas, geométricas e operacionais serão explicitadas antes da escolha final do algoritmo de otimização.",
+    "objectID": "chapters/06_optimization.html#jobs-configuráveis",
+    "href": "chapters/06_optimization.html#jobs-configuráveis",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.3 Jobs configuráveis",
+    "text": "6.3 Jobs configuráveis\nHiperparâmetros e proporções de dados não deverão exigir edição do código-fonte. Cada job receberá uma configuração externa contendo, por exemplo,\n\nproporções de treino, validação e teste;\nlearning rate;\nnúmero máximo de épocas;\nbatch size;\nweight decay;\ncritério e paciência de early stopping;\ndimensão latente;\nnúmero de camadas;\nfunção de agregação;\ndropout;\narquitetura e conjunto de features.\n\nA interface de linha de comando poderá sobrescrever valores do arquivo de configuração para permitir execução em estação de trabalho ou HPC.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#nlp-and-minlp",
-    "href": "chapters/06_optimization.html#nlp-and-minlp",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.4 NLP and MINLP",
-    "text": "6.4 NLP and MINLP\nO problema será classificado como NLP ou MINLP somente após a definição das variáveis discretas. A Álgebra Geométrica estruturará representações e modelos físicos, enquanto os solvers de otimização operarão sobre objetivos e restrições escalares.",
+    "objectID": "chapters/06_optimization.html#baselines-e-ablações",
+    "href": "chapters/06_optimization.html#baselines-e-ablações",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.4 Baselines e ablações",
+    "text": "6.4 Baselines e ablações\nA progressão experimental deverá separar a contribuição de cada mecanismo. A sequência de referência será:\n\nmodelo sem grafo baseado em descritores globais;\nMPNN convencional;\nMPNN com atributos geométricos estruturados;\nMPNN com features derivadas de Álgebra Geométrica;\ncanais multivetoriais ou operações geometricamente estruturadas, quando implementados de forma matematicamente consistente;\nvariante multifidelidade, quando houver dados compatíveis;\narquitetura multitarefa aero–EM, somente depois da validação dos modelos disciplinares.\n\nAs comparações deverão manter o mesmo split por configuração e um orçamento de treinamento comparável.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#multiobjective-optimization",
-    "href": "chapters/06_optimization.html#multiobjective-optimization",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.5 Multiobjective optimization",
-    "text": "6.5 Multiobjective optimization\nA análise será orientada à fronteira de Pareto aero-stealth.",
+    "objectID": "chapters/06_optimization.html#surrogate-aerodinâmico-2d",
+    "href": "chapters/06_optimization.html#surrogate-aerodinâmico-2d",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.5 Surrogate aerodinâmico 2D",
+    "text": "6.5 Surrogate aerodinâmico 2D\nO primeiro modelo disciplinar será escrito como\n\\[\n\\mathcal G_{\\mathrm{aero},\\boldsymbol\\theta}\n:\n(G,\\mathbf c_{\\mathrm{aero}})\n\\longmapsto\n(\\widehat C_L,\\widehat C_D),\n\\]\nem que \\(G\\) representa a geometria discretizada, \\(\\mathbf c_{\\mathrm{aero}}\\) contém as condições físicas e \\(\\boldsymbol\\theta\\) reúne os parâmetros treináveis.\nA eficiência aerodinâmica prevista será derivada de\n\\[\n\\widehat{L/D}\n=\n\\frac{\\widehat C_L}{\\widehat C_D}.\n\\]\nSe houver uma saída direta adicional para \\(L/D\\), será avaliada sua consistência com essa relação.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#surrogate-assisted-optimization",
-    "href": "chapters/06_optimization.html#surrogate-assisted-optimization",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.6 Surrogate-assisted optimization",
-    "text": "6.6 Surrogate-assisted optimization\nA GNN será usada para substituir avaliações caras durante grande parte da busca, com chamadas HF seletivas para calibração e validação.",
+    "objectID": "chapters/06_optimization.html#surrogate-eletromagnético-2d",
+    "href": "chapters/06_optimization.html#surrogate-eletromagnético-2d",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.6 Surrogate eletromagnético 2D",
+    "text": "6.6 Surrogate eletromagnético 2D\nO segundo modelo disciplinar será\n\\[\n\\mathcal G_{\\mathrm{EM},\\boldsymbol\\theta}\n:\n(G,\\mathbf c_{\\mathrm{EM}})\n\\longmapsto\n\\widehat R_{\\mathrm{EM}},\n\\]\nem que \\(\\widehat R_{\\mathrm{EM}}\\) receberá o nome e a unidade da grandeza fornecida pelo solver. Se o alvo for uma curva angular, a saída será vetorial ou condicionada por direção de observação; se for escalar, será modelada como resposta global.\nA função de perda deverá respeitar a escala física usada pelo conjunto de dados. Resultados em escala linear e logarítmica não serão comparados sem explicitar a transformação.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#high-fidelity-revalidation",
-    "href": "chapters/06_optimization.html#high-fidelity-revalidation",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.7 High-fidelity revalidation",
-    "text": "6.7 High-fidelity revalidation\nSoluções candidatas deverão ser reavaliadas nos solvers de referência antes de conclusões de engenharia.",
+    "objectID": "chapters/06_optimization.html#modelos-separados-antes-do-compartilhamento",
+    "href": "chapters/06_optimization.html#modelos-separados-antes-do-compartilhamento",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.7 Modelos separados antes do compartilhamento",
+    "text": "6.7 Modelos separados antes do compartilhamento\nAerodinâmica e eletromagnetismo compartilharão a mesma geometria, mas serão inicialmente treinados com processadores separados. Esse baseline permite medir o desempenho de cada disciplina sem interferência entre tarefas.\nSomente após essa caracterização será testada uma arquitetura com encoder geométrico compartilhado e heads específicos. Eventual ganho será tratado como resultado experimental, não como consequência automática do compartilhamento.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#computational-speed-up",
-    "href": "chapters/06_optimization.html#computational-speed-up",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.8 Computational speed-up",
-    "text": "6.8 Computational speed-up\nUma métrica central será o speed-up da otimização completa:\n\\[\nS_{\\mathrm{MDO}}\n=\n\\frac{T_{\\mathrm{MDO,baseline}}}{T_{\\mathrm{MDO,GNN}}}.\n\\]\nO tempo total deverá incluir geração dos dados, treinamento, otimização e revalidação para evitar estimativas artificiais de aceleração.",
+    "objectID": "chapters/06_optimization.html#treinamento-validação-e-teste",
+    "href": "chapters/06_optimization.html#treinamento-validação-e-teste",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.8 Treinamento, validação e teste",
+    "text": "6.8 Treinamento, validação e teste\nO subconjunto de treinamento será usado para ajuste dos parâmetros. A validação controlará seleção de hiperparâmetros e early stopping. O teste permanecerá isolado até a escolha final da configuração experimental.\nCom aproximadamente 50 geometrias, o tamanho do conjunto limita a precisão com que se pode estimar generalização. A interpretação dos resultados deverá considerar intervalos, sensibilidade ao split e, quando apropriado, uma análise complementar por validação cruzada agrupada por geometria.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
     ]
   },
   {
-    "objectID": "chapters/06_optimization.html#pareto-quality",
-    "href": "chapters/06_optimization.html#pareto-quality",
-    "title": "6  GNN-Accelerated Multidisciplinary Aero-Stealth Optimization",
-    "section": "6.9 Pareto quality",
-    "text": "6.9 Pareto quality\nSerão definidas métricas para comparar a fronteira produzida pelo surrogate com soluções revalidadas em alta fidelidade.\n\nStatus M0: estrutura editorial preparada; a formulação final será desenvolvida após a consolidação das disciplinas físicas e dos surrogates.",
+    "objectID": "chapters/06_optimization.html#métricas-preditivas",
+    "href": "chapters/06_optimization.html#métricas-preditivas",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.9 Métricas preditivas",
+    "text": "6.9 Métricas preditivas\nPara um alvo escalar \\(y\\) e sua previsão \\(\\widehat y\\), serão reportados pelo menos MAE, RMSE e \\(R^2\\). Para aerodinâmica, as métricas serão calculadas separadamente para \\(C_L\\), \\(C_D\\) e \\(L/D\\).\nSe a resposta eletromagnética for angular, métricas médias serão complementadas por erro de pico, deslocamento angular do pico, erro por setor e, quando aplicável, comparação entre polarizações.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#métricas-de-recursos",
+    "href": "chapters/06_optimization.html#métricas-de-recursos",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.10 Métricas de recursos",
+    "text": "6.10 Métricas de recursos\nAlém da precisão, cada job deverá registrar\n\ntempo de treinamento;\ntempo de inferência;\nthroughput;\nnúmero de parâmetros;\npico de memória;\nuso de CPU/GPU;\narmazenamento dos artefatos;\nnúmero de avaliações dos modelos físicos utilizadas para gerar o conjunto.\n\nA utilidade do surrogate será julgada pela combinação de erro e demanda de recursos.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#artefatos-de-cada-execução",
+    "href": "chapters/06_optimization.html#artefatos-de-cada-execução",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.11 Artefatos de cada execução",
+    "text": "6.11 Artefatos de cada execução\nCada job deverá produzir um diretório rastreável contendo, no mínimo,\n\narquivo de configuração efetivamente utilizado;\nmanifest do dataset e do split;\nhistórico de treinamento;\ncheckpoint selecionado;\nmétricas de validação e teste;\nprevisões por configuração;\ninformações do ambiente de software;\ntempos e uso de recursos.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#otimização-pré-condição-geométrica",
+    "href": "chapters/06_optimization.html#otimização-pré-condição-geométrica",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.12 Otimização: pré-condição geométrica",
+    "text": "6.12 Otimização: pré-condição geométrica\nUma GNN treinada a partir de 50 geometrias pode avaliar novas amostras representadas como grafos, mas uma otimização geométrica contínua exige uma parametrização explícita do espaço de projeto.\nSe cada configuração possuir um vetor de parâmetros\n\\[\n\\mathbf d\n=\n[d_1,\\ldots,d_p],\n\\]\na cadeia poderá ser escrita como\n\\[\n\\mathbf d\n\\rightarrow\n\\text{geometria}\n\\rightarrow\nG\n\\rightarrow\n\\text{GNN}\n\\rightarrow\n(\\widehat C_L,\\widehat C_D,\\widehat R_{\\mathrm{EM}}).\n\\]\nSem \\(\\mathbf d\\) ou outro gerador de geometria, a etapa será corretamente descrita como seleção ou avaliação assistida por surrogate, e não como otimização contínua de novas formas.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#formulação-aero-stealth-2d",
+    "href": "chapters/06_optimization.html#formulação-aero-stealth-2d",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.13 Formulação aero-stealth 2D",
+    "text": "6.13 Formulação aero-stealth 2D\nQuando a parametrização estiver disponível, uma formulação multiobjetivo poderá combinar uma medida eletromagnética e uma medida aerodinâmica. Para variáveis contínuas, o problema será tratado como NLP; MINLP somente será utilizado se houver decisões discretas reais.\nAs soluções selecionadas deverão ser reavaliadas com os modelos físicos de referência. A qualidade do surrogate será então medida não apenas pelo erro pontual, mas também pela preservação das decisões relevantes para a otimização.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06_optimization.html#ponte-para-o-estudo-3d",
+    "href": "chapters/06_optimization.html#ponte-para-o-estudo-3d",
+    "title": "6  GNNs, treinamento, validação e otimização no estudo 2D",
+    "section": "6.14 Ponte para o estudo 3D",
+    "text": "6.14 Ponte para o estudo 3D\nO encerramento do caso 2D deverá produzir uma infraestrutura reutilizável: loaders, validação de dados, splits, construção de grafos, modelos, treinamento, métricas e rastreamento de artefatos. Os Capítulos 7 e 8 estenderão essa infraestrutura para malhas superficiais tridimensionais e para a otimização de configurações UCAV, sem assumir que hiperparâmetros ou conclusões do domínio 2D permaneçam válidos automaticamente.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>GNNs, treinamento, validação e otimização no estudo 2D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html",
+    "href": "chapters/07_multifidelity_3d.html",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "",
+    "text": "7.1 Geometrias UCAV e parametrização 3D\nEste capítulo estenderá para três dimensões a infraestrutura validada no estudo 2D. A passagem para 3D não será tratada como simples aumento do número de coordenadas: superfícies triangulares, orientação de faces, remalhamento, campos vetoriais e dependências eletromagnéticas de longo alcance introduzem novas exigências geométricas, físicas e computacionais.\nA geometria tridimensional deverá ser gerada a partir de um espaço de projeto explicitamente parametrizado. Cada configuração manterá rastreabilidade entre parâmetros de projeto, CAD ou representação geométrica intermediária, malha superficial, grafo e respostas dos solvers.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#malhas-superficiais-e-grafos",
+    "href": "chapters/07_multifidelity_3d.html#malhas-superficiais-e-grafos",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.2 Malhas superficiais e grafos",
+    "text": "7.2 Malhas superficiais e grafos\nSerão avaliados grafos de vértices e de faces, escolhidos de acordo com a localização das variáveis físicas e com a discretização dos modelos de referência. A robustez a alterações de densidade e conectividade da malha será testada explicitamente.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#álgebra-geométrica-em-cl30",
+    "href": "chapters/07_multifidelity_3d.html#álgebra-geométrica-em-cl30",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.3 Álgebra Geométrica em \\(Cl(3,0)\\)",
+    "text": "7.3 Álgebra Geométrica em \\(Cl(3,0)\\)\nPara uma face triangular \\(f=(i,j,k)\\), o bivetor de área orientada será\n\\[\nB_f\n=\n\\frac12\n\\mathbf r_{ij}\\wedge\\mathbf r_{ik},\n\\]\ne sua magnitude fornecerá a área. Normais, dualidade, rotores entre referenciais locais e relações de orientação entre faces serão incorporados de forma compatível com as definições do Capítulo 2.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#aerodinâmica-tridimensional",
+    "href": "chapters/07_multifidelity_3d.html#aerodinâmica-tridimensional",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.4 Aerodinâmica tridimensional",
+    "text": "7.4 Aerodinâmica tridimensional\nAs respostas poderão incluir \\(C_p\\), \\(C_L\\), \\(C_D\\), \\(C_m\\) e demais coeficientes relevantes. Os níveis de fidelidade serão definidos por conteúdo físico, discretização, modelos de turbulência quando aplicáveis, condições de contorno, convergência e demanda de recursos.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#espalhamento-eletromagnético-tridimensional",
+    "href": "chapters/07_multifidelity_3d.html#espalhamento-eletromagnético-tridimensional",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.5 Espalhamento eletromagnético tridimensional",
+    "text": "7.5 Espalhamento eletromagnético tridimensional\nA resposta eletromagnética será tratada como RCS tridimensional quando sua definição física e normalização corresponderem a essa grandeza. A dependência angular, de frequência e de polarização deverá ser preservada:\n\\[\n\\sigma\n=\n\\sigma(\\theta,\\phi,f,\\mathrm{pol}).\n\\]\nQuando campos ou correntes locais estiverem disponíveis, serão preservadas amplitude e fase para permitir reconstruções fisicamente coerentes de campo distante.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#fidelidades-em-e-aero",
+    "href": "chapters/07_multifidelity_3d.html#fidelidades-em-e-aero",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.6 Fidelidades EM e aero",
+    "text": "7.6 Fidelidades EM e aero\nAs hierarquias não serão definidas apenas por nomes de solvers. Cada nível deverá ser documentado por suas hipóteses, discretização, resolução, tratamento de bordas ou viscosidade, critérios numéricos e recursos observados.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#correspondência-entre-fidelidades",
+    "href": "chapters/07_multifidelity_3d.html#correspondência-entre-fidelidades",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.7 Correspondência entre fidelidades",
+    "text": "7.7 Correspondência entre fidelidades\nA construção multifidelidade exigirá compatibilidade entre grandezas. Respostas LF e HF deverão representar a mesma quantidade física sob condições equivalentes antes de serem usadas em correção residual, transferência de representação ou aprendizado conjunto.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#dados-manifestos-e-rastreabilidade",
+    "href": "chapters/07_multifidelity_3d.html#dados-manifestos-e-rastreabilidade",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.8 Dados, manifestos e rastreabilidade",
+    "text": "7.8 Dados, manifestos e rastreabilidade\nCada configuração 3D deverá manter identificadores persistentes para geometria, malha, fidelidade e condições físicas. Os splits continuarão sendo realizados por geometria, evitando vazamento entre remalhamentos ou condições derivadas da mesma configuração.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#transferência-do-pipeline-2d",
+    "href": "chapters/07_multifidelity_3d.html#transferência-do-pipeline-2d",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.9 Transferência do pipeline 2D",
+    "text": "7.9 Transferência do pipeline 2D\nLoaders, configuração de jobs, seed oficial, métricas e estrutura de artefatos serão reutilizados. A representação geométrica, os hiperparâmetros e as arquiteturas serão novamente avaliados, pois desempenho no caso 2D não constitui validação automática em 3D.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07_multifidelity_3d.html#critérios-de-prontidão-para-o-capítulo-8",
+    "href": "chapters/07_multifidelity_3d.html#critérios-de-prontidão-para-o-capítulo-8",
+    "title": "7  Modelagem multifidelidade e representação geométrica do estudo 3D",
+    "section": "7.10 Critérios de prontidão para o Capítulo 8",
+    "text": "7.10 Critérios de prontidão para o Capítulo 8\nAntes da otimização tridimensional, os surrogates disciplinares deverão demonstrar generalização em geometrias não vistas, estabilidade frente a remalhamento e erro compatível com as decisões de projeto que serão tomadas no domínio aero-stealth.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modelagem multifidelidade e representação geométrica do estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html",
+    "href": "chapters/08_optimization_3d.html",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "",
+    "text": "8.1 Baselines tridimensionais\nEste capítulo integrará os modelos tridimensionais ao problema aero-stealth de configurações UCAV. A análise combinará treinamento de GNNs sobre malhas superficiais, multifidelidade explícita, respostas aerodinâmicas e eletromagnéticas, otimização matemática determinística e reavaliação por modelos de referência.\nO estudo começará por modelos disciplinares separados e por uma MPNN convencional. Features geométricas usuais, atributos derivados de Álgebra Geométrica, canais multivetoriais, mecanismos de longo alcance e arquiteturas compartilhadas serão acrescentados por ablação.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#surrogate-aerodinâmico-3d",
+    "href": "chapters/08_optimization_3d.html#surrogate-aerodinâmico-3d",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.2 Surrogate aerodinâmico 3D",
+    "text": "8.2 Surrogate aerodinâmico 3D\nA formulação poderá prever campos locais e coeficientes integrados:\n\\[\n\\mathcal G_{\\mathrm{aero},\\boldsymbol\\theta}\n:\n(G,\\mathbf c_{\\mathrm{aero}})\n\\longmapsto\n(C_p,C_L,C_D,C_m,\\ldots).\n\\]\nQuando campos forem previstos, a consistência entre integração superficial e coeficientes globais será usada como métrica adicional.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#surrogate-eletromagnético-3d",
+    "href": "chapters/08_optimization_3d.html#surrogate-eletromagnético-3d",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.3 Surrogate eletromagnético 3D",
+    "text": "8.3 Surrogate eletromagnético 3D\nA saída deverá preservar, conforme o conjunto de dados, a dependência angular e de polarização:\n\\[\n\\mathcal G_{\\mathrm{EM},\\boldsymbol\\theta}\n:\n(G,\\mathbf c_{\\mathrm{EM}})\n\\longmapsto\n\\sigma(\\theta,phi,\\mathrm{pol}).\n\\]\nArquiteturas condicionadas por consulta poderão ser comparadas com decoders que produzam curvas ou mapas angulares completos.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#multifidelidade-tridimensional",
+    "href": "chapters/08_optimization_3d.html#multifidelidade-tridimensional",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.4 Multifidelidade tridimensional",
+    "text": "8.4 Multifidelidade tridimensional\nSerão avaliadas correção residual, transferência entre níveis, compartilhamento parcial de representação e outras estratégias justificadas pela estrutura dos dados. A redução de avaliações de referência será medida explicitamente.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#modelos-separados-e-multitarefa",
+    "href": "chapters/08_optimization_3d.html#modelos-separados-e-multitarefa",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.5 Modelos separados e multitarefa",
+    "text": "8.5 Modelos separados e multitarefa\nApós os baselines disciplinares, será testado compartilhamento de representação geométrica entre aerodinâmica e eletromagnetismo. A comparação deverá detectar tanto transferência positiva quanto interferência negativa entre tarefas.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#interações-de-longo-alcance",
+    "href": "chapters/08_optimization_3d.html#interações-de-longo-alcance",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.6 Interações de longo alcance",
+    "text": "8.6 Interações de longo alcance\nO caso 3D permitirá avaliar se message passing local é suficiente ou se mecanismos multiescala, arestas de longo alcance, estados globais ou atenção são necessários. Ganhos serão julgados por precisão e recursos computacionais, não apenas por capacidade arquitetural.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#variáveis-de-projeto",
+    "href": "chapters/08_optimization_3d.html#variáveis-de-projeto",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.7 Variáveis de projeto",
+    "text": "8.7 Variáveis de projeto\nO vetor de decisão será definido a partir da parametrização geométrica real. Variáveis contínuas conduzirão a formulações NLP; variáveis inteiras ou categóricas somente justificarão MINLP quando representarem decisões físicas reais.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#objetivos-e-restrições",
+    "href": "chapters/08_optimization_3d.html#objetivos-e-restrições",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.8 Objetivos e restrições",
+    "text": "8.8 Objetivos e restrições\nA formulação multiobjetivo combinará métricas eletromagnéticas e aerodinâmicas sob restrições geométricas e operacionais. A RCS poderá ser agregada por setores, máximos, quantis ou outras medidas explicitamente definidas, preservando a curva original para validação.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#otimização-assistida-por-surrogate",
+    "href": "chapters/08_optimization_3d.html#otimização-assistida-por-surrogate",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.9 Otimização assistida por surrogate",
+    "text": "8.9 Otimização assistida por surrogate\nA GNN realizará a maior parte das consultas do otimizador, enquanto os solvers de referência serão usados na geração de dados, em regiões críticas e na reavaliação de soluções selecionadas.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#reavaliação-e-qualidade-de-pareto",
+    "href": "chapters/08_optimization_3d.html#reavaliação-e-qualidade-de-pareto",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.10 Reavaliação e qualidade de Pareto",
+    "text": "8.10 Reavaliação e qualidade de Pareto\nSoluções nondominadas previstas deverão ser reavaliadas com modelos de referência. Serão analisados erro após reavaliação, dominância, hipervolume e outros indicadores adequados ao conjunto de soluções.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#recursos-e-aceleração-end-to-end",
+    "href": "chapters/08_optimization_3d.html#recursos-e-aceleração-end-to-end",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.11 Recursos e aceleração end-to-end",
+    "text": "8.11 Recursos e aceleração end-to-end\nA aceleração será medida contabilizando geração dos dados, treinamento, otimização e reavaliação:\n\\[\nS_{\\mathrm{MDO}}\n=\n\\frac{T_{\\mathrm{MDO,ref}}}\n{T_{\\mathrm{data}}+T_{\\mathrm{train}}+T_{\\mathrm{opt}}+T_{\\mathrm{reval}}}.\n\\]\nTambém serão registrados CPU/GPU horas, memória de pico, armazenamento, número de avaliações dos modelos de referência e throughput de inferência.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08_optimization_3d.html#validação-final",
+    "href": "chapters/08_optimization_3d.html#validação-final",
+    "title": "8  GNNs multifidelidade e otimização aero-stealth no estudo 3D",
+    "section": "8.12 Validação final",
+    "text": "8.12 Validação final\nAs conclusões de engenharia serão baseadas nas respostas reavaliadas pelos modelos de referência e, quando viável, comparadas com evidência experimental. A contribuição do framework será julgada pela combinação de precisão, robustez, recursos e qualidade das decisões aero-stealth.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>GNNs multifidelidade e otimização aero-stealth no estudo 3D</span>"
     ]
   }
 ]

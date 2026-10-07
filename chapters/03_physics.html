@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -64,10 +64,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ed7344add5f1663e434276306a2aa159.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fd0503e23dce65854c81c5baaade3bdf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -199,13 +199,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/05_multifidelity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Multifidelity Learning and Adaptive Data Generation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 2D</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/06_optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNN-Accelerated Multidisciplinary Aero-Stealth Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">GNNs, treinamento, validação e otimização no estudo 2D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_multifidelity_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modelagem multifidelidade e representação geométrica do estudo 3D</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_optimization_3d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">GNNs multifidelidade e otimização aero-stealth no estudo 3D</span></span></a>
   </div>
 </li>
     </ul>
@@ -290,9 +302,10 @@ window.Quarto = {
   <li><a href="#o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador" id="toc-o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador" class="nav-link" data-scroll-target="#o-que-pode-ser-representado-por-multivetores-e-o-que-continua-sendo-operador"><span class="header-section-number">3.21</span> O que pode ser representado por multivetores — e o que continua sendo operador</a></li>
   <li><a href="#métodos-e-níveis-de-fidelidade-aerodinâmica" id="toc-métodos-e-níveis-de-fidelidade-aerodinâmica" class="nav-link" data-scroll-target="#métodos-e-níveis-de-fidelidade-aerodinâmica"><span class="header-section-number">3.22</span> Métodos e níveis de fidelidade aerodinâmica</a></li>
   <li><a href="#validação-aerodinâmica-progressiva" id="toc-validação-aerodinâmica-progressiva" class="nav-link" data-scroll-target="#validação-aerodinâmica-progressiva"><span class="header-section-number">3.23</span> Validação aerodinâmica progressiva</a></li>
-  <li><a href="#ponte-entre-os-dois-domínios-físicos-e-as-gnns" id="toc-ponte-entre-os-dois-domínios-físicos-e-as-gnns" class="nav-link" data-scroll-target="#ponte-entre-os-dois-domínios-físicos-e-as-gnns"><span class="header-section-number">3.24</span> Ponte entre os dois domínios físicos e as GNNs</a></li>
-  <li><a href="#resíduos-físicos-como-informação-de-treinamento" id="toc-resíduos-físicos-como-informação-de-treinamento" class="nav-link" data-scroll-target="#resíduos-físicos-como-informação-de-treinamento"><span class="header-section-number">3.25</span> Resíduos físicos como informação de treinamento</a></li>
-  <li><a href="#síntese-do-capítulo" id="toc-síntese-do-capítulo" class="nav-link" data-scroll-target="#síntese-do-capítulo"><span class="header-section-number">3.26</span> Síntese do capítulo</a></li>
+  <li><a href="#problemas-bidimensionais-e-respostas-tridimensionais" id="toc-problemas-bidimensionais-e-respostas-tridimensionais" class="nav-link" data-scroll-target="#problemas-bidimensionais-e-respostas-tridimensionais"><span class="header-section-number">3.24</span> Problemas bidimensionais e respostas tridimensionais</a></li>
+  <li><a href="#ponte-entre-os-dois-domínios-físicos-e-as-gnns" id="toc-ponte-entre-os-dois-domínios-físicos-e-as-gnns" class="nav-link" data-scroll-target="#ponte-entre-os-dois-domínios-físicos-e-as-gnns"><span class="header-section-number">3.25</span> Ponte entre os dois domínios físicos e as GNNs</a></li>
+  <li><a href="#resíduos-físicos-como-informação-de-treinamento" id="toc-resíduos-físicos-como-informação-de-treinamento" class="nav-link" data-scroll-target="#resíduos-físicos-como-informação-de-treinamento"><span class="header-section-number">3.26</span> Resíduos físicos como informação de treinamento</a></li>
+  <li><a href="#síntese-do-capítulo" id="toc-síntese-do-capítulo" class="nav-link" data-scroll-target="#síntese-do-capítulo"><span class="header-section-number">3.27</span> Síntese do capítulo</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/edit/main/chapters/03_physics.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li><li><a href="https://github.com/cvictorr2508/ucav-aerostealth-gnn/blob/main/chapters/03_physics.qmd" class="toc-action"><i class="bi empty"></i>Ver o código fonte</a></li></ul></div></nav>
     </div>
@@ -1092,8 +1105,14 @@ u\frac{du}{dx},
 <p>Antes de aplicar o modelo a uma geometria UCAV completa, a validação deve avançar de problemas elementares para problemas integrados: conservação em estados uniformes, casos com solução conhecida ou benchmark consolidado, perfis bidimensionais, asas simples e finalmente a geometria tridimensional de interesse.</p>
 <p>A comparação não deve se restringir a <span class="math inline">\(C_L\)</span>, <span class="math inline">\(C_D\)</span> e <span class="math inline">\(C_m\)</span>. Campos intermediários, como <span class="math inline">\(C_p\)</span>, pressão superficial e balanços de conservação, ajudam a identificar compensações de erro que poderiam produzir um coeficiente integrado aparentemente correto. Quando houver resultados experimentais ou soluções de referência adequadas, eles devem ser usados para distinguir erro de discretização, limitação do modelo físico e erro do futuro surrogate.</p>
 </section>
-<section id="ponte-entre-os-dois-domínios-físicos-e-as-gnns" class="level2" data-number="3.24">
-<h2 data-number="3.24" class="anchored" data-anchor-id="ponte-entre-os-dois-domínios-físicos-e-as-gnns"><span class="header-section-number">3.24</span> Ponte entre os dois domínios físicos e as GNNs</h2>
+<section id="problemas-bidimensionais-e-respostas-tridimensionais" class="level2" data-number="3.24">
+<h2 data-number="3.24" class="anchored" data-anchor-id="problemas-bidimensionais-e-respostas-tridimensionais"><span class="header-section-number">3.24</span> Problemas bidimensionais e respostas tridimensionais</h2>
+<p>A etapa bidimensional exige distinguir simplificação geométrica de equivalência física. Em aerodinâmica, um aerofólio 2D representa uma seção e permite estudar coeficientes seccionais e campos associados a um escoamento bidimensional; esses resultados não incluem efeitos tridimensionais de asa finita, como vórtices de ponta e arrasto induzido.</p>
+<p>No eletromagnetismo, a distinção é ainda mais importante. Um problema de espalhamento estritamente bidimensional é frequentemente formulado em termos de uma grandeza por unidade de comprimento, como <em>scattering width</em>, cuja dimensão física não é a mesma da RCS tridimensional em <span class="math inline">\(\mathrm{m^2}\)</span>. Se os dados utilizados nos estudos 2D forem provenientes de uma extrusão finita ou de um solver tridimensional parametrizado por uma seção 2D, a saída poderá continuar sendo RCS, desde que a geometria e a normalização correspondentes sejam explicitadas. Caso sejam dados de um problema EM verdadeiramente 2D, a grandeza física deverá ser denominada e interpretada de acordo com a formulação que a gerou.</p>
+<p>Essa distinção será preservada na ingestão dos dados e nas funções de perda: nenhuma conversão entre <em>scattering width</em> e RCS será realizada implicitamente.</p>
+</section>
+<section id="ponte-entre-os-dois-domínios-físicos-e-as-gnns" class="level2" data-number="3.25">
+<h2 data-number="3.25" class="anchored" data-anchor-id="ponte-entre-os-dois-domínios-físicos-e-as-gnns"><span class="header-section-number">3.25</span> Ponte entre os dois domínios físicos e as GNNs</h2>
 <p>Os domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas diferentes. Isso motiva a investigação de representações geométricas compartilháveis sem pressupor que um único modelo multitarefa seja necessariamente superior.</p>
 <p>Uma geometria discretizada pode ser representada por um grafo</p>
 <p><span class="math display">\[
@@ -1125,8 +1144,8 @@ G=(V,E,\mathcal F),
 \]</span></p>
 <p>O mesmo <span class="math inline">\(G\)</span> fornece uma base geométrica comum; os condicionantes físicos e as saídas permanecem específicos de cada domínio. Compartilhamento de codificadores, cabeças especializadas ou modelos separados são hipóteses arquiteturais a serem comparadas empiricamente.</p>
 </section>
-<section id="resíduos-físicos-como-informação-de-treinamento" class="level2" data-number="3.25">
-<h2 data-number="3.25" class="anchored" data-anchor-id="resíduos-físicos-como-informação-de-treinamento"><span class="header-section-number">3.25</span> Resíduos físicos como informação de treinamento</h2>
+<section id="resíduos-físicos-como-informação-de-treinamento" class="level2" data-number="3.26">
+<h2 data-number="3.26" class="anchored" data-anchor-id="resíduos-físicos-como-informação-de-treinamento"><span class="header-section-number">3.26</span> Resíduos físicos como informação de treinamento</h2>
 <p>A incorporação de física ao treinamento só é válida quando o resíduo pode ser calculado a partir das variáveis produzidas pela rede. Se a GNN prevê campos eletromagnéticos compatíveis com a formulação em STA, um resíduo conceitual é</p>
 <p><span class="math display">\[
 \mathcal R_{\mathrm M}
@@ -1170,8 +1189,8 @@ G=(V,E,\mathcal F),
 \]</span></p>
 <p>Como os termos podem possuir unidades e escalas muito diferentes, normalização ou adimensionalização deve ser considerada antes de interpretar os pesos <span class="math inline">\(\lambda\)</span>. Um peso numericamente pequeno não significa, por si só, baixa importância física.</p>
 </section>
-<section id="síntese-do-capítulo" class="level2" data-number="3.26">
-<h2 data-number="3.26" class="anchored" data-anchor-id="síntese-do-capítulo"><span class="header-section-number">3.26</span> Síntese do capítulo</h2>
+<section id="síntese-do-capítulo" class="level2" data-number="3.27">
+<h2 data-number="3.27" class="anchored" data-anchor-id="síntese-do-capítulo"><span class="header-section-number">3.27</span> Síntese do capítulo</h2>
 <p>A assinatura radar e o desempenho aerodinâmico derivam de sistemas físicos diferentes, mas ambos são condicionados pela geometria e podem ser discretizados sobre malhas. No eletromagnetismo, Maxwell conecta fontes, materiais e propagação; a passagem para o domínio da frequência transforma derivadas temporais em multiplicações por <span class="math inline">\(j\omega\)</span>, mantendo a estrutura diferencial espacial; condições de contorno produzem o campo espalhado, e seu comportamento assintótico conduz à RCS. Na STA, os campos elétrico e magnético podem ser reunidos no bivetor de Faraday <span class="math inline">\(F\)</span>, sem atribuir à AG uma linearização que não existe.</p>
 <p>Na aerodinâmica, Euler aplica conservação de massa, quantidade de movimento e energia a um gás perfeito compressível e invíscido. A forma conservativa conecta naturalmente fluxos às faces da malha. A derivada geométrica separa expansão e rotação local, enquanto bivetores fornecem uma representação natural para vorticidade. Entretanto, o fluxo de quantidade de movimento permanece um operador tensorial e a não linearidade convectiva continua fisicamente presente.</p>
 <p>Esses dois blocos definem variáveis, hipóteses, condições de contorno, campos intermediários e respostas integradas que serão utilizados nos capítulos seguintes. A continuidade metodológica é deliberada: <strong>física → representação geométrica → dados multifidelidade → GNN → otimização determinística</strong>, sem confundir compacidade matemática com simplificação física nem precisão preditiva com validade de engenharia.</p>
