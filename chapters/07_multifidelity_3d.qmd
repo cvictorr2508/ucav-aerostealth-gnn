@@ -1,0 +1,60 @@
+# Modelagem multifidelidade e representação geométrica do estudo 3D
+
+Este capítulo estenderá para três dimensões a infraestrutura validada no estudo 2D. A passagem para 3D não será tratada como simples aumento do número de coordenadas: superfícies triangulares, orientação de faces, remalhamento, campos vetoriais e dependências eletromagnéticas de longo alcance introduzem novas exigências geométricas, físicas e computacionais.
+
+## Geometrias UCAV e parametrização 3D
+
+A geometria tridimensional deverá ser gerada a partir de um espaço de projeto explicitamente parametrizado. Cada configuração manterá rastreabilidade entre parâmetros de projeto, CAD ou representação geométrica intermediária, malha superficial, grafo e respostas dos solvers.
+
+## Malhas superficiais e grafos
+
+Serão avaliados grafos de vértices e de faces, escolhidos de acordo com a localização das variáveis físicas e com a discretização dos modelos de referência. A robustez a alterações de densidade e conectividade da malha será testada explicitamente.
+
+## Álgebra Geométrica em \(Cl(3,0)\)
+
+Para uma face triangular \(f=(i,j,k)\), o bivetor de área orientada será
+
+$$
+B_f
+=
+\frac12
+\mathbf r_{ij}\wedge\mathbf r_{ik},
+$$
+
+e sua magnitude fornecerá a área. Normais, dualidade, rotores entre referenciais locais e relações de orientação entre faces serão incorporados de forma compatível com as definições do Capítulo 2.
+
+## Aerodinâmica tridimensional
+
+As respostas poderão incluir \(C_p\), \(C_L\), \(C_D\), \(C_m\) e demais coeficientes relevantes. Os níveis de fidelidade serão definidos por conteúdo físico, discretização, modelos de turbulência quando aplicáveis, condições de contorno, convergência e demanda de recursos.
+
+## Espalhamento eletromagnético tridimensional
+
+A resposta eletromagnética será tratada como RCS tridimensional quando sua definição física e normalização corresponderem a essa grandeza. A dependência angular, de frequência e de polarização deverá ser preservada:
+
+$$
+\sigma
+=
+\sigma(\theta,\phi,f,\mathrm{pol}).
+$$
+
+Quando campos ou correntes locais estiverem disponíveis, serão preservadas amplitude e fase para permitir reconstruções fisicamente coerentes de campo distante.
+
+## Fidelidades EM e aero
+
+As hierarquias não serão definidas apenas por nomes de solvers. Cada nível deverá ser documentado por suas hipóteses, discretização, resolução, tratamento de bordas ou viscosidade, critérios numéricos e recursos observados.
+
+## Correspondência entre fidelidades
+
+A construção multifidelidade exigirá compatibilidade entre grandezas. Respostas LF e HF deverão representar a mesma quantidade física sob condições equivalentes antes de serem usadas em correção residual, transferência de representação ou aprendizado conjunto.
+
+## Dados, manifestos e rastreabilidade
+
+Cada configuração 3D deverá manter identificadores persistentes para geometria, malha, fidelidade e condições físicas. Os splits continuarão sendo realizados por geometria, evitando vazamento entre remalhamentos ou condições derivadas da mesma configuração.
+
+## Transferência do pipeline 2D
+
+Loaders, configuração de jobs, seed oficial, métricas e estrutura de artefatos serão reutilizados. A representação geométrica, os hiperparâmetros e as arquiteturas serão novamente avaliados, pois desempenho no caso 2D não constitui validação automática em 3D.
+
+## Critérios de prontidão para o Capítulo 8
+
+Antes da otimização tridimensional, os surrogates disciplinares deverão demonstrar generalização em geometrias não vistas, estabilidade frente a remalhamento e erro compatível com as decisões de projeto que serão tomadas no domínio aero-stealth.

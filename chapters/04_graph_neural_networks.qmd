@@ -742,6 +742,12 @@ $$
 
 A AG atua transversalmente na representação geométrica e, se os experimentos justificarem, nos canais e operadores internos da GNN. A multifidelidade atua na relação entre dados provenientes de modelos distintos. A física orienta atributos, alvos, condições de contorno, integrais e perdas. Nenhum desses componentes elimina a necessidade de validação e reavaliação com os solvers de referência.
 
+## Progressão experimental dos grafos 2D para 3D
+
+Os conceitos deste capítulo serão avaliados primeiro em grafos derivados de contornos e malhas bidimensionais. Nessa etapa, cada configuração geométrica será mantida integralmente em um único subconjunto de treino, validação ou teste, evitando que nós ou condições da mesma geometria contaminem mais de uma partição quando o objetivo for medir generalização geométrica.
+
+A mesma interface conceitual será posteriormente reutilizada em superfícies tridimensionais. O que muda entre as etapas é a complexidade geométrica e física: em 2D predominam contornos, arestas e relações em \(Cl(2,0)\); em 3D surgem faces orientadas, bivetores de área, rotores entre referenciais locais, maior variabilidade de malha e interações físicas de alcance potencialmente maior. Arquiteturas e hiperparâmetros bem-sucedidos em 2D serão tratados como pontos de partida, não como escolhas automaticamente válidas em 3D.
+
 ## Síntese
 
 A principal vantagem conceitual das GNNs neste problema é operar diretamente sobre malhas irregulares e aprender interações condicionadas pela geometria e pelas condições físicas. Para que essa vantagem se converta em contribuição de engenharia, a formulação precisa manter significado matemático explícito, tratar corretamente simetrias e orientação, controlar dependências da discretização, fornecer alcance suficiente para interações não locais e separar erro de campo, erro de resposta integrada e economia real de recursos.
