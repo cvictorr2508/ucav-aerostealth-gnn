@@ -44,12 +44,19 @@ def main(argv: list[str] | None = None) -> None:
     columns_cfg = config.get("columns", {})
     split_cfg = config.get("split", {})
 
-    input_csv = Path(args.input_csv or input_cfg.get("csv", ""))
-    output_dir = Path(args.output_dir or input_cfg.get("output_dir", ""))
-    if not str(input_csv):
+    input_value = args.input_csv or input_cfg.get("csv")
+    output_value = args.output_dir or input_cfg.get("output_dir")
+    if not input_value:
         raise ValueError("An input CSV path is required.")
-    if not str(output_dir):
+    if not output_value:
         raise ValueError("An output directory is required.")
+    if input_cfg.get("closed_contour", True) is not True:
+        raise NotImplementedError(
+            "Chapter 5 currently supports ordered closed contours only."
+        )
+
+    input_csv = Path(str(input_value))
+    output_dir = Path(str(output_value))
 
     schema = ContourCSVSchema(
         configuration_id=str(columns_cfg.get("configuration_id", "configuration_id")),
