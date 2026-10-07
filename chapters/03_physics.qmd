@@ -966,6 +966,14 @@ Antes de aplicar o modelo a uma geometria UCAV completa, a validação deve avan
 
 A comparação não deve se restringir a \(C_L\), \(C_D\) e \(C_m\). Campos intermediários, como \(C_p\), pressão superficial e balanços de conservação, ajudam a identificar compensações de erro que poderiam produzir um coeficiente integrado aparentemente correto. Quando houver resultados experimentais ou soluções de referência adequadas, eles devem ser usados para distinguir erro de discretização, limitação do modelo físico e erro do futuro surrogate.
 
+## Problemas bidimensionais e respostas tridimensionais
+
+A etapa bidimensional exige distinguir simplificação geométrica de equivalência física. Em aerodinâmica, um aerofólio 2D representa uma seção e permite estudar coeficientes seccionais e campos associados a um escoamento bidimensional; esses resultados não incluem efeitos tridimensionais de asa finita, como vórtices de ponta e arrasto induzido.
+
+No eletromagnetismo, a distinção é ainda mais importante. Um problema de espalhamento estritamente bidimensional é frequentemente formulado em termos de uma grandeza por unidade de comprimento, como *scattering width*, cuja dimensão física não é a mesma da RCS tridimensional em \(\mathrm{m^2}\). Se os dados utilizados nos estudos 2D forem provenientes de uma extrusão finita ou de um solver tridimensional parametrizado por uma seção 2D, a saída poderá continuar sendo RCS, desde que a geometria e a normalização correspondentes sejam explicitadas. Caso sejam dados de um problema EM verdadeiramente 2D, a grandeza física deverá ser denominada e interpretada de acordo com a formulação que a gerou.
+
+Essa distinção será preservada na ingestão dos dados e nas funções de perda: nenhuma conversão entre *scattering width* e RCS será realizada implicitamente.
+
 ## Ponte entre os dois domínios físicos e as GNNs
 
 Os domínios eletromagnético e aerodinâmico compartilham a mesma geometria de superfície, mas respondem a condições físicas diferentes. Isso motiva a investigação de representações geométricas compartilháveis sem pressupor que um único modelo multitarefa seja necessariamente superior.
