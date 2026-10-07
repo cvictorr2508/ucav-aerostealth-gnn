@@ -244,6 +244,12 @@ O protocolo experimental incluirá modelos de referência capazes de separar a c
 
 A Álgebra Geométrica permanece como formalismo adotado no framework final. A ablação tem a função de quantificar como cada componente modifica precisão, estabilidade, demanda de dados e comportamento da otimização, e não de decidir sua adoção.
 
+## Progressão experimental de 2D para 3D
+
+A validação do framework será realizada em duas etapas complementares. A primeira utilizará problemas bidimensionais de aerofólios e espalhamento eletromagnético para construir e testar, de ponta a ponta, a representação geométrica, a conversão malha--grafo, os atributos em Álgebra Geométrica, os modelos substitutos e os protocolos de treinamento e validação. Essa etapa não será tratada como substituta do problema tridimensional: seu papel é fornecer um ambiente controlado no qual hipóteses arquiteturais, fontes de erro e ganhos de recursos possam ser isolados com maior transparência.
+
+A segunda etapa estenderá a infraestrutura validada para geometrias tridimensionais de configurações UCAV. As conclusões obtidas em 2D serão consideradas evidência metodológica preliminar, e propriedades como generalização geométrica, sensibilidade a remalhamento, dependências eletromagnéticas de longo alcance e desempenho em otimização serão novamente avaliadas no domínio 3D antes de qualquer conclusão de engenharia sobre a configuração completa.
+
 ## Delimitação do estudo
 
 O trabalho concentra-se na integração entre geometria UCAV, RCS, aerodinâmica subsônica, Álgebra Geométrica, GNNs multifidelidade e otimização matemática. Os solvers físicos de referência serão utilizados para geração de dados e reavaliação, enquanto as reformulações em AG terão profundidade suficiente para sustentar as representações, relações físicas e operações empregadas pelo modelo substituto e pela otimização.
