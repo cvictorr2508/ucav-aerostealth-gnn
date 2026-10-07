@@ -213,13 +213,13 @@ Para cada nó do contorno, a representação inicial armazena
 
 $
 \left[
-x_i,,
-y_i,,
-t_{x,i},,
-t_{y,i},,
-n_{x,i},,
-n_{y,i},,
-d_i,,
+x_i,
+y_i,
+t_{x,i},
+t_{y,i},
+n_{x,i},
+n_{y,i},
+d_i,
 b_i
 \right],
 $
