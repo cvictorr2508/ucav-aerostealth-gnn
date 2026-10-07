@@ -1,4 +1,4 @@
-# Modelagem multifidelidade e representação geométrica do estudo 2D
+# Modelagem multifidelidade, parametrização e representação geométrica do estudo 2D
 
 Este capítulo estabelece o primeiro bloco experimental do framework. O objetivo é transformar a formulação desenvolvida nos capítulos anteriores em um pipeline reproduzível para geometrias bidimensionais, preservando o significado físico das respostas e preparando a extensão tridimensional. O estudo 2D será usado para validar representação, ingestão de dados, construção de grafos, atributos em Álgebra Geométrica e relações entre níveis de fidelidade antes de aumentar a complexidade geométrica.
 
@@ -326,7 +326,7 @@ Da mesma forma, o campo chamado provisoriamente de RCS no conjunto de dados ser�
 
 ## Saídas computacionais deste capítulo
 
-A infraestrutura implementada neste estágio fornece
+A primeira implementação deverá fornecer
 
 - validação do contrato dos CSVs;
 - reconstrução de contornos 2D;
@@ -336,4 +336,4 @@ A infraestrutura implementada neste estágio fornece
 - manifestos de dados e split;
 - testes unitários para o produto geométrico, dualidade, orientação, comprimentos, grafos e ausência de vazamento entre partições.
 
-Os valores experimentais somente serão produzidos depois que os CSVs reais forem incorporados. O Capítulo 6 utilizará os artefatos deste pipeline para treinamento, validação e comparação das GNNs.
+Os resultados experimentais serão produzidos somente depois que os CSVs reais forem incorporados e seu contrato físico-numérico for validado. O Capítulo 6 utilizará os artefatos desse pipeline para treinamento, validação e comparação das GNNs.
