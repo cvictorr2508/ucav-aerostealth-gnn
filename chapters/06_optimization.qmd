@@ -164,7 +164,7 @@ O **aprendizado ativo** será tratado como um mecanismo explícito de enriquecim
 
 Depois de treinar um surrogate inicial, um ciclo de enriquecimento poderá ser escrito como
 
-$
+$$
 \mathcal D_k
 \rightarrow
 \mathcal G_{\boldsymbol\theta_k}
@@ -174,7 +174,7 @@ $
 \text{nova avaliação de referência}
 \rightarrow
 \mathcal D_{k+1},
-$
+$$
 
 em que \(\mathcal D_k\) é o conjunto disponível na iteração \(k\), \(\mathcal G_{\boldsymbol\theta_k}\) é o surrogate treinado e \(\mathcal A_k\) é um critério de aquisição. Esse critério poderá combinar incerteza epistemológica validada, discrepância entre fidelidades, distância em relação aos dados existentes e relevância para regiões promissoras da fronteira de Pareto.
 
@@ -212,22 +212,22 @@ Sem \(\mathbf d\) ou outro gerador de geometria, a etapa será corretamente desc
 
 Quando a parametrização estiver disponível, seja \(\mathbf d\in\mathbb R^p\) o vetor de projeto e seja \(\mathcal D_{\mathrm{adm}}\) o domínio de geometrias admissíveis. Uma formulação multiobjetivo de referência é
 
-$
+$$
 \min_{\mathbf d\in\mathcal D_{\mathrm{adm}}}
 \begin{bmatrix}
 J_{\mathrm{EM}}(\mathbf d)\\
 C_D(\mathbf d)
 \end{bmatrix},
-$
+$$
 
 sujeita, por exemplo, a
 
-$
+$$
 C_L(\mathbf d)\ge C_{L,\min},
 \qquad
 g_r(\mathbf d)\le 0,
 \quad r=1,\ldots,n_g.
-$
+$$
 
 Aqui, \(J_{\mathrm{EM}}\) é uma métrica eletromagnética definida a partir da resposta realmente fornecida pelo solver, \(C_{L,\min}\) é a sustentação mínima requerida e \(g_r\) representa restrições geométricas ou operacionais. Restrições de espessura, área seccional ou suavidade somente serão incluídas quando fizerem parte do espaço de projeto real.
 

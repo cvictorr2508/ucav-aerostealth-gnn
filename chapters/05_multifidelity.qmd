@@ -12,27 +12,27 @@ A grandeza eletromagnética deverá ser identificada a partir dos metadados do c
 
 A malha ou o contorno é a entrada natural da GNN, mas não é, por si só, uma parametrização adequada para otimização contínua. Para gerar novas geometrias de forma controlada, define-se um vetor de projeto
 
-$
+$$
 \mathbf d
 =
 [d_1,\ldots,d_p]^T,
-$
+$$
 
 em que cada componente \(d_k\) modifica uma característica geométrica com domínio e significado conhecidos. Um gerador geométrico \(\mathcal P\) transforma esse vetor em uma geometria contínua,
 
-$
+$$
 \Gamma
 =
 \mathcal P(\mathbf d),
-$
+$$
 
 e uma etapa de discretização \(\mathcal M\) produz a malha ou o contorno usado pela GNN,
 
-$
+$$
 G
 =
 \mathcal M\!\left(\mathcal P(\mathbf d)\right).
-$
+$$
 
 No estudo de aerofólios, parametrizações como **Class-Shape Transformation (CST)** constituem uma alternativa compacta e amplamente usada para representar famílias de perfis [@kulfan2008]. Splines, PARSEC, *free-form deformation* e outras técnicas permanecem alternativas possíveis. A escolha não será fixada antes da inspeção dos 50 casos, porque é necessário saber se os CSVs preservam os parâmetros geradores ou apenas as coordenadas discretizadas.
 
@@ -42,7 +42,7 @@ Se os dados fornecerem somente coordenadas, a GNN poderá ser treinada normalmen
 
 A geração planejada de dados deve cobrir conjuntamente o espaço geométrico e as condições físicas sem contaminar a avaliação final do surrogate. Seja \(\mathbf c\) o vetor de condições de operação e seja \(f\) um identificador do nível de fidelidade. Uma amostra computacional pode ser representada por
 
-$
+$$
 \mathcal D
 =
 \left\{
@@ -54,7 +54,7 @@ G^{(s)},
 \mathbf y^{(s)}
 \right)
 \right\}_{s=1}^{N},
-$
+$$
 
 em que \(s\) identifica a amostra, \(G^{(s)}\) é o grafo correspondente e \(\mathbf y^{(s)}\) contém as respostas físicas disponíveis.
 

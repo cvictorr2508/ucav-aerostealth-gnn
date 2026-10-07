@@ -54,24 +54,24 @@ O vetor de decisão será definido a partir da parametrização geométrica real
 
 Seja \(\mathbf d\) o vetor de parâmetros geométricos 3D e seja \(\mathcal D_{\mathrm{adm}}\) o conjunto de configurações admissíveis. Uma formulação de referência é
 
-$
+$$
 \min_{\mathbf d\in\mathcal D_{\mathrm{adm}}}
 \begin{bmatrix}
 J_{\mathrm{RCS}}(\mathbf d)\\
 C_D(\mathbf d)
 \end{bmatrix},
-$
+$$
 
 sujeita a
 
-$
+$$
 C_L(\mathbf d)\ge C_{L,\min},
 \qquad
 V_{\mathrm{int}}(\mathbf d)\ge V_{\min},
 \qquad
 g_r(\mathbf d)\le0,
 \quad r=1,\ldots,n_g.
-$
+$$
 
 Nessa escrita, \(J_{\mathrm{RCS}}\) é uma medida explicitamente definida a partir da curva de RCS, \(V_{\mathrm{int}}\) é o volume interno disponível e \(g_r\) reúne outras restrições geométricas, operacionais ou de integração que forem efetivamente adotadas. A RCS poderá ser agregada por setores, máximos, quantis ou outras medidas de risco, preservando a curva original para validação.
 
