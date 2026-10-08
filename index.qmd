@@ -14,9 +14,9 @@ Desenvolver e validar um framework de otimização multidisciplinar aero-stealth
 
 ## Arquitetura da pesquisa
 
-A arquitetura metodológica de referência é:
+A arquitetura metodológica de referência combina **análise e otimização baseadas em modelos substitutos** (*surrogate-based analysis and optimization*, SBAO) com uma formulação de **Otimização Multidisciplinar de Projeto (Multidisciplinary Design Optimization, MDO)**. Os modelos substitutos reduzem o número de consultas aos modelos físicos de referência, enquanto a organização multidisciplinar segue a taxonomia de arquiteturas de MDO e será classificada como MDF, IDF ou outra alternativa somente depois que as variáveis de acoplamento e as condições de consistência entre as disciplinas estiverem explicitamente definidas [@queipo2005sbao; @martins2013]. A relação entre níveis de fidelidade será tratada segundo métodos de modelagem multifidelidade, preservando compatibilidade física entre as respostas e avaliações de referência para validação [@peherstorfer2018]. As Graph Neural Networks operacionalizam os surrogates sobre as representações em malha/grafo.
 
-$
+\[
 \text{geometria parametrizada 2D/3D}
 \rightarrow
 \text{malha/grafo}
@@ -30,13 +30,12 @@ $
 \text{otimização matemática aero-stealth}
 \rightarrow
 \text{reavaliação por modelos de referência}.
-$
+\]
 
 A validação metodológica será conduzida em duas etapas. Primeiro, o pipeline completo será desenvolvido e testado em problemas bidimensionais de aerofólios e espalhamento eletromagnético, nos quais geometria, conectividade, atributos em Álgebra Geométrica, treinamento e erros podem ser inspecionados diretamente. Depois, a mesma infraestrutura será estendida para geometrias tridimensionais de configurações UCAV, preservando a separação entre o que foi demonstrado em 2D e o que precisa ser novamente validado em 3D.
 
 A motivação para grafos decorre da estrutura natural de malhas triangulares e não estruturadas, amplamente explorada em *geometric deep learning* e simulação baseada em malhas [@bronstein2021; @pfaff2021]. Trabalhos recentes já demonstram GNNs para modelagem eletromagnética tridimensional [@shan2024] e análise aero-eletromagnética multitarefa em malhas de configurações *blended-wing-body* [@li2026aeroem].
 
-Do ponto de vista da otimização, o framework pertence à família de **análise e otimização baseadas em modelos substitutos** (*surrogate-based analysis and optimization*, SBAO), na qual aproximações treinadas reduzem o número de consultas aos modelos físicos de referência sem removê-los do processo de validação [@queipo2005sbao]. A organização multidisciplinar será descrita com a terminologia de arquiteturas de MDO de Martins e Lambe [@martins2013], mas a classificação final como MDF, IDF ou outra arquitetura não será imposta antes de identificar o acoplamento efetivo entre as disciplinas. A gestão dos níveis de fidelidade seguirá o princípio de combinar modelos que aproximam grandezas físicas compatíveis, mantendo avaliações de referência no ciclo para controlar precisão e validade [@peherstorfer2018].
 
 ## Questões metodológicas centrais
 
