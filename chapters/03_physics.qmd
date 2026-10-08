@@ -941,6 +941,48 @@ Em construções espaço-temporais mais amplas, quantidades associadas à vortic
 
 A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogias são úteis para representar **estrutura geométrica dos campos**, mas não equivalem automaticamente à formulação conservativa completa de Euler empregada em um solver aerodinâmico. O sistema conservativo contém densidade, fluxo tensorial de quantidade de movimento, energia e uma equação de estado. Logo, uma implementação deve manter esses objetos explicitamente identificados.
 
+## Continuidade compressível e conteúdo geométrico de Euler
+
+A decomposição da derivada geométrica apresentada anteriormente permite relacionar uma informação cinemática local a uma lei de conservação. Para um fluido compressível, seja \(\rho>0\) a densidade, \(\mathbf u\) o campo de velocidades, \(\theta=\nabla\cdot\mathbf u\) sua dilatação local e \(\Omega=\nabla\wedge\mathbf u\) seu bivetor de vorticidade. A derivada material de um campo escalar é \(D/Dt=\partial_t+\mathbf u\cdot\nabla\). Em regiões nas quais as grandezas são diferenciáveis, a conservação da massa pode ser escrita como
+
+$
+\frac{D\rho}{Dt}+\rho\theta=0.
+$
+
+Daí decorre a identidade cinemática
+
+$
+\nabla\mathbf u
+=
+-\frac{D\ln\rho}{Dt}+\Omega.
+$
+
+A parte escalar associa dilatação à variação material da densidade; a parte bivetorial descreve rotação local. Essa expressão reorganiza informações já presentes nas equações de Euler, sem substituir a conservação de massa nem fornecer uma solução independente do sistema [@hestenes1984; @sen2023].
+
+### Geração baroclínica de vorticidade
+
+Considere o balanço de quantidade de movimento de Euler, sem forças de corpo, em uma região regular do escoamento. Aplicando o produto exterior com \(\nabla\) à sua forma não conservativa, obtém-se, sob as convenções anteriores,
+
+$
+\frac{\partial\Omega}{\partial t}
++
+\nabla\wedge(\mathbf u\cdot\Omega)
+=
+\frac{1}{\rho^2}\,\nabla\rho\wedge\nabla p,
+$
+
+em que \(p\) é a pressão termodinâmica e \(\mathbf u\cdot\Omega\) é a contração de um vetor com um bivetor. O produto exterior \(\nabla\rho\wedge\nabla p\) representa a contribuição **baroclínica**: ela se anula quando os gradientes de densidade e pressão são paralelos. Trata-se de uma interpretação geométrica útil, mas não de um método numérico alternativo de solução da conservação compressível [@sen2023; @doran2003].
+
+Em particular, no regime transônico podem existir ondas de choque, através das quais campos macroscópicos deixam de ser diferenciáveis no sentido clássico. As relações diferenciais anteriores devem então ser entendidas em regiões regulares; o tratamento de choques requer a forma conservativa, as condições de salto e a discretização apropriada. A compacidade de uma expressão multivetorial não demonstra aumento de precisão nem redução de custo computacional.
+
+### Planos de rotação e dados necessários à aprendizagem
+
+Em \(Cl(3,0)\), com orientação euclidiana \(I=e_1e_2e_3\), a vorticidade vetorial convencional \(\boldsymbol\omega=\nabla\times\mathbf u\) está associada ao bivetor \(\Omega=I\boldsymbol\omega\). O vetor axial \(\boldsymbol\omega\) é **normal** ao plano orientado representado por \(\Omega\). Assim, quando ocorre alinhamento de Beltrami, \(\mathbf u\parallel\boldsymbol\omega\), a velocidade é normal a esse plano, e não um vetor nele contido. O cuidado com orientação e dualidade impede trocar indevidamente a direção axial pelo próprio bivetor.
+
+Esse bivetor de vorticidade deve ser distinguido do produto exterior \(\mathbf t_i\wedge\mathbf t_j\) entre tangentes geométricas adjacentes de um aerofólio. O segundo descreve a mudança de direção do **contorno**; o primeiro depende de derivadas do **campo de velocidade**. Ambos podem gerar atributos para uma Graph Neural Network (GNN), mas não possuem a mesma semântica. O cálculo de vorticidade, de termos baroclínicos ou de resíduos de Euler a partir de dados CFD exige os campos volumétricos apropriados e informações suficientes sobre sua discretização. Uma base contendo somente contorno, pressão superficial e \(C_L\)/\(C_D\) não permite inferi-los exatamente.
+
+De modo semelhante, a escrita formal \(\nabla^{-1}=\nabla(\nabla^2)^{-1}\), utilizada em cálculo geométrico para construir soluções particulares por funções de Green, depende da classe de campos, do domínio e das condições de contorno. Em domínios limitados, contribuições homogêneas ou de contorno precisam ser determinadas [@hestenes1984; @doran2003]. Essa representação não constitui, por si só, um algoritmo de CFD nem um atalho demonstrado para a solução de Euler.
+
 ## O que pode ser representado por multivetores — e o que continua sendo operador
 
 A AG oferece representações naturais para vetores velocidade, bivetores de vorticidade, bivetores de faces e transformações por rotores. Já o fluxo
