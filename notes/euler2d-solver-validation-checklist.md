@@ -1,6 +1,6 @@
 # Checklist de verificação do solver Euler 2D — S1
 
-**Projeto:** UCAV Aero-Stealth GNN · **Responsável pela campanha:** João Pedro · **Estado:** modelo de preenchimento, sem afirmar verificações realizadas · **Contrato:** \`notes/euler2d-dataset-contract.md\` (v0.1).
+**Projeto:** UCAV Aero-Stealth GNN · **Responsável pela campanha:** João Pedro · **Estado:** modelo de preenchimento, sem afirmar verificações realizadas · **Contrato:** `notes/euler2d-dataset-contract.md` (v0.1).
 
 > Marcar cada item como **verificado**, **não verificado**, **não disponível** ou **não aplicável**, com evidência (log, arquivo, captura de configuração, comando, versão ou checksum). Não preencher lacunas por inferência. As caixas abaixo iniciam desmarcadas.
 
@@ -37,7 +37,7 @@
 - [ ] Ao menos uma geometria canônica com malhas grossa, intermediária e de referência planejadas/executadas e registradas como tal.
 - [ ] Ampliar o estudo para **4–6 geometrias representativas** da faixa de \(m,p,t\), quando viável, incluindo regimes críticos.
 - [ ] Em cada malha, comparar \(C_L,C_D,C_p(s)\), posição de choque quando houver, iterações, resíduos e histórico dos coeficientes.
-- [ ] Comparar \`wall_time_s\`, CPU-hours, memória e ambiente de processamento.
+- [ ] Comparar `wall_time_s`, CPU-hours, memória e ambiente de processamento.
 - [ ] Definir tolerâncias de aceitação e justificar nível de referência por comportamento numérico, não pelo número de células.
 
 **Não pressupor que 200 mil células representem uma referência convergida.** Se o estudo não permitir estimativa rigorosa do erro assintótico, explicitar essa limitação em vez de declarar independência de malha.
@@ -48,15 +48,15 @@
 - [ ] Histórico de \(C_L,C_D\) por iteração ou janela final exportado.
 - [ ] Convenção de \(C_L,C_D,C_m\), eixos de sustentação/arrasto e ponto de referência do momento documentados.
 - [ ] Determinar o significado de \(C_D\) no Euler invíscido (forças de pressão e eventuais contribuições numéricas; sem atrito viscoso).
-- [ ] Códigos de status e \`failure_code\` disponíveis para execuções inválidas ou não convergidas.
-- [ ] Reinvestigar falhas do CSV histórico (\`id=7\` e \`id=22\`) e registrar diagnóstico com evidência, se reproduzíveis.
-- [ ] Não misturar \`ERRO\` ou outros textos em colunas numéricas; valores indisponíveis como \`NaN\` com status explícito.
+- [ ] Códigos de status e `failure_code` disponíveis para execuções inválidas ou não convergidas.
+- [ ] Reinvestigar falhas do CSV histórico (`id=7` e `id=22`) e registrar diagnóstico com evidência, se reproduzíveis.
+- [ ] Não misturar `ERRO` ou outros textos em colunas numéricas; valores indisponíveis como `NaN` com status explícito.
 
 ## E. Pressão superficial, \(C_p\) e integração de forças
 
 - [ ] Confirmar se pressão e \(C_p\) são exportáveis em nós, células ou faces de parede; registrar localização **nativa**.
 - [ ] Se cell-centered, verificar exportação da pressão reconstruída nas faces de contorno e preservar indicação do método.
-- [ ] Exportar identificador de entidade, \`case_id\`, coordenadas, \`x/c,y/c,s/c\`, norma/orientação, comprimento de face e conectividade.
+- [ ] Exportar identificador de entidade, `case_id`, coordenadas, `x/c,y/c,s/c`, norma/orientação, comprimento de face e conectividade.
 - [ ] Preservar a ordenação do contorno, identificação de extradorso/intradorso e eventuais componentes separados.
 - [ ] Preservar pressão dimensional e fatores usados em \(C_p=(p-p_\infty)/q_\infty\).
 - [ ] Inspecionar valores de \(C_p\) em extradorso/intradorso, especialmente em regiões transônicas ou de choque.
@@ -78,7 +78,7 @@ A força seccional (por unidade de envergadura) utiliza a normal externa ao corp
 
 Disponibilizar **um caso canônico válido** (podendo incluir mais de uma malha) com os seguintes artefatos e um índice que ligue seus IDs:
 
-- [ ] Registro \`cases.csv\` (ao menos \`case_id,geometry_id,mesh_id\`, parâmetros, condição física, versão e status).
+- [ ] Registro `cases.csv` (ao menos `case_id,geometry_id,mesh_id`, parâmetros, condição física, versão e status).
 - [ ] Coordenadas e conectividade do contorno, normais e identificação da localização nativa das variáveis.
 - [ ] Pressão superficial e/ou \(C_p\), com referência de normalização.
 - [ ] Malha e metadados de malha, incluindo orientação e limites do domínio.
@@ -92,10 +92,10 @@ Disponibilizar **um caso canônico válido** (podendo incluir mais de uma malha)
 
 ## H. Critérios de entrada para S2 e delimitação de responsabilidades
 
-**Ação da equipe de desenvolvimento após receber os arquivos:** inspecionar tipos, unidades, chaves, conectividade, orientação e sentido das normais; documentar divergências do contrato v0.1; planejar adaptador multi-arquivo para o leitor de contorno da PR #16; construir grafo e manifesto; testar consistência \(C_p\)–força; assegurar split por \`geometry_id\`, seed 42 e CI.
+**Ação da equipe de desenvolvimento após receber os arquivos:** inspecionar tipos, unidades, chaves, conectividade, orientação e sentido das normais; documentar divergências do contrato v0.1; planejar adaptador multi-arquivo para o leitor de contorno da PR #16; construir grafo e manifesto; testar consistência \(C_p\)–força; assegurar split por `geometry_id`, seed 42 e CI.
 
-**Não realizar durante S0:** alterar o pacote Python em \`src/\`, gerar falsos resultados de solver, classificar níveis de fidelidade apenas pelo número de células, declarar a PR #16 pronta para merge ou promover trabalhos experimentais às branches estáveis.
+**Não realizar durante S0:** alterar o pacote Python em `src/`, gerar falsos resultados de solver, classificar níveis de fidelidade apenas pelo número de células, declarar a PR #16 pronta para merge ou promover trabalhos experimentais às branches estáveis.
 
 **Quadro de decisão a preencher:** responsável ______; data ______; solver/versão ______; caso canônico ______; metadados completos? ______; \(C_p\) disponível? ______; conectividade disponível? ______; S1 aprovado? ______; pendências ______.
 
-**Documentos relacionados:** \`notes/euler2d-dataset-contract.md\`, \`notes/editorial-scientific-guidelines.md\`, PR #16.
+**Documentos relacionados:** `notes/euler2d-dataset-contract.md`, `notes/editorial-scientific-guidelines.md`, PR #16.

@@ -945,17 +945,17 @@ A aplicação ao presente trabalho exige uma distinção rigorosa. Essas analogi
 
 A decomposição da derivada geométrica apresentada anteriormente permite relacionar uma informação cinemática local a uma lei de conservação. Para um fluido compressível, seja \(\rho>0\) a densidade, \(\mathbf u\) o campo de velocidades, \(\theta=\nabla\cdot\mathbf u\) sua dilatação local e \(\Omega=\nabla\wedge\mathbf u\) seu bivetor de vorticidade. A derivada material de um campo escalar é \(D/Dt=\partial_t+\mathbf u\cdot\nabla\). Em regiões nas quais as grandezas são diferenciáveis, a conservação da massa pode ser escrita como
 
-$
+$$
 \frac{D\rho}{Dt}+\rho\theta=0.
-$
+$$
 
 Daí decorre a identidade cinemática
 
-$
+$$
 \nabla\mathbf u
 =
 -\frac{D\ln\rho}{Dt}+\Omega.
-$
+$$
 
 A parte escalar associa dilatação à variação material da densidade; a parte bivetorial descreve rotação local. Essa expressão reorganiza informações já presentes nas equações de Euler, sem substituir a conservação de massa nem fornecer uma solução independente do sistema [@hestenes1984; @sen2023].
 
@@ -963,13 +963,13 @@ A parte escalar associa dilatação à variação material da densidade; a parte
 
 Considere o balanço de quantidade de movimento de Euler, sem forças de corpo, em uma região regular do escoamento. Aplicando o produto exterior com \(\nabla\) à sua forma não conservativa, obtém-se, sob as convenções anteriores,
 
-$
+$$
 \frac{\partial\Omega}{\partial t}
 +
 \nabla\wedge(\mathbf u\cdot\Omega)
 =
 \frac{1}{\rho^2}\,\nabla\rho\wedge\nabla p,
-$
+$$
 
 em que \(p\) é a pressão termodinâmica e \(\mathbf u\cdot\Omega\) é a contração de um vetor com um bivetor. O produto exterior \(\nabla\rho\wedge\nabla p\) representa a contribuição **baroclínica**: ela se anula quando os gradientes de densidade e pressão são paralelos. Trata-se de uma interpretação geométrica útil, mas não de um método numérico alternativo de solução da conservação compressível [@sen2023; @doran2003].
 
